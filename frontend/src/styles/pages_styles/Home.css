@@ -1,0 +1,10 @@
+.book_slide {
+    background-color: hsla(38, 92%, 52%, 0.827);
+    width: 100%;
+    height: calc(100vh - 60px);
+    position: relative;
+}
+
+.book_slide h1 {
+    color: #fff;
+}

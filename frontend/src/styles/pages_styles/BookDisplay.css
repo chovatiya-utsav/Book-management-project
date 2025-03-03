@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.Book_Body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: powderblue;
+}
+
+.Book {
+    position: relative;
+    width: 350px;
+    height: 500px;
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    perspective: 1500px;
+}
+
+.front,
+.back {
+    background: #fff;
+    border-color: #fff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    transition: transform 0.5s;
+}
+
+
+.front {
+    z-index: 1;
+    backface-visibility: hidden;
+    border-left: 3px solid powderblue;
+}
+
+.back {
+    z-index: 0;
+}
+
+.front-content,
+.back-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-content {
+    transform: rotateY(180deg);
+}
+
+.flipped .front,
+.flipped .back {
+    transform: rotateY(-180deg);
+}
+
+
+.prev_button,
+.next_button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.prev_button i,
+.next_button i {
+    font-size: 50px;
+    color: #a5a2a2;
+}
+
+.prev_button i:hover,
+.next_button i:hover {
+    color: #cdc8c8;
+}
+
+#p1 {
+    z-index: 1;
+}
+
+#p2 {
+    z-index: 0;
+}
+
+.Book_move {
+    transform: translatex(50%);
+}
+
+.Book_curent_location {
+    transform: translatex(100%);
+}
+
+.prve_button_move {
+    transform: translatex(-180px);
+}
+
+.next_button_move {
+    transform: translatex(180px);
+}
