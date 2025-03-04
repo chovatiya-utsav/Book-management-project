@@ -40,9 +40,9 @@ const BookDisplay = () => {
                 {[1, 2, 3].map((page) => (
                     <div key={page} id={`${frontPageDisplay === page ? "p1" : "p2"}`} className={`page ${flippedPages >= page ? "flipped" : ""}`}>
                         <div className="front">
-                            <div className="front-content">
-                                <h1>Front {page}
-                                </h1>
+                            <div className={`front-content ${flippedPages === 0 ? "Book_Cover" : ""}`}>
+                                <h1>Fronjjhghft {page}
+                                </h1>   
                             </div>
                         </div>
                         <div className="back">
