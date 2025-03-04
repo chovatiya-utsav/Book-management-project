@@ -73,7 +73,7 @@ const loginValidation = (req, res, next) => {
             .messages({
                 "string.empty": "Password cannot be empty",
                 "string.min": "Password must be at least 5 character",
-                "string.max": "Password cannot longer than 10 characters",
+                "string.max": "Password cannot longer than 10 character",
                 "string.pattern.base": "Password must include at least one uppercase letter, one number,and one special character"
             }),
     })
