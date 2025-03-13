@@ -30,6 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
     //console.log(req.body);
 
     //validation -not empty
+    //.some() is an array method that checks if at least one item in the array meets a condition.
     if (
         [name, email, password, contactNo, address].some((field) => field?.trim() === "")
     ) {
