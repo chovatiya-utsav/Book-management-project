@@ -1,92 +1,265 @@
-import React from 'react';
-import { Formik } from 'formik';
-import "../../styles/pages_styles/Registration.css"
-import { useNavigate } from 'react-router';
+import React, { useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import "../../styles/pages_styles/Registration.css";
+
+const registrationDetails = [
+    { detail: "User Name", placeholder: "abc", name: "userName", type: "text" },
+    { detail: "User Contact", placeholder: "1547856952", name: "userContact", type: "tel" },
+    { detail: "User Email", placeholder: "abc@gmail.com", name: "userEmail", type: "email" },
+    { detail: "User Password", placeholder: "password", name: "userPassword", type: "password" },
+    { detail: "confirm Password", placeholder: "conform password", name: "userConfirmPassword", type: "password" },
+    { detail: "User Address", placeholder: "21 no,abc street,abc area", name: "userAddress", type: "text" }
+];
+
+// Validation Schema
+const validationSchema = Yup.object().shape({
+    userName: Yup.string()
+        .matches(/^[A-Za-z\s]+$/, "User Name cannot contain numbers")
+        .required("User Name is required"),
+    userContact: Yup.string()
+        .matches(/^\d+$/, "User Contact must contain only numbers")
+        .min(10, "User Contact must be at least 10 digits")
+        .max(10, "User Contact must be  10 digits not more")
+        .required("User Contact is required"),
+    userEmail: Yup.string()
+        .email("Invalid email format")
+        .required("User Email is required"),
+    userPassword: Yup.string()
+        .min(6, "Password must be at least 6 characters")
+        .required("User Password is required"),
+    userConfirmPassword: Yup.string()
+        .oneOf([Yup.ref("userPassword")], "Passwords must match"),
+    userAddress: Yup.string()
+        .required("User Address is required"),
+});
 
 const Registration = () => {
+    const [flippedPages, setFlippedPages] = useState(0);
+    const [frontPageDisplay, setFrontPageDisplay] = useState(1);
+    const [bookCoverOpen, setBookCoverOpen] = useState(false);
+    const [backBookCoverOpen, setBackBookCoverOpen] = useState(false);
+    const [userInfo, setUserInfo] = useState([])
 
-    const navigat = useNavigate();
+    const flipPage = (direction, values, errors) => {
+        if (!bookCoverOpen) {
+            setBookCoverOpen(true);
+        } else if (backBookCoverOpen) {
+            setBackBookCoverOpen(false);
+        } else {
+            const currentField = registrationDetails[flippedPages]?.name;
 
-    const navigatRagistration = () => {
-        navigat("/Login")
-    }
+            if (direction === "next") {
+                if (!errors[currentField] && values[currentField]) {
+                    setFlippedPages((prev) => prev + 1);
+                    setFrontPageDisplay((prev) => prev + 1);
+
+                    setUserInfo((prev) => ({
+                        ...prev,
+                        [currentField]: values[currentField],
+                    }));
+
+                }
+            } else if (direction === "prev") {
+                if (!errors[currentField]) {
+                    setFlippedPages((prev) => Math.max(prev - 1, 0));
+                    setFrontPageDisplay((prev) => Math.max(prev - 1, 1));
+                }
+            }
+
+            if (direction === "prev" && flippedPages === 0) {
+                setBookCoverOpen(false);
+            }
+
+            if (direction === "next" && flippedPages === registrationDetails.length) {
+                setBackBookCoverOpen(true);
+            }
+        }
+    };
+
+    const getAutoCompleteValue = (fieldName, values) => {
+        const autoCompleteValues = {
+            userName: "name",
+            userContact: "tel",
+            userEmail: "email",
+            userPassword: "new-password",
+            userConfirmPassword: values.userPassword,
+            userAddress: "street-address"
+        };
+        return autoCompleteValues[fieldName] || "off";
+    };
+
 
     return (
-        <>
-            <div className='form'>
-                <Formik
-                    initialValues={{ email: '', password: '' }}
-                    validate={values => {
-                        const errors = {};
-                        if (!values.email) {
-                            errors.email = 'Required';
-                        } else if (
-                            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                        ) {
-                            errors.email = 'Invalid email address';
+        <Formik
+            initialValues={{
+                userName: "",
+                userContact: "",
+                userEmail: "",
+                userPassword: "",
+                userConfirmPassword: "",
+                userAddress: "",
+            }}
+            validationSchema={validationSchema}
+            validateOnChange
+            validateOnBlur
+            onSubmit={
+                (values, actions) => {
+                    const fromData = {
+                        userName: values?.userName,
+                        userContact: values?.userContact,
+                        userEmail: values?.userEmail,
+                        userPassword: values?.userPassword,
+                        userAddress: values?.userAddress,
+                    }
+
+                    const userData = JSON.stringify(fromData)
+                    console.log("data base store Data:", userData);
+
+                    setTimeout(async () => {
+                        if (userData) {
+                            const response = await fetch("", {
+                                method: "post",
+                                body: userData,
+                                headers: {
+                                    'content-Type': 'application/json'
+                                }
+                            })
+                            const Data = response.json();
+
+
                         }
-                        return errors;
-                    }}
-                    onSubmit={(values, { setSubmitting }) => {
-                        setTimeout(() => {
-                            const userData = JSON.parse(localStorage.getItem('user-data')) || [];
-                            const matchUserData = userData.find((item) => item?.email === values.email);
-                            if (!matchUserData) {
-                                const userLoginData = [...userData, values];
-                                localStorage.setItem("user-data", JSON.stringify(userLoginData));
-                                navigat("/Login")
-                            } else {
-                                alert("match")
-                            }
-                            // console.log(matchUserData);
-                        }, 400);
-                    }}
-                >
-                    {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        isSubmitting,
-                        /* and other goodies */
-                    }) => (
-                        <form onSubmit={handleSubmit}>
-                            <input
-                                type="email"
-                                name="email"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.email}
-                            />
-                            <span>
 
-                                {errors.email && touched.email && errors.email}
-                            </span>
-                            <input
-                                type="password"
-                                name="password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.password}
-                            />
-                            <span>
+                    });
 
-                                {errors.password && touched.password && errors.password}
-                            </span>
-                            <button type="submit">
-                                Submit
+
+
+                }
+
+            }
+        >
+            {(
+                {
+                    values,
+                    errors,
+                }) => (
+                <Form className="Book_Body">
+                    {/* Left Arrow Button */}
+                    {
+                        bookCoverOpen ?
+                            <button
+                                className={`prev_button ${bookCoverOpen && !backBookCoverOpen ? "prve_button_move" : ""}`}
+                                type="button"
+                                onClick={() => flipPage("prev", values, errors)}
+                            >
+                                <i className="fa fa-arrow-circle-left"></i>
                             </button>
-                            <button onClick={navigatRagistration}>
-                                Login
-                            </button>
-                        </form>
-                    )}
-                </Formik>
-            </div >
-        </>
-    )
-}
+
+                            : null
+                    }
+
+                    {/* Book Pages */}
+                    <div
+                        className={`Book ${bookCoverOpen && !backBookCoverOpen ? "Book_move" : ""}  
+                        ${flippedPages === registrationDetails.length && backBookCoverOpen ? "Book_current_location" : ""}`}
+                    >
+                        {/* Front Book Cover */}
+                        <div className={`Book_front_cover ${bookCoverOpen ? "front_cover_opened" : "front_cover_close"}`}>
+                            <div className="front" >
+                                {/* <div className="front" id={!bookCoverOpen ? "p1" : "p2"}> */}
+                                <div className="Book_Cover_front_Content">
+                                    <h1>User Registration Book</h1>
+                                </div>
+                            </div>
+                            <div className="back">
+                                <div className="Book_Cover_back_Content">
+                                    <h1>Fill all fields</h1>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Pages */}
+                        <div className="Book_pages">
+                            {registrationDetails.map((item, index) => (
+                                <div
+                                    key={index}
+                                    id={frontPageDisplay === index + 1 ? "p1" : "p2"}
+                                    className={`page ${flippedPages >= index + 1 ? "flipped" : ""}`}
+                                >
+                                    <div className="front">
+                                        <div className="front-content">
+                                            <div className="user_info">
+                                                <h1>{item.detail}</h1>
+                                            </div>
+                                            <div className="user_info_input">
+                                                <Field
+                                                    type={item.type}
+                                                    name={item.name}
+                                                    placeholder={item.placeholder}
+                                                    autoComplete={getAutoCompleteValue(item.name, values)}
+                                                />
+                                                <ErrorMessage name={item.name} component="span" className="error" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="back">
+                                        <div className="back-content">
+                                            <div className="user_submitted_info">
+                                                <h1>Submitted Details</h1>
+                                                {Object.entries(userInfo).map(([key, value]) => (
+                                                    <div key={key} className="user_Data">
+                                                        <strong className="info_title">{key} <span>:</span></strong>
+                                                        <span className={`user_value ${key === "userPassword" || key === "userConfirmPassword" ? "Password" : null}`} > {value} </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Back Book Cover */}
+                        <div className={`Book_front_cover ${!backBookCoverOpen ? "Back_cover_opened" : "Back_cover_close"}`}>
+                            <div className="front" >
+                                {/* <div className="front" id={!backBookCoverOpen ? "b1" : "p2"}> */}
+                                {
+                                    registrationDetails.length === flippedPages ?
+                                        <div className="Book_Cover_front_Content">
+                                            <h1>Check the side information you provided. If all the details are accurate, click the button below to register</h1>
+                                            <button type="button" onClick={() => flipPage("next", values, errors)}>
+                                                register
+                                            </button>
+                                        </div>
+                                        : null
+                                }
+                            </div>
+                            <div className="back">
+                                <div className="Book_Cover_back_Content">
+                                    <h1>Click the 'Below' button to confirm your registration</h1>
+                                    <button type="submit" >
+                                        confirm register
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Arrow Button */}
+                    {registrationDetails.length !== flippedPages ?
+                        <button
+                            className={`next_button ${bookCoverOpen && !backBookCoverOpen ? "next_button_move" : ""}`}
+                            type="button"
+                            onClick={() => flipPage("next", values, errors)}
+                        >
+                            <i className="fa fa-arrow-circle-right"></i>
+                        </button>
+                        : null
+                    }
+                </Form>
+            )}
+        </Formik>
+    );
+};
 
 export default Registration;
