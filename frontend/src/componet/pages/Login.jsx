@@ -20,7 +20,8 @@ const Login = () => {
     const [loginContect, setLoginContect] = useState(false);
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const navigate = useNavigate();
-    const [displayError, setDisplayError] = useState(false)
+    const [displayError, setDisplayError] = useState(false);
+    const [userNotExists, setUserNotExists] = useState(false)
     const [modalOpen, setModalOpen] = useState(false);
     const [changePasswordConform, setChangePasswordConform] = useState(false)
 
@@ -57,6 +58,11 @@ const Login = () => {
 
                 if (!CheckUser) {
                     console.log("user not ragistr please ragister first")
+                    setUserNotExists(true)
+                    setTimeout(() => {
+                        setUserNotExists(false)
+                    }, 4000);
+                    resetForm()
                 } else {
                     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
                     if (!CheckPassword) {
@@ -67,7 +73,7 @@ const Login = () => {
                         resetForm()
 
                     } else {
-                        console.log("user susecc fully login")
+                        localStorage.setItem("userLogin", JSON.stringify(data))
                         navigate("/Book-Management")
                     }
                 }
@@ -87,6 +93,11 @@ const Login = () => {
                 const CheckUser = userData.find((item) => item?.userEmail === data?.userEmail)
                 if (!CheckUser) {
                     console.log("user not ragistr please ragister first")
+                    setUserNotExists(true)
+                    setTimeout(() => {
+                        setUserNotExists(false)
+                    }, 4000);
+                    resetForm()
                 } else {
                     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
                     if (!CheckPassword) {
@@ -98,6 +109,7 @@ const Login = () => {
                         resetForm()
                     } else {
                         console.log("user susecc fully login")
+                        localStorage.setItem("userLogin", JSON.stringify(data))
                         navigate("/Book-Management")
                     }
                 }
@@ -128,8 +140,9 @@ const Login = () => {
                 >
                     {({ values, errors, isSubmitting, setErrors, resetForm }) => (
                         <Form className={`form ${isSubmittingForm ? "submitting" : ""}`}>
-                            <div className={`ragistrtion-error ${displayError ? "showError" : ""}`} >
-                                <h1>enter correct password</h1>
+                            <div className={`ragistrtion-error ${displayError || userNotExists ? "showError" : ""}`} >
+                                {displayError ? <h1>enter correct password</h1> : null}
+                                {userNotExists ? <h1>please complit your ragistrtion</h1> : null}
                             </div>
                             <div className="login-heding">
                                 <h1>Login</h1>
