@@ -11,7 +11,7 @@ const port = process.env.PORT
 
 connctDB()
     .then(() => {
-        app.listen(port || 8080, () => {
+        app.listen(port || 8000, () => {
             console.log(`Server is running on PORT:${port}`);
         })
     })
