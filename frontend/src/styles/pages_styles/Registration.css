@@ -4,22 +4,56 @@
     box-sizing: border-box;
 }
 
-.Book_Body {
+.ragistrtion-book {
+    width: 100%;
     height: 100vh;
+    background-color: powderblue;
+    animation: fadeInBackground 1.5s ease-in-out;
+    overflow: hidden;
+}
+
+@keyframes fadeInBackground {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.ragistrtion-book .Book_Body {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: powderblue;
+    animation: fadeInForm 1.5s ease-in-out;
+
 }
 
-.Book_Body .Book {
+@keyframes fadeInForm {
+    from {
+        transform: translatex(70px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translatex(0);
+        opacity: 1;
+    }
+}
+
+.ragistrtion-book .Book_Body .Book {
     position: relative;
     width: 400px;
     height: 550px;
     margin: 0px 30px;
 }
 
-.Book_Body .Book .Book_front_cover {
+
+
+
+.ragistrtion-book .Book_Body .Book .Book_front_cover {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -28,7 +62,7 @@
     perspective: 1500px;
 }
 
-.Book_Body .Book .page {
+.ragistrtion-book .Book_Body .Book .page {
     position: absolute;
     width: 95%;
     height: 95%;
@@ -37,8 +71,8 @@
     perspective: 1500px;
 }
 
-.Book_Body .Book .page .front,
-.Book_Body .Book .page .back {
+.ragistrtion-book .Book_Body .Book .page .front,
+.ragistrtion-book .Book_Body .Book .page .back {
     background: #fff;
     border-color: #fff;
     border-radius: 0px 20px 20px 0px;
@@ -51,23 +85,23 @@
     transition: transform 0.5s ease-in;
 }
 
-.Book_Body .Book .page .front {
+.ragistrtion-book .Book_Body .Book .page .front {
     border-left: 3px solid powderblue;
 }
 
-.Book_Body .Book .Book_front_cover .front,
-.Book_Body .Book .page .front {
+.ragistrtion-book .Book_Body .Book .Book_front_cover .front,
+.ragistrtion-book .Book_Body .Book .page .front {
     z-index: 1;
     backface-visibility: hidden;
 }
 
-.Book_Body .Book .page .back,
-.Book_Body .Book .Book_front_cover .back {
+.ragistrtion-book .Book_Body .Book .page .back,
+.ragistrtion-book .Book_Body .Book .Book_front_cover .back {
     z-index: 0;
 }
 
-.Book_Body .Book .page .front .front-content,
-.Book_Body .Book .page .back .back-content {
+.ragistrtion-book .Book_Body .Book .page .front .front-content,
+.ragistrtion-book .Book_Body .Book .page .back .back-content {
     width: 100%;
     height: 100%;
     display: flex;
@@ -76,60 +110,61 @@
     justify-content: center;
 }
 
-.Book_Body .Book .page .back .back-content {
+.ragistrtion-book .Book_Body .Book .page .back .back-content {
     animation: coverFlip 1s ease-in-out forwards
 }
 
-.Book_Body .Book .front_cover_opened .back .Book_Cover_back_Content,
-.Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content {
+.ragistrtion-book .Book_Body .Book .front_cover_opened .back .Book_Cover_back_Content,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content {
     animation: coverFlip 0.5s ease-in-out forwards
 }
 
-.Book_Body .Book .front_cover_close .back .Book_Cover_back_Content,
-.Book_Body .Book .Back_cover_opened .back .Book_Cover_back_Content {
+.ragistrtion-book .Book_Body .Book .front_cover_close .back .Book_Cover_back_Content,
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .back .Book_Cover_back_Content {
     animation: prvCoverFlip 0.7s ease-in-out forwards
 }
 
-.Book_Body .Book .page .back .back-content .user_submitted_info h1 {
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info h1 {
     margin: 20px 0px;
 }
 
-.Book_Body .Book .page .back .back-content .user_submitted_info .user_Data {
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data {
     line-height: 30px;
 }
 
-.Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title {
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title {
     font-size: 18px;
     font-weight: bolder;
 }
 
-.Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .user_value {
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .user_value {
     font-size: 17px;
     font-weight: lighter;
 }
-.Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .Password {
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .Password {
     -webkit-text-security: disc;
     -webkit-text-stroke-width: thick;
     color: #9b9898;
     letter-spacing: 3px;
 }
 
-.Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title span {
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title span {
     padding: 0px 5px;
 }
 
 
-.Book_Body .Book .flipped .front,
-.Book_Body .Book .flipped .back,
-.Book_Body .Book .front_cover_opened .front,
-.Book_Body .Book .front_cover_opened .back,
-.Book_Body .Book .Back_cover_close .front,
-.Book_Body .Book .Back_cover_close .back {
+.ragistrtion-book .Book_Body .Book .flipped .front,
+.ragistrtion-book .Book_Body .Book .flipped .back,
+.ragistrtion-book .Book_Body .Book .front_cover_opened .front,
+.ragistrtion-book .Book_Body .Book .front_cover_opened .back,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .front,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back {
     transform: rotateY(-180deg);
 }
 
-.Book_Body .prev_button,
-.Book_Body .next_button {
+.ragistrtion-book .Book_Body .prev_button,
+.ragistrtion-book .Book_Body .next_button {
     margin: 0;
     padding: 0;
     background: none;
@@ -137,40 +172,40 @@
     cursor: pointer;
 }
 
-.Book_Body .prev_button i,
-.Book_Body .next_button i {
+.ragistrtion-book .Book_Body .prev_button i,
+.ragistrtion-book .Book_Body .next_button i {
     font-size: 50px;
     color: #5f5959;
 }
 
-.Book_Body .prev_button i:hover,
-.Book_Body .next_button i:hover {
+.ragistrtion-book .Book_Body .prev_button i:hover,
+.ragistrtion-book .Book_Body .next_button i:hover {
     font-size: 50px;
     color: #968d8d;
 }
 
-.Book_Body .Book #p1 {
+.ragistrtion-book .Book_Body .Book #p1 {
     animation: frontzIndexChange 0s linear 0.25s forwards;
 }
 
 
-.Book_Body .Book #p2 {
+.ragistrtion-book .Book_Body .Book #p2 {
     z-index: 1;
     animation: zIndexChange 0s linear 0.4s forwards;
 }
 
-.Book_Body .Book .front_cover_close {
+.ragistrtion-book .Book_Body .Book .front_cover_close {
     z-index: 3;
 }
 
-.Book_Body .Book .front_cover_opened {
+.ragistrtion-book .Book_Body .Book .front_cover_opened {
     z-index: 3;
     animation: zIndexChange 0s linear 0.4s forwards;
 }
 
 
-.Book_Body .Book .Book_front_cover .front,
-.Book_Body .Book .Book_front_cover .back {
+.ragistrtion-book .Book_Body .Book .Book_front_cover .front,
+.ragistrtion-book .Book_Body .Book .Book_front_cover .back {
     background: #000;
     color: #fff;
     border-radius: 0px 20px 20px 0px;
@@ -188,43 +223,43 @@
 }
 
 
-.Book_Body .Book_move {
+.ragistrtion-book .Book_Body .Book_move {
     transform: translatex(50%);
 }
 
-.Book_Body .Book_current_location {
+.ragistrtion-book .Book_Body .Book_current_location {
     transform: translatex(100%);
 }
 
-.Book_Body .prve_button_move {
+.ragistrtion-book .Book_Body .prve_button_move {
     transform: translateX(-200px);
 }
 
-.Book_Body .next_button_move {
+.ragistrtion-book .Book_Body .next_button_move {
     transform: translateX(200px);
 }
 
-.Book_Body .Book .page .front .front-content .user_info {
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info {
     text-transform: capitalize;
 }
 
 
-.Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content h1 {
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content h1 {
     font-size: 20px;
     color: #fff;
     margin: 20px 3px;
     text-transform: capitalize;
 }
 
-.Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content h1 {
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content h1 {
     font-size: 20px;
     color: #fff;
     margin: 20px 8px;
     text-transform: capitalize;
 }
 
-.Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button,
-.Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button {
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button {
     font-size: 20px;
     padding: 10px 20px;
     border-radius: 5px;
@@ -235,8 +270,8 @@
     text-transform: capitalize;
 }
 
-.Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button:hover,
-.Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button:hover {
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button:hover,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button:hover {
     font-size: 24px;
     padding: 12px 22px;
     border-radius: 6px;
@@ -244,11 +279,11 @@
         0px 0px 10px 4px #898888;
 }
 
-.Book_Body .Book .page .front .front-content .user_info_input {
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input {
     width: 100%;
 }
 
-.Book_Body .Book .page .front .front-content .user_info_input input {
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input input {
     display: block;
     width: -webkit-fill-available;
     font-size: 20px;
@@ -258,7 +293,7 @@
     margin: 10px 20px;
 }
 
-.Book_Body .Book .page .front .front-content .user_info_input span {
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input span {
     color: #c61414;
     font-weight: bold;
     font-size: 17px;

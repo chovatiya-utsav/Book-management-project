@@ -1,0 +1,125 @@
+import React, { useState } from 'react'
+import { Modal } from 'react-bootstrap'
+import "../../styles/ForgetPasswordModal.css"
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import * as yup from "yup"
+
+const validationSchema = yup.object().shape({
+    userContact: yup
+        .string()
+        .matches(/^\d+$/, "User Contact must contain only numbers")
+        .min(10, "User Contact must be at least 10 digits")
+        .max(10, "User Contact must be 10 digits not more")
+        .required("User Contact is required"),
+    userEmail: yup.string().email("Invalid email format").required("User Email is required"),
+    userPassword: yup.string().min(6, "Password must be at least 6 characters").required("User Password is required"),
+    userConfirmPassword: yup.string()
+        .oneOf([yup.ref("userPassword")], "Passwords must match"),
+});
+
+
+
+const ForgetPasswordModal = (props) => {
+
+    const { modalOpen, closeModal, changePassword } = props
+    const [getInput, setGetInput] = useState(false);
+    const [userNotFound, setUserNotFound] = useState(false)
+
+    const checkUser = (values, errors, e, resetForm) => {
+        e.preventDefault()
+        const data = JSON.parse(localStorage.getItem("userData"))
+
+        if (values.userEmail && values.userEmail && !errors.userContact && !errors.userEmail) {
+            const checkData = data.find((item) => item?.userEmail === values?.userEmail && item?.userContact === values?.userContact)
+            if (checkData) {
+                setGetInput(true);
+                if (values.userConfirmPassword && !errors.userConfirmPassword) {
+                    localStorage.setItem("new-password", JSON.stringify(values))
+                    changePassword();
+                    closeModal();
+                }
+            } else {
+                setUserNotFound(true);
+                setTimeout(() => {
+                    setUserNotFound(false);
+                }, 3000);
+                resetForm();
+            }
+        }
+    }
+    return (
+        <div>
+            <Modal show={modalOpen} className="custom-login-modal">
+                <div className={`user-error ${userNotFound ? "showError" : ""}`}>
+                    <h3>user not found please enter correct email & contact</h3>
+                </div>
+                <Modal.Header>
+                    <Modal.Title id='ModalHeader'>
+                        <h1>change password </h1>
+                    </Modal.Title>
+                    <button type='button' className='close-Modal' onClick={() => { setGetInput(false); closeModal(); }}>
+                        <i className="fa fa-close"></i>
+                    </button>
+                </Modal.Header>
+                <Modal.Body>
+                    <Formik
+                        initialValues={{ userEmail: "", userPassword: "", userContact: "", userConfirmPassword: "" }}
+                        validationSchema={validationSchema}
+                        validateOnBlur
+                        validateOnChange
+
+                    >
+                        {({ values, errors, resetForm }) => (
+                            <Form className={`form`}>
+                                <div className="input-filed">
+                                    <div className='filed'>
+                                        <label htmlFor="email">Email</label>
+                                        <Field type="email" name="userEmail" id="email" disabled={getInput ? true : false} />
+                                        <ErrorMessage name="userEmail" component="span" className="error" />
+                                    </div>
+                                    <div className='filed'>
+                                        <label htmlFor="Contact">Contact</label>
+                                        <Field type="tel" name="userContact" id="Contact" disabled={getInput ? true : false} />
+                                        <ErrorMessage name="userContact" component="span" className="error" />
+                                    </div>
+                                </div>
+                                {getInput ?
+                                    <div className="chenge-password-input-filed">
+                                        <div className='filed'>
+                                            <label htmlFor="Contact">password</label>
+                                            <Field type="password" name="userPassword" id="userPassword" autoFocus />
+                                            <ErrorMessage name="userPassword" component="span" className="error" />
+                                        </div>
+                                        <div className='filed'>
+                                            <label htmlFor="Contact">confirm Password</label>
+                                            <Field type="password" name="userConfirmPassword" id="userConfirmPassword" />
+                                            <ErrorMessage name="userConfirmPassword" component="span" className="error" />
+                                        </div>
+                                    </div>
+                                    : null}
+                                <div>
+                                    <Modal.Footer>
+                                        {!getInput ?
+                                            <button type='button' onClick={(e) => checkUser(values, errors, e, resetForm)}>
+                                                submit
+                                            </button>
+                                            :
+                                            <button type='button' onClick={(e) => checkUser(values, errors, e)}>
+                                                change password
+                                            </button>
+                                        }
+                                    </Modal.Footer>
+
+                                </div>
+
+                            </Form>
+                        )}
+                    </Formik>
+                </Modal.Body>
+            </Modal>
+
+        </div>
+    )
+}
+
+export default ForgetPasswordModal
