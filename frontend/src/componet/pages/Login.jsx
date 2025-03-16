@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router";
-import { Modal } from 'react-bootstrap';
 import * as yup from "yup";
 import "../../styles/pages_styles/Login.css";
 import ForgetPasswordModal from "../commonComponet/ForgetPasswordModal";
