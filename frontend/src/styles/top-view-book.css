@@ -1,0 +1,239 @@
+.top-view-book-display {
+    background-color: #111;
+}
+
+/* Background styling */
+.topBook_Display {
+    background: #333;
+    width: 100%;
+    padding: 20px 0;
+    position: relative;
+    /* Needed for absolute positioning of arrows */
+    overflow: hidden;
+}
+
+/* Heading */
+.topBook_Display .heding {
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 24px;
+    text-transform: capitalize;
+}
+
+/* Slider container */
+.topBook_Display .slider-container {
+    width: 90%;
+    margin: auto;
+    position: relative;
+}
+
+/* Book Card */
+.topBook_Display .slider-container .book-info {
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+    width: 250px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Light transparent background */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect: Box shadow appears when hovered */
+.topBook_Display .slider-container .book-info:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 15px 3px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Book Image */
+.topBook_Display .slider-container .book-info img {
+    width: 100%;
+    min-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Book Title */
+.topBook_Display .slider-container .book-info h3 {
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Slick Slider Styles */
+.topBook_Display .slider-container .slick-track {
+    display: flex;
+    gap: 10px;
+}
+
+.topBook_Display .slider-container .slick-slide {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+/* ARROW STYLING */
+.topBook_Display .slider-container .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+/* Hover effect for arrows */
+.topBook_Display .slider-container .slick-arrow:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+}
+
+/* Positioning Previous (Left) Arrow */
+.topBook_Display .slider-container .slick-prev {
+    left: -60px;
+}
+
+
+
+/* Hide default slick arrows */
+.topBook_Display .slider-container .slick-prev::before,
+.topBook_Display .slider-container .slick-next::before {
+    display: none !important;
+}
+
+
+.topBook_Display .slider-container .slick-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Slick Dots Container */
+.topBook_Display .slider-container .slick-dots {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: -20px;
+    /* Adjust spacing from slider */
+    left: 50%;
+    transform: translateX(-50%);
+    list-style: none;
+    padding: 0;
+}
+
+/* Dots Style */
+.topBook_Display .slider-container .slick-dots li {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Inactive dots */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Active Dot */
+.topBook_Display .slider-container .slick-dots li.slick-active {
+    background-color: white;
+    /* Highlight active dot */
+    width: 16px;
+    height: 16px;
+}
+
+/* Hide default button inside dots */
+.topBook_Display .slider-container .slick-dots button {
+    display: none;
+}
+
+.topBook_Display .slider-container .slick-prev {
+    right: 0;
+}
+
+/* Positioning Next (Right) Arrow */
+.topBook_Display .slider-container .slick-next {
+    right: -60px;
+}
+
+@media only screen and (max-width: 1256px) {
+    .topBook_Display .slider-container .slick-prev {
+        left: calc(0% + -30px);
+    }
+
+    .topBook_Display .slider-container .slick-next {
+        right: calc(0% + -30px);
+    }
+}
+
+@media only screen and (max-width: 680px) {
+    .topBook_Display .slider-container .slick-prev {
+        left: -15px;;
+    }
+
+    .topBook_Display .slider-container .slick-next {
+        right: -15px;;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .topBook_Display .slider-container .slick-arrow {
+        display: none;
+    }
+
+    /* Slick dots positioning */
+    .topBook_Display .slider-container .slick-dots {
+        display: flex !important;
+        justify-content: center;
+        margin-top: 10px;
+        list-style: none;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+    }
+
+    /* Default dot styling */
+    .topBook_Display .slider-container .slick-dots li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    /* Hide extra dots beyond the first 5 */
+    .topBook_Display .slider-container .slick-dots li:nth-child(n+6) {
+        display: none;
+    }
+
+    /* Dot button styling */
+    .topBook_Display .slider-container .slick-dots li .dot {
+        font-size: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #888;
+        border: none;
+        outline: none;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    /* Active dot */
+    .topBook_Display .slider-container .slick-dots .slick-active .dot {
+        background-color: #fff;
+        transform: scale(1.2);
+    }
+
+}
