@@ -27,7 +27,9 @@ const validationSchema = Yup.object().shape({
         .email("Invalid email format")
         .required("User Email is required"),
     userPassword: Yup.string()
-        .min(6, "Password must be at least 6 characters")
+        .min(5)
+        .max(10)
+        .matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,10}$/,"password not secury")
         .required("User Password is required"),
     userConfirmPassword: Yup.string()
         .oneOf([Yup.ref("userPassword")], "Passwords must match"),
@@ -111,33 +113,35 @@ const Registration = () => {
                 onSubmit={
                     (values, actions) => {
                         const fromData = [{
-                            userName: values?.userName,
-                            userContact: values?.userContact,
-                            userEmail: values?.userEmail,
-                            userPassword: values?.userPassword,
-                            userAddress: values?.userAddress,
+                            name: values?.userName,
+                            contactNo: values?.userContact,
+                            email: values?.userEmail,
+                            password: values?.userPassword,
+                            address: values?.userAddress,
                         }]
 
                         const userData = JSON.stringify(fromData)
                         console.log("data base store Data:", userData);
 
                         setTimeout(async () => {
-                            // if (userData) {
-                            //     const response = await fetch("", {
-                            //         method: "post",
-                            //         body: userData,
-                            //         headers: {
-                            //             'content-Type': 'application/json'
-                            //         }
-                            //     })
-                            //     const Data = response.json();
-
-                            // }
-
                             if (userData) {
-                                localStorage.setItem("userData", [userData]);
-                                navigate("/Login");
+                                const response = await fetch("https://9994-103-178-46-246.ngrok-free.app/api/v1/users/register", {
+                                    method: "post",
+                                    body: userData,
+                                    headers: {
+                                        'content-Type': 'application/json'
+                                    }
+                                })
+                                const Data = response.json();
+                                console.log("response", Data)
+
                             }
+
+                            // if (userData) {
+                            //     localStorage.setItem("userData", [userData]);
+                            //     const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
+                            //     navigate(`/Login?message=${errorMessage}`);
+                            // }
                         });
 
                     }
@@ -175,6 +179,19 @@ const Registration = () => {
                                     {/* <div className="front" id={!bookCoverOpen ? "p1" : "p2"}> */}
                                     <div className="Book_Cover_front_Content">
                                         <h1>User Registration Book</h1>
+                                        {
+                                            !values?.userName ?
+                                                <div className="get-info-lo-rag">
+                                                    <button type="button" onClick={() => { navigate("/login") }}>
+                                                        login
+                                                    </button>
+                                                    <button type="button" onClick={() => flipPage("next", values, errors)}>
+                                                        registration
+                                                    </button>
+                                                </div>
+                                                : null
+
+                                        }
                                     </div>
                                 </div>
                                 <div className="back">

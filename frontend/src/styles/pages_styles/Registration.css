@@ -258,6 +258,14 @@
     text-transform: capitalize;
 }
 
+.ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag {
+    margin: 10px 0px 0px 0px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag button,
 .ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button,
 .ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button {
     font-size: 20px;
@@ -270,6 +278,7 @@
     text-transform: capitalize;
 }
 
+.ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag button:hover,
 .ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button:hover,
 .ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button:hover {
     font-size: 24px;

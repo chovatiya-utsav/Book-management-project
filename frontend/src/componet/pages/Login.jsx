@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import * as yup from "yup";
 import "../../styles/pages_styles/Login.css";
 import ForgetPasswordModal from "../commonComponet/ForgetPasswordModal";
@@ -24,6 +24,23 @@ const Login = () => {
     const [userNotExists, setUserNotExists] = useState(false)
     const [modalOpen, setModalOpen] = useState(false);
     const [changePasswordConform, setChangePasswordConform] = useState(false)
+
+    
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialMessage  = queryParams.get("message");
+    const [message, setMessage] = useState(initialMessage);
+
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage(null);  // Clear the message
+                window.history.replaceState({}, document.title, "/Login"); // Remove from URL
+            }, 3000);
+
+            return () => clearTimeout(timer); // Cleanup
+        }
+    }, [message]);
 
     const closeModal = () => {
         setModalOpen(!modalOpen);
@@ -66,10 +83,10 @@ const Login = () => {
                 } else {
                     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
                     if (!CheckPassword) {
+                        setDisplayError(true)
                         setTimeout(() => {
                             setDisplayError(false)
                         }, 4000);
-                        setDisplayError(!displayError)
                         resetForm()
 
                     } else {
@@ -130,6 +147,8 @@ const Login = () => {
                         </div>
                         : null
                 }
+                {message && <div className="change-password-info"><h2>{decodeURIComponent(message)}</h2></div>}
+
 
                 <Formik
                     initialValues={{ userEmail: "", userPassword: "", userContact: "" }}
