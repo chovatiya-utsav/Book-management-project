@@ -25,10 +25,10 @@ const Login = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [changePasswordConform, setChangePasswordConform] = useState(false)
 
-    
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const initialMessage  = queryParams.get("message");
+    const initialMessage = queryParams.get("message");
     const [message, setMessage] = useState(initialMessage);
 
     useEffect(() => {
@@ -61,39 +61,51 @@ const Login = () => {
         navigate("/registration");
     };
 
-    const handelSubmit = (data, errors, resetForm) => {
+    const handelSubmit = async (data, errors, resetForm) => {
         if (loginContect) {
             if (!errors.userContact && !errors.userPassword && data.userContact && data.userPassword) {
                 const userLoginData = {
-                    userPassword: data?.userPassword,
-                    userContact: data?.userContact
+                    password: data?.userPassword,
+                    contactNo: data?.userContact
                 }
 
-                const userData = JSON.parse(localStorage.getItem("userData"));
+                const loginData = JSON.stringify(userLoginData);
 
-                const CheckUser = userData.find((item) => item?.userContact === data?.userContact)
-
-                if (!CheckUser) {
-                    console.log("user not ragistr please ragister first")
-                    setUserNotExists(true)
-                    setTimeout(() => {
-                        setUserNotExists(false)
-                    }, 4000);
-                    resetForm()
-                } else {
-                    const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
-                    if (!CheckPassword) {
-                        setDisplayError(true)
-                        setTimeout(() => {
-                            setDisplayError(false)
-                        }, 4000);
-                        resetForm()
-
-                    } else {
-                        localStorage.setItem("userLogin", JSON.stringify(data))
-                        navigate("/Book-Management")
+                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/login", {
+                    method: "post",
+                    body: loginData,
+                    headers: {
+                        'content-Type': 'application/json'
                     }
-                }
+                })
+
+                const responeData = await response.json()
+
+                console.log(responeData);
+
+
+
+                // if (!CheckUser) {
+                //     console.log("user not ragistr please ragister first")
+                //     setUserNotExists(true)
+                //     setTimeout(() => {
+                //         setUserNotExists(false)
+                //     }, 4000);
+                //     resetForm()
+                // } else {
+                //     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
+                //     if (!CheckPassword) {
+                //         setDisplayError(true)
+                //         setTimeout(() => {
+                //             setDisplayError(false)
+                //         }, 4000);
+                //         resetForm()
+
+                //     } else {
+                //         localStorage.setItem("userLogin", JSON.stringify(data))
+                //         navigate("/Book-Management")
+                //     }
+                // }
 
                 setIsSubmittingForm(true)
                 console.log("contect", userLoginData);
@@ -101,37 +113,51 @@ const Login = () => {
         } else {
             if (!errors.userEmail && !errors.userPassword && data.userEmail && data.userPassword) {
                 const userLoginData = {
-                    userEmail: data?.userEmail,
-                    userPassword: data?.userPassword
+                    email: data?.userEmail,
+                    password: data?.userPassword
                 }
+                const loginData = JSON.stringify(userLoginData);
 
-                const userData = JSON.parse(localStorage.getItem("userData"));
 
-                const CheckUser = userData.find((item) => item?.userEmail === data?.userEmail)
-                if (!CheckUser) {
-                    console.log("user not ragistr please ragister first")
-                    setUserNotExists(true)
-                    setTimeout(() => {
-                        setUserNotExists(false)
-                    }, 4000);
-                    resetForm()
-                } else {
-                    const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
-                    if (!CheckPassword) {
-                        setTimeout(() => {
-
-                            setDisplayError(false);
-                        }, 4000);
-                        setDisplayError(!displayError);
-                        resetForm()
-                    } else {
-                        console.log("user susecc fully login")
-                        localStorage.setItem("userLogin", JSON.stringify(data))
-                        navigate("/Book-Management")
+                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/login", {
+                    method: "post",
+                    body: loginData,
+                    headers: {
+                        'content-Type': 'application/json'
                     }
-                }
-                setIsSubmittingForm(true)
-                console.log("email", userLoginData);
+                })
+
+                const responeData = await response.json()
+
+                console.log(responeData);
+
+                // const userData = JSON.parse(localStorage.getItem("userData"));
+
+                // const CheckUser = userData.find((item) => item?.userEmail === data?.userEmail)
+                // if (!CheckUser) {
+                //     console.log("user not ragistr please ragister first")
+                //     setUserNotExists(true)
+                //     setTimeout(() => {
+                //         setUserNotExists(false)
+                //     }, 4000);
+                //     resetForm()
+                // } else {
+                //     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
+                //     if (!CheckPassword) {
+                //         setTimeout(() => {
+
+                //             setDisplayError(false);
+                //         }, 4000);
+                //         setDisplayError(!displayError);
+                //         resetForm()
+                //     } else {
+                //         console.log("user susecc fully login")
+                //         localStorage.setItem("userLogin", JSON.stringify(data))
+                //         navigate("/Book-Management")
+                //     }
+                // }
+                // setIsSubmittingForm(true)
+                // console.log("email", userLoginData);
             }
 
         }

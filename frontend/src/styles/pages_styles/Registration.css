@@ -307,6 +307,8 @@
     font-weight: bold;
     font-size: 17px;
     margin: 0px 20px;
+    display: flex;
+    text-align: start;
 }
 
 @keyframes coverFlip {

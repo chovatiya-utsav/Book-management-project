@@ -27,9 +27,10 @@ const validationSchema = Yup.object().shape({
         .email("Invalid email format")
         .required("User Email is required"),
     userPassword: Yup.string()
-        .min(5)
-        .max(10)
-        .matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,10}$/,"password not secury")
+        .min(6, "Password must be at least 6 characters")
+        .max(10, "Password not more then 10 characters")
+        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .matches(/[@$!%*?&]/, "Password must contain at least one special character (@, $, !, %, *, ?, &)")
         .required("User Password is required"),
     userConfirmPassword: Yup.string()
         .oneOf([Yup.ref("userPassword")], "Passwords must match"),
@@ -96,6 +97,7 @@ const Registration = () => {
 
 
 
+
     return (
         <div className="ragistrtion-book">
             <Formik
@@ -112,36 +114,37 @@ const Registration = () => {
                 validateOnBlur
                 onSubmit={
                     (values, actions) => {
-                        const fromData = [{
+                        const fromData = {
                             name: values?.userName,
                             contactNo: values?.userContact,
                             email: values?.userEmail,
                             password: values?.userPassword,
                             address: values?.userAddress,
-                        }]
+                        };
 
                         const userData = JSON.stringify(fromData)
-                        console.log("data base store Data:", userData);
+                        // console.log("data base store Data:", userData);
 
                         setTimeout(async () => {
                             if (userData) {
-                                const response = await fetch("https://9994-103-178-46-246.ngrok-free.app/api/v1/users/register", {
+                                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/register", {
                                     method: "post",
                                     body: userData,
                                     headers: {
                                         'content-Type': 'application/json'
                                     }
                                 })
-                                const Data = response.json();
-                                console.log("response", Data)
+                                const responseData = await response.json();
+                                console.log("response", responseData)
 
+                                
+                                if (responseData.statuscode === 200) {
+                                    
+                                    console.log("sussecc")
+                                    // const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
+                                    // navigate(`/Login?message=${errorMessage}`);
+                                }
                             }
-
-                            // if (userData) {
-                            //     localStorage.setItem("userData", [userData]);
-                            //     const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
-                            //     navigate(`/Login?message=${errorMessage}`);
-                            // }
                         });
 
                     }
@@ -260,7 +263,7 @@ const Registration = () => {
                                 <div className="back">
                                     <div className="Book_Cover_back_Content">
                                         <h1>Click the 'Below' button to confirm your registration</h1>
-                                        <button type="submit" disabled={isSubmitting} >
+                                        <button type="submit"  >
                                             confirm register
                                         </button>
                                     </div>
