@@ -7,7 +7,8 @@ dotenv.config(
 )
 
 
-const port = process.env.PORT
+//const port = process.env.PORT
+const port = 8000
 
 connctDB()
     .then(() => {

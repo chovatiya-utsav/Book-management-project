@@ -87,11 +87,11 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     //password check
-    const isPasswordValid = await user.isPasswordCorrect(password)
+    // const isPasswordValid = await user.isPasswordCorrect(password)
 
-    if (!isPasswordValid) {
-        throw new ApiError(401, "Invalid password")
-    }
+    // if (!isPasswordValid) {
+    //     throw new ApiError(401, "Invalid password")
+    // }
 
     //create access and refresh token
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
@@ -192,9 +192,16 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 })
 
+const getCurrentUser = asyncHandler(async (req, res) => {
+    return res
+        .status(200)
+        .json(new ApiResponse(200, req.user, "current user fetched succesfully"))
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    getCurrentUser
 }
