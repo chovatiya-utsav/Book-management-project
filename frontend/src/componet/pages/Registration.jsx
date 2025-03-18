@@ -137,12 +137,19 @@ const Registration = () => {
                                 const responseData = await response.json();
                                 console.log("response", responseData)
 
-                                
+
                                 if (responseData.statuscode === 200) {
-                                    
+
                                     console.log("sussecc")
                                     // const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
                                     // navigate(`/Login?message=${errorMessage}`);
+                                    navigate(`/Login`);
+                                }
+                                if (responseData.statuscode === 409) {
+
+
+                                    const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
+                                    navigate(`/Login?message=${errorMessage}`);
                                 }
                             }
                         });

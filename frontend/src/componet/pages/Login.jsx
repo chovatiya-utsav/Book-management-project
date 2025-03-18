@@ -76,13 +76,13 @@ const Login = () => {
                     body: loginData,
                     headers: {
                         'content-Type': 'application/json'
-                    }
+                    },
+                    credentials: "include"
                 })
 
                 const responeData = await response.json()
 
                 console.log(responeData);
-
 
 
                 // if (!CheckUser) {
@@ -124,7 +124,8 @@ const Login = () => {
                     body: loginData,
                     headers: {
                         'content-Type': 'application/json'
-                    }
+                    },
+                    credentials: "include"
                 })
 
                 const responeData = await response.json()

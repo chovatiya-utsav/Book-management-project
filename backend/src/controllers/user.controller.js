@@ -39,11 +39,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
     //check for existeduser
     const existedUser = await User.findOne({
-        $or: [{ contactNo  }, { email }]
+        $or: [{ contactNo }, { email }]
     })
 
     if (existedUser) {
-        throw new ApiError(409, "User already exist")
+        return res
+            .status(409)
+            .json(new ApiResponse(409, "User already exist"))
     }
 
     //create user-entry in db
