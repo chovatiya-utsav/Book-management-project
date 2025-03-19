@@ -8,7 +8,7 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
 }))
-
+//app.use(cors())
 // app.use(cors({
 //     origin: function (origin, callback) {
 //         if (!origin || origin.startsWith("http://localhost")) {
@@ -30,10 +30,12 @@ app.use(cookieParser())
 //import routes
 import userRouter from "./routes/user.routes.js"
 import bookRouter from "./routes/book.router.js"
+import categoryRouter from "./routes/category.router.js"
 
 //routes declaration
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/books", bookRouter)
+app.use("/api/v1/category", categoryRouter)
 
 
 export { app }
