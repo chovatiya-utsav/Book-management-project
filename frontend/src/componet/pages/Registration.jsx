@@ -143,6 +143,7 @@ const Registration = () => {
                                     console.log("sussecc")
                                     // const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
                                     // navigate(`/Login?message=${errorMessage}`);
+                                    navigate(`/Login`);
                                 }
                             }
                         });

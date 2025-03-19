@@ -76,7 +76,8 @@ const Login = () => {
                     body: loginData,
                     headers: {
                         'content-Type': 'application/json'
-                    }
+                    },
+                    credentials: "include"
                 })
 
                 const responeData = await response.json()
@@ -124,7 +125,8 @@ const Login = () => {
                     body: loginData,
                     headers: {
                         'content-Type': 'application/json'
-                    }
+                    },
+                    credentials: "include"
                 })
 
                 const responeData = await response.json()
