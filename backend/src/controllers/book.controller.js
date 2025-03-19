@@ -94,25 +94,36 @@ const updateBook = asyncHandler(async (req, res) => {
 
     const coverImageLocalPath = req.file?.path
 
-   
+    const existingBook = await Book.findById(id)
+
+    if (!existingBook) {
+        return res.status(404)
+            .json(new ApiResponse(404, "Book not found"))
+    }
+
+    const updateData = {}
+
+    if (bookName) updateData.bookName = bookName
+    if (author) updateData.author = author
+    if (publishedYear) updateData.publishedYear = publishedYear
+    if (genre) updateData.genre = genre
+    if (price) updateData.price = price
+    if (category) updateData.category = category
 
     const coverImageUrl = await uploadOnCloudinary(coverImageLocalPath)
 
     if (!coverImageUrl.url) {
-        throw new ApiError(400, "Error while uploading image on cloudinary")
+        return res.status(400)
+            .json(new ApiResponse(400, "Error while uploading image on cloudinary"))
+        //throw new ApiError(400, "Error while uploading image on cloudinary")
     }
+
+    updateData.coverImage = coverImageUrl.url
 
     const updatedBook = await Book.findByIdAndUpdate(
         id,
         {
-            $set: {
-                bookName,
-                author, publishedYear,
-                genre,
-                description,
-                price,
-                coverImage: coverImageUrl.url
-            },
+            $set: updateData
         },
         {
             new: true

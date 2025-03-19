@@ -49,15 +49,15 @@ const userSchema = new Schema(
 //The 10 represents the salt rounds used in the hashing process.
 //Salt rounds determine how many times the hashing algorithm runs internally.
 
-// userSchema.pre("save", async function (next) {
-//     if (!this.isModified("password")) return next()
-//     this.password = await bcrypt.hash(this.password, 10)
-//     next()//Move to the next step (saving user to DB)
-// })
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next()
+    this.password = await bcrypt.hash(this.password, 10)
+    next()//Move to the next step (saving user to DB)
+})
 
-// userSchema.methods.isPasswordCorrect = async function (password) {
-//     return await bcrypt.compare(password, this.password)
-// }
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password)
+}
 
 //generate jwt tokens
 //sign() method generate tokens
