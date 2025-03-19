@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import "../../styles/top-view-book.css";
 
 const TopViewBook = () => {
+
+    const [topViewBook, setTopViewBook] = useState(null)
+
     // Custom Arrows
     const PrevArrow = ({ onClick }) => (
         <div className="slick-arrow slick-prev" onClick={onClick}>
@@ -63,18 +66,46 @@ const TopViewBook = () => {
         ]
     };
 
+    useEffect(() => {
+        setTimeout(async () => {
+            try {
+                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/books/getAllBooks");
+
+                if (!response.ok) {
+                    console.error("API Error:", response.status, response.statusText);
+                    return;
+                }
+
+                const rdata = await response.json();
+                console.log("JSON Data:", rdata);
+                setTopViewBook(rdata.data);
+
+            } catch (error) {
+                console.error("Fetch Error:", error);
+            }
+        }, 1000);
+    }, [topViewBook]);
+
+
     return (
         <div className='block topBook_Display'>
             <h1 className='heding'> Top Book Viewer </h1>
             <div className="slider-container">
                 <Slider {...settings}>
-                    {[...Array(totalSlides)].map((_, index) => (
-                        <div className='book-info' key={index}>
-                            <img src={`/images/slied_Book_Background_img/background_BookStore(${(index % 4) + 1}).png`} alt={`Book Cover ${index + 1}`} />
-                            <h3 className="image-title">Book Title {index + 1}</h3>
-                        </div>
-                    ))}
+                    {topViewBook && topViewBook.length > 0 ? (
+                        topViewBook.map((book, index) => (
+                            <div className='book-info' key={book._id}>
+                                <img src={book.coverImage} alt={book.bookName} />
+                                <h3 className="image-title">{book.bookName}</h3>
+                                <p className="author">by {book.author}</p>
+                                <p className="price">${book.price}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>Loading books...</p>
+                    )}
                 </Slider>
+
             </div>
         </div>
     );
