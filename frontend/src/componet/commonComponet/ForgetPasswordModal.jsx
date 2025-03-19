@@ -12,7 +12,12 @@ const validationSchema = yup.object().shape({
         .max(10, "User Contact must be 10 digits not more")
         .required("User Contact is required"),
     userEmail: yup.string().email("Invalid email format").required("User Email is required"),
-    userPassword: yup.string().min(6, "Password must be at least 6 characters").required("User Password is required"),
+    userPassword: yup.string()
+        .min(6, "Password must be at least 6 characters")
+        .max(10, "Password not more then 10 characters")
+        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .matches(/[@$!%*?&]/, "Password must contain at least one special character (@, $, !, %, *, ?, &)")
+        .required("User Password is required"),
     userConfirmPassword: yup.string()
         .oneOf([yup.ref("userPassword")], "Passwords must match"),
 });
@@ -24,13 +29,12 @@ const ForgetPasswordModal = (props) => {
     const { modalOpen, closeModal, changePassword } = props
     const [getInput, setGetInput] = useState(false);
     const [userNotFound, setUserNotFound] = useState(false)
+    const [response, setResponse] = useState(null)
 
     const checkUser = async (values, errors, e, resetForm) => {
         e.preventDefault()
-        const data = JSON.parse(localStorage.getItem("userData"))
 
         if (values.userEmail && values.userEmail && !errors.userContact && !errors.userEmail) {
-            const checkData = data.find((item) => item?.userEmail === values?.userEmail && item?.userContact === values?.userContact)
 
             const checkUser = {
                 email: values?.userEmail,
@@ -39,36 +43,66 @@ const ForgetPasswordModal = (props) => {
 
             const checkUserData = JSON.stringify(checkUser);
 
-            const respone = await fetch("", {
-                headers: "post",
+            const respone = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/check-user", {
+                method: "post",
                 body: checkUserData,
-                // eslint-disable-next-line no-dupe-keys
                 headers: {
                     'content-Type': 'application/json'
                 }
             })
 
             const responeData = await respone.json()
-
             console.log(responeData)
 
-            if (responeData.statuscode === 200) {
-                setGetInput(true);
-                if (values.userConfirmPassword && !errors.userConfirmPassword) {
-                    localStorage.setItem("new-password", JSON.stringify(values))
-                    changePassword();
-                    closeModal();
-                }
-            }else{
+            if (responeData.statusCode === 404) {
                 setUserNotFound(true);
                 setTimeout(() => {
                     setUserNotFound(false);
                 }, 3000);
                 resetForm();
+            } else {
+                setGetInput(true);
+                setResponse(responeData)
             }
+
+
 
         }
     }
+
+    const updatePassword = async (values, errors, e) => {
+        console.log(response)
+
+        if (getInput && response.statuscode === 200 && response.data && values.userConfirmPassword && !errors.userConfirmPassword) {
+
+            console.log("id", response.data.userId)
+
+            const checkUser = {
+                password: values?.userConfirmPassword,
+                _id: response?.data.userId
+            }
+
+            const checkUserData = JSON.stringify(checkUser);
+
+            const respone = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/forgotpassword", {
+                method: "post",
+                body: checkUserData,
+                headers: {
+                    'content-Type': 'application/json'
+                }
+            })
+
+            const responeData = await respone.json()
+            console.log(responeData)
+
+            if (responeData.statuscode === 200) {
+                changePassword();
+                closeModal();
+                setGetInput(null)
+            }
+        }
+    }
+
     return (
         <div>
             <Modal show={modalOpen} className="custom-login-modal">
@@ -126,7 +160,7 @@ const ForgetPasswordModal = (props) => {
                                                 submit
                                             </button>
                                             :
-                                            <button type='button' onClick={(e) => checkUser(values, errors, e)}>
+                                            <button type='button' onClick={(e) => updatePassword(values, errors, e)}>
                                                 change password
                                             </button>
                                         }

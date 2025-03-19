@@ -13,7 +13,12 @@ const validationSchema = yup.object().shape({
         .max(10, "User Contact must be 10 digits not more")
         .required("User Contact is required"),
     userEmail: yup.string().email("Invalid email format").required("User Email is required"),
-    userPassword: yup.string().min(6, "Password must be at least 6 characters").required("User Password is required"),
+    userPassword: yup.string()
+        .min(6, "Password must be at least 6 characters")
+        .max(10, "Password not more then 10 characters")
+        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .matches(/[@$!%*?&]/, "Password must contain at least one special character (@, $, !, %, *, ?, &)")
+        .required("User Password is required"),
 });
 
 const Login = () => {
@@ -81,10 +86,10 @@ const Login = () => {
 
                 const responeData = await response.json()
 
-                
+
                 if (responeData.statuscode === 200) {
-                    console.log("response",responeData.data.user);
-                    localStorage.setItem("userLogin",JSON.stringify(responeData.data.user))
+                    console.log("response", responeData.data.user);
+                    localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
                     navigate("/Book-Management")
                 }
 
@@ -127,7 +132,7 @@ const Login = () => {
                 console.log(responeData);
                 if (responeData.statuscode === 200) {
                     console.log("response", responeData.data.user);
-                    localStorage.setItem("userLogin",JSON.stringify(responeData.data.user))
+                    localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
                     navigate("/Book-Management")
                 } else if (responeData.statuscode === 404) {
                     setUserNotExists(true)
