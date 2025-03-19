@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import Header from '../header/Header';
 
+
+
 const Protected = (props) => {
     const { Componet } = props;
 

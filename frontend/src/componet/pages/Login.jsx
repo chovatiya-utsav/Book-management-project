@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import * as yup from "yup";
 import "../../styles/pages_styles/Login.css";
 import ForgetPasswordModal from "../commonComponet/ForgetPasswordModal";
@@ -26,17 +26,16 @@ const Login = () => {
     const [changePasswordConform, setChangePasswordConform] = useState(false)
 
 
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const initialMessage = queryParams.get("message");
-    const [message, setMessage] = useState(initialMessage);
+    const [message, setMessage] = useState(null);
 
     useEffect(() => {
+        const initialMessage = (JSON.parse(localStorage.getItem("userExistError")))
+        setMessage(initialMessage)
         if (message) {
             const timer = setTimeout(() => {
                 setMessage(null);  // Clear the message
-                window.history.replaceState({}, document.title, "/Login"); // Remove from URL
-            }, 3000);
+                localStorage.clear()
+            }, 4000);
 
             return () => clearTimeout(timer); // Cleanup
         }
@@ -82,33 +81,28 @@ const Login = () => {
 
                 const responeData = await response.json()
 
-                console.log(responeData);
+                
+                if (responeData.statuscode === 200) {
+                    console.log("response",responeData.data.user);
+                    localStorage.setItem("userLogin",JSON.stringify(responeData.data.user))
+                    navigate("/Book-Management")
+                }
 
-
-                // if (!CheckUser) {
-                //     console.log("user not ragistr please ragister first")
-                //     setUserNotExists(true)
-                //     setTimeout(() => {
-                //         setUserNotExists(false)
-                //     }, 4000);
-                //     resetForm()
-                // } else {
-                //     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
-                //     if (!CheckPassword) {
-                //         setDisplayError(true)
-                //         setTimeout(() => {
-                //             setDisplayError(false)
-                //         }, 4000);
-                //         resetForm()
-
-                //     } else {
-                //         localStorage.setItem("userLogin", JSON.stringify(data))
-                //         navigate("/Book-Management")
-                //     }
-                // }
+                if (responeData.statuscode === 404) {
+                    setUserNotExists(true)
+                    setTimeout(() => {
+                        setUserNotExists(false)
+                    }, 4000);
+                    resetForm()
+                } else if (responeData.statuscode === 401) {
+                    setDisplayError(true)
+                    setTimeout(() => {
+                        setDisplayError(false)
+                    }, 4000);
+                    resetForm()
+                }
 
                 setIsSubmittingForm(true)
-                console.log("contect", userLoginData);
             }
         } else {
             if (!errors.userEmail && !errors.userPassword && data.userEmail && data.userPassword) {
@@ -131,34 +125,24 @@ const Login = () => {
                 const responeData = await response.json()
 
                 console.log(responeData);
+                if (responeData.statuscode === 200) {
+                    console.log("response", responeData.data.user);
+                    localStorage.setItem("userLogin",JSON.stringify(responeData.data.user))
+                    navigate("/Book-Management")
+                } else if (responeData.statuscode === 404) {
+                    setUserNotExists(true)
+                    setTimeout(() => {
+                        setUserNotExists(false)
+                    }, 4000);
+                    resetForm()
+                } else if (responeData.statuscode === 401) {
+                    setDisplayError(true)
+                    setTimeout(() => {
+                        setDisplayError(false)
+                    }, 4000);
+                    resetForm()
+                }
 
-                // const userData = JSON.parse(localStorage.getItem("userData"));
-
-                // const CheckUser = userData.find((item) => item?.userEmail === data?.userEmail)
-                // if (!CheckUser) {
-                //     console.log("user not ragistr please ragister first")
-                //     setUserNotExists(true)
-                //     setTimeout(() => {
-                //         setUserNotExists(false)
-                //     }, 4000);
-                //     resetForm()
-                // } else {
-                //     const CheckPassword = userData.find((item) => item?.userPassword === data?.userPassword)
-                //     if (!CheckPassword) {
-                //         setTimeout(() => {
-
-                //             setDisplayError(false);
-                //         }, 4000);
-                //         setDisplayError(!displayError);
-                //         resetForm()
-                //     } else {
-                //         console.log("user susecc fully login")
-                //         localStorage.setItem("userLogin", JSON.stringify(data))
-                //         navigate("/Book-Management")
-                //     }
-                // }
-                // setIsSubmittingForm(true)
-                // console.log("email", userLoginData);
             }
 
         }

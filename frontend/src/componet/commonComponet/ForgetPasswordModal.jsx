@@ -25,26 +25,48 @@ const ForgetPasswordModal = (props) => {
     const [getInput, setGetInput] = useState(false);
     const [userNotFound, setUserNotFound] = useState(false)
 
-    const checkUser = (values, errors, e, resetForm) => {
+    const checkUser = async (values, errors, e, resetForm) => {
         e.preventDefault()
         const data = JSON.parse(localStorage.getItem("userData"))
 
         if (values.userEmail && values.userEmail && !errors.userContact && !errors.userEmail) {
             const checkData = data.find((item) => item?.userEmail === values?.userEmail && item?.userContact === values?.userContact)
-            if (checkData) {
+
+            const checkUser = {
+                email: values?.userEmail,
+                contactNo: values?.userContact
+            }
+
+            const checkUserData = JSON.stringify(checkUser);
+
+            const respone = await fetch("", {
+                headers: "post",
+                body: checkUserData,
+                // eslint-disable-next-line no-dupe-keys
+                headers: {
+                    'content-Type': 'application/json'
+                }
+            })
+
+            const responeData = await respone.json()
+
+            console.log(responeData)
+
+            if (responeData.statuscode === 200) {
                 setGetInput(true);
                 if (values.userConfirmPassword && !errors.userConfirmPassword) {
                     localStorage.setItem("new-password", JSON.stringify(values))
                     changePassword();
                     closeModal();
                 }
-            } else {
+            }else{
                 setUserNotFound(true);
                 setTimeout(() => {
                     setUserNotFound(false);
                 }, 3000);
                 resetForm();
             }
+
         }
     }
     return (

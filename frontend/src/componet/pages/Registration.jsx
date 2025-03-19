@@ -135,24 +135,14 @@ const Registration = () => {
                                     }
                                 })
                                 const responseData = await response.json();
-                                console.log("response", responseData)
-
-
+                                // console.log("response", responseData)
                                 if (responseData.statuscode === 200) {
-
-                                    console.log("sussecc")
-                                    // const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
-                                    // navigate(`/Login?message=${errorMessage}`);
                                     navigate(`/Login`);
-<<<<<<< HEAD
-=======
                                 }
                                 if (responseData.statuscode === 409) {
-
-
                                     const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
-                                    navigate(`/Login?message=${errorMessage}`);
->>>>>>> a11fcb82d125f022dbf581b254083cd126c1d7de
+                                    localStorage.setItem("userExistError", JSON.stringify(errorMessage));
+                                    navigate(`/Login`);
                                 }
                             }
                         });
