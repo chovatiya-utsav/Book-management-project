@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -85,15 +86,17 @@ const loginUser = asyncHandler(async (req, res) => {
     })
 
     if (!user) {
-        throw new ApiError(404, "User does not exist")
+        return res
+            .status(404)
+            .json(new ApiResponse(404, "User does not exist"))
     }
 
     //password check
-    // const isPasswordValid = await user.isPasswordCorrect(password)
+    const isPasswordValid = await user.isPasswordCorrect(password)
 
-    // if (!isPasswordValid) {
-    //     throw new ApiError(401, "Invalid password")
-    // }
+    if (!isPasswordValid) {
+        return res.status(401).json(new ApiResponse(401, "Invalid Password"))
+    }
 
     //create access and refresh token
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
@@ -200,10 +203,53 @@ const getCurrentUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, req.user, "current user fetched succesfully"))
 })
 
+const checkUser = asyncHandler(async (req, res) => {
+    const { email, contactNo } = req.body
+
+    const user = await User.findOne({
+        $and: [{ email }, { contactNo }]
+    })
+
+    if (!user) {
+        return res.status(404).json({ statusCode: 404, message: "User not found" })
+    }
+
+    return res.status(200)
+        .json(new ApiResponse(200, { userId: user._id }, "user found"))
+})
+
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { password } = req.body
+    const { _id } = req.body
+
+    if (!password) {
+        return res.status(400).json({ statusCode: 400, message: "Please Enter Password" })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await User.findByIdAndUpdate(
+        _id,
+        {
+            $set: {
+                password: hashedPassword
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    return res.status(200)
+        .json(new ApiResponse(200, user, "Password Successfully Update."))
+})
+
 export {
     registerUser,
     loginUser,
     logoutUser,
     refreshAccessToken,
-    getCurrentUser
+    getCurrentUser,
+    checkUser,
+    forgotPassword
 }
