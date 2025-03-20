@@ -67,26 +67,31 @@ const TopViewBook = () => {
             }
         ]
     };
+    useEffect(() => {
+        setTimeout(async () => {
+            try {
+                const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include" // Important for cookies and sessions
+                });
 
-    // useEffect(() => {
-    //     setTimeout(async () => {
-    //         try {
-    //             const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`);
+                if (!response.ok) {
+                    console.error("API Error:", response.status, response.statusText);
+                    return;
+                }
 
-    //             if (!response.ok) {
-    //                 console.error("API Error:", response.status, response.statusText);
-    //                 return;
-    //             }
+                const rdata = await response.json();
+                console.log("JSON Data:", rdata);
 
-    //             const rdata = await response.json();
-    //             console.log("JSON Data:", rdata);
-    //             setTopViewBook(rdata)
+            } catch (error) {
+                console.error("Fetch Error:", error);
+            }
+        }, 1000);
+    }, []);
 
-    //         } catch (error) {
-    //             console.error("Fetch Error:", error);
-    //         }
-    //     }, 1000);
-    // }, [topViewBook]);
 
 
     return (
@@ -101,10 +106,10 @@ const TopViewBook = () => {
                                 //     <img src={`/images/slied_Book_Background_img/background_BookStore(${(index % 4) + 1}).png`} alt={`Book Cover ${index + 1}`} />
                                 //     <h3 className="image-title">Book Title {index + 1}</h3>
                                 // </div>
-                                    <div className='book-info'>
-                                        <img src={`/images/slied_Book_Background_img/background_BookStore().png`} alt={`Book Cover `} />
-                                        <h3 className="image-title">Book Title</h3>
-                                    </div>
+                                <div className='book-info'>
+                                    <img src={`/images/slied_Book_Background_img/background_BookStore().png`} alt={`Book Cover `} />
+                                    <h3 className="image-title">Book Title</h3>
+                                </div>
                             )) : (
                                 <div className='book-info'>
                                     <img src={`/images/slied_Book_Background_img/background_BookStore(1).png`} alt={`Book Cover `} />

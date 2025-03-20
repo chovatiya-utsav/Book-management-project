@@ -66,7 +66,7 @@
 }
 
 /* Background Image Transition */
-@keyframes changeBackground {
+/* @keyframes changeBackground {
     0% {
         background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(4).png");
     }
@@ -82,4 +82,4 @@
     100% {
         background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(2).png");
     }
-}
+} */
