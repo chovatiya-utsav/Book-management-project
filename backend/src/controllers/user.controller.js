@@ -40,7 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     //check for existeduser
     const existedUser = await User.findOne({
-        $or: [{ contactNo }, { email }]
+        $or: [{ contactNo }, { email }, { name }]
     })
 
     if (existedUser) {
@@ -108,7 +108,8 @@ const loginUser = asyncHandler(async (req, res) => {
     //cookies bydefault anyone can modified on frontend , so when below 2 options "true" karie tyre khali server side j cookie modified thai sake.
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: "None"
     }
 
     return res
