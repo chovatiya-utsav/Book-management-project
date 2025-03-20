@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import "../../styles/top-view-book.css";
+import useApiUrl from './useApiUrl';
 
 const TopViewBook = () => {
+    const baseUrl = useApiUrl()
 
     const [topViewBook, setTopViewBook] = useState(null)
 
@@ -66,25 +68,25 @@ const TopViewBook = () => {
         ]
     };
 
-    useEffect(() => {
-        setTimeout(async () => {
-            try {
-                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/books/getAllBooks");
+    // useEffect(() => {
+    //     setTimeout(async () => {
+    //         try {
+    //             const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`);
 
-                if (!response.ok) {
-                    console.error("API Error:", response.status, response.statusText);
-                    return;
-                }
+    //             if (!response.ok) {
+    //                 console.error("API Error:", response.status, response.statusText);
+    //                 return;
+    //             }
 
-                const rdata = await response.json();
-                console.log("JSON Data:", rdata);
-                setTopViewBook(rdata.data);
+    //             const rdata = await response.json();
+    //             console.log("JSON Data:", rdata);
+    //             setTopViewBook(rdata)
 
-            } catch (error) {
-                console.error("Fetch Error:", error);
-            }
-        }, 1000);
-    }, [topViewBook]);
+    //         } catch (error) {
+    //             console.error("Fetch Error:", error);
+    //         }
+    //     }, 1000);
+    // }, [topViewBook]);
 
 
     return (
@@ -92,6 +94,26 @@ const TopViewBook = () => {
             <h1 className='heding'> Top Book Viewer </h1>
             <div className="slider-container">
                 <Slider {...settings}>
+                    {
+                        totalSlides ?
+                            [...Array(totalSlides)].map((_, index) => (
+                                // <div className='book-info' key={index}>
+                                //     <img src={`/images/slied_Book_Background_img/background_BookStore(${(index % 4) + 1}).png`} alt={`Book Cover ${index + 1}`} />
+                                //     <h3 className="image-title">Book Title {index + 1}</h3>
+                                // </div>
+                                    <div className='book-info'>
+                                        <img src={`/images/slied_Book_Background_img/background_BookStore().png`} alt={`Book Cover `} />
+                                        <h3 className="image-title">Book Title</h3>
+                                    </div>
+                            )) : (
+                                <div className='book-info'>
+                                    <img src={`/images/slied_Book_Background_img/background_BookStore(1).png`} alt={`Book Cover `} />
+                                    <h3 className="image-title">Book Title</h3>
+                                </div>
+                            )
+                    }
+                </Slider>
+                {/* <Slider {...settings}>
                     {topViewBook && topViewBook.length > 0 ? (
                         topViewBook.map((book, index) => (
                             <div className='book-info' key={book._id}>
@@ -104,8 +126,7 @@ const TopViewBook = () => {
                     ) : (
                         <p>Loading books...</p>
                     )}
-                </Slider>
-
+                </Slider> */}
             </div>
         </div>
     );

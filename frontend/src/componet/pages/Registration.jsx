@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useNavigate } from "react-router";
 import * as Yup from 'yup';
 import "../../styles/pages_styles/Registration.css";
+import useApiUrl from "../commonComponet/useApiUrl.js";
+
 
 const registrationDetails = [
     { detail: "User Name", placeholder: "abc", name: "userName", type: "text" },
@@ -25,6 +27,7 @@ const validationSchema = Yup.object().shape({
         .required("User Contact is required"),
     userEmail: Yup.string()
         .email("Invalid email format")
+        .matches(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, "Invalid email format")
         .required("User Email is required"),
     userPassword: Yup.string()
         .min(6, "Password must be at least 6 characters")
@@ -38,7 +41,9 @@ const validationSchema = Yup.object().shape({
         .required("User Address is required"),
 });
 
+
 const Registration = () => {
+    const baseUrl = useApiUrl()
     const [flippedPages, setFlippedPages] = useState(0);
     const [frontPageDisplay, setFrontPageDisplay] = useState(1);
     const [bookCoverOpen, setBookCoverOpen] = useState(false);
@@ -47,7 +52,12 @@ const Registration = () => {
 
     const navigate = useNavigate();
 
+    const inputRefs = useRef([]);
+
     const flipPage = (direction, values, errors) => {
+
+        const currentIndex = flippedPages;
+
         if (!bookCoverOpen) {
             setBookCoverOpen(true);
         } else if (backBookCoverOpen) {
@@ -65,11 +75,19 @@ const Registration = () => {
                         [currentField]: values[currentField],
                     }));
 
+                    setTimeout(() => {
+                        inputRefs.current[currentIndex + 1]?.focus(); // Move focus to next input
+                    }, 100);
+
                 }
             } else if (direction === "prev") {
                 if (!errors[currentField]) {
                     setFlippedPages((prev) => Math.max(prev - 1, 0));
                     setFrontPageDisplay((prev) => Math.max(prev - 1, 1));
+
+                    setTimeout(() => {
+                        inputRefs.current[currentIndex - 1]?.focus(); // Move focus to previous input
+                    }, 100);
                 }
             }
 
@@ -96,8 +114,6 @@ const Registration = () => {
     };
 
 
-
-
     return (
         <div className="ragistrtion-book">
             <Formik
@@ -113,7 +129,7 @@ const Registration = () => {
                 validateOnChange
                 validateOnBlur
                 onSubmit={
-                    (values, actions) => {
+                    async (values, actions) => {
                         const fromData = {
                             name: values?.userName,
                             contactNo: values?.userContact,
@@ -125,27 +141,34 @@ const Registration = () => {
                         const userData = JSON.stringify(fromData)
                         // console.log("data base store Data:", userData);
 
-                        setTimeout(async () => {
-                            if (userData) {
-                                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/register", {
-                                    method: "post",
-                                    body: userData,
-                                    headers: {
-                                        'content-Type': 'application/json'
-                                    }
-                                })
-                                const responseData = await response.json();
-                                // console.log("response", responseData)
-                                if (responseData.statuscode === 200) {
-                                    navigate(`/Login`);
+                        if (userData) {
+                            const response = await fetch(`${baseUrl}/api/v1/users/register`, {
+                                method: "post",
+                                body: userData,
+                                headers: {
+                                    'content-Type': 'application/json'
                                 }
-                                if (responseData.statuscode === 409) {
-                                    const errorMessage = encodeURIComponent("You have already registered, please log in using email or contact & password.");
-                                    localStorage.setItem("userExistError", JSON.stringify(errorMessage));
-                                    navigate(`/Login`);
+                            })
+                            const responseData = await response.json();
+                            console.log("response", responseData)
+                            if (responseData.statuscode === 200) {
+
+                                const autoLogin = {
+                                    email: values?.userEmail,
+                                    password: values?.userPassword,
                                 }
+
+                                localStorage.setItem("userRagistretion", JSON.stringify(autoLogin))
+                                setTimeout(() => {
+
+                                    navigate(`/Login`);
+                                }, 400);
                             }
-                        });
+                            if (responseData.statuscode === 409) {
+                                localStorage.setItem("userExistError", JSON.stringify("You have already registered, please log in using email or contact & password."));
+                                navigate(`/Login`);
+                            }
+                        }
 
                     }
                 }
@@ -223,6 +246,7 @@ const Registration = () => {
                                                         name={item.name}
                                                         placeholder={item.placeholder}
                                                         autoComplete={getAutoCompleteValue(item.name, values)}
+                                                        innerRef={(el) => (inputRefs.current[index] = el)}
                                                     />
                                                     <ErrorMessage name={item.name} component="span" className="error" />
                                                 </div>
@@ -285,7 +309,7 @@ const Registration = () => {
                     </Form>
                 )}
             </Formik>
-        </div>
+        </div >
     );
 };
 

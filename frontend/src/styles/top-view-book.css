@@ -70,6 +70,10 @@
     gap: 10px;
 }
 
+.topBook_Display .slider-container .slick-slide div {
+    width: 100%;
+}
+
 .topBook_Display .slider-container .slick-slide {
     opacity: 0;
     transform: scale(0.8);
@@ -183,11 +187,13 @@
 
 @media only screen and (max-width: 680px) {
     .topBook_Display .slider-container .slick-prev {
-        left: -15px;;
+        left: -15px;
+        ;
     }
 
     .topBook_Display .slider-container .slick-next {
-        right: -15px;;
+        right: -15px;
+        ;
     }
 }
 

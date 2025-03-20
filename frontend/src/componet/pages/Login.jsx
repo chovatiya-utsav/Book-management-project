@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import * as yup from "yup";
 import "../../styles/pages_styles/Login.css";
 import ForgetPasswordModal from "../commonComponet/ForgetPasswordModal";
+import useApiUrl from "../commonComponet/useApiUrl.js";
+
 
 const validationSchema = yup.object().shape({
     userContact: yup
@@ -12,7 +14,9 @@ const validationSchema = yup.object().shape({
         .min(10, "User Contact must be at least 10 digits")
         .max(10, "User Contact must be 10 digits not more")
         .required("User Contact is required"),
-    userEmail: yup.string().email("Invalid email format").required("User Email is required"),
+    userEmail: yup.string().email("Invalid email format")
+        .matches(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, "Invalid email format")
+        .required("User Email is required"),
     userPassword: yup.string()
         .min(6, "Password must be at least 6 characters")
         .max(10, "Password not more then 10 characters")
@@ -21,20 +25,26 @@ const validationSchema = yup.object().shape({
         .required("User Password is required"),
 });
 
+
+
 const Login = () => {
+    const baseUrl = useApiUrl()
     const [loginContect, setLoginContect] = useState(false);
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
     const navigate = useNavigate();
     const [displayError, setDisplayError] = useState(false);
     const [userNotExists, setUserNotExists] = useState(false)
     const [modalOpen, setModalOpen] = useState(false);
-    const [changePasswordConform, setChangePasswordConform] = useState(false)
+    const [changePasswordConform, setChangePasswordConform] = useState(false);
 
 
     const [message, setMessage] = useState(null);
 
     useEffect(() => {
-        const initialMessage = (JSON.parse(localStorage.getItem("userExistError")))
+        const initialMessage = JSON.parse(localStorage?.getItem("userExistError")) || null;
+        const userRagistretionData = JSON.parse(localStorage?.getItem("userRagistretion")) || null;
+        console.log(userRagistretionData)
+
         setMessage(initialMessage)
         if (message) {
             const timer = setTimeout(() => {
@@ -43,8 +53,43 @@ const Login = () => {
             }, 4000);
 
             return () => clearTimeout(timer); // Cleanup
+        } else if (userRagistretionData) {
+
+            autoLogin(userRagistretionData)
+
         }
+
     }, [message]);
+
+    const autoLogin = async (userRagistretionData) => {
+        const userLoginData = {
+            email: userRagistretionData?.email,
+            password: userRagistretionData?.password
+        }
+
+        const loginData = JSON.stringify(userLoginData);
+
+        const response = await fetch(`${baseUrl}/api/v1/users/login`, {
+            method: "post",
+            body: loginData,
+            headers: {
+                'content-Type': 'application/json'
+            },
+            credentials: "include"
+        })
+
+        const responeData = await response.json()
+
+        console.log(responeData);
+        if (responeData.statuscode === 200) {
+            localStorage.clear()
+            console.log("response", responeData.data.user);
+            localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
+            navigate("/Book-Management")
+        } else {
+            alert("somting went worng")
+        }
+    }
 
     const closeModal = () => {
         setModalOpen(!modalOpen);
@@ -75,7 +120,7 @@ const Login = () => {
 
                 const loginData = JSON.stringify(userLoginData);
 
-                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/login", {
+                const response = await fetch(`${baseUrl}/api/v1/users/login`, {
                     method: "post",
                     body: loginData,
                     headers: {
@@ -118,7 +163,7 @@ const Login = () => {
                 const loginData = JSON.stringify(userLoginData);
 
 
-                const response = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/login", {
+                const response = await fetch(`${baseUrl}/api/v1/users/login`, {
                     method: "post",
                     body: loginData,
                     headers: {
