@@ -51,3 +51,16 @@
 .header .navebar a {
     text-decoration: none;
 }
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.logout-btn:hover {
+    color: red;
+}

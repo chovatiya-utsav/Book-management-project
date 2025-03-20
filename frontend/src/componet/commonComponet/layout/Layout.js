@@ -18,7 +18,6 @@ const Layout = () => {
                     <Route path='/' element={<Protected Componet={Home} />} />
                     <Route path='/Book-Management' element={<Protected Componet={Home} />} />
                     <Route path='/library' element={<Protected Componet={Library} />} />
-                    <Route path='/Logout' element={<Protected Componet={Logout} />} />
                     <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} ></Route>
                     <Route path='/Login' element={<Login />} />
                     <Route path='/Registration' element={<Registration />} />

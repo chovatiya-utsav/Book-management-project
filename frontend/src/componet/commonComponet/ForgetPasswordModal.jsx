@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap'
 import "../../styles/ForgetPasswordModal.css"
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as yup from "yup"
+import useApiUrl from './useApiUrl'
 
 const validationSchema = yup.object().shape({
     userContact: yup
@@ -25,7 +26,7 @@ const validationSchema = yup.object().shape({
 
 
 const ForgetPasswordModal = (props) => {
-
+    const baseUrl = useApiUrl()
     const { modalOpen, closeModal, changePassword } = props
     const [getInput, setGetInput] = useState(false);
     const [userNotFound, setUserNotFound] = useState(false)
@@ -43,7 +44,7 @@ const ForgetPasswordModal = (props) => {
 
             const checkUserData = JSON.stringify(checkUser);
 
-            const respone = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/check-user", {
+            const respone = await fetch(`${baseUrl}/api/v1/users/check-user`, {
                 method: "post",
                 body: checkUserData,
                 headers: {
@@ -84,7 +85,7 @@ const ForgetPasswordModal = (props) => {
 
             const checkUserData = JSON.stringify(checkUser);
 
-            const respone = await fetch("https://d877-103-181-126-16.ngrok-free.app/api/v1/users/forgotpassword", {
+            const respone = await fetch(`${baseUrl}/api/v1/users/forgotpassword`, {
                 method: "post",
                 body: checkUserData,
                 headers: {
