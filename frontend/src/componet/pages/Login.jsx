@@ -129,6 +129,7 @@ const Login = () => {
                 })
 
                 const responeData = await response.json()
+                console.log(responeData.statuscode)
 
 
                 if (responeData.statuscode === 200) {
@@ -136,6 +137,10 @@ const Login = () => {
                     localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
                     navigate("/Book-Management")
                 }
+                if (responeData.statuscode === 202) {
+                    navigate("/admin-dashboard");  // Redirect admin to admin pane
+                }
+
 
                 if (responeData.statuscode === 404) {
                     setUserNotExists(true)
@@ -194,6 +199,9 @@ const Login = () => {
 
         }
     }
+
+
+
 
     return (
         <>

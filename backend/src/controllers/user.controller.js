@@ -57,8 +57,11 @@ const registerUser = asyncHandler(async (req, res) => {
         contactNo,
         address
     })
-    
+
     const existedgAdmin = await User.findOne({ role: 'admin' })
+    if (existedgAdmin) {
+        return res.status(202).json({ existedUser })
+    }
     if (!existedgAdmin) {
         const adminUser = await User.create({
             name: "vishesh",
@@ -74,6 +77,7 @@ const registerUser = asyncHandler(async (req, res) => {
         }
         console.log("Admin registered successfully:", adminUser);
     }
+
 
     //check user creation
     const createdUser = await User.findById(user._id).select("-password -refreshToken")

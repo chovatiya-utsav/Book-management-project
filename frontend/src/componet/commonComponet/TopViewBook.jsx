@@ -142,10 +142,10 @@ const TopViewBook = () => {
                 show={modalOpen}
                 onClose={() => setModalOpen(false)}
                 book={selectedBook}
-                // userReview={{
-                //     rating: 4,
-                //     reviewText: "This book was amazing! Highly recommend."
-                // }} 
+            // userReview={{
+            //     rating: 4,
+            //     reviewText: "This book was amazing! Highly recommend."
+            // }} 
             />
         </>
     );
