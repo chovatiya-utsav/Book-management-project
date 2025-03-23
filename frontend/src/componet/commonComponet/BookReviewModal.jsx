@@ -46,11 +46,6 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
         setReviewText("");
     };
 
-    const cancelReview = () => {
-        setRating(0);
-        setReviewText("")
-    }
-
     const readBook = (id) => {
         if (rating && reviewText) {
             setSuccessMessage("✅ Review successfully submitted!");
