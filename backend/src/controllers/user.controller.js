@@ -27,13 +27,13 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     //get user detail from frontend
-    const { name, email, password, contactNo, address } = req.body
+    const { name, email, password, contactNo, address, role } = req.body
     //console.log(req.body);
 
     //validation -not empty
     //.some() is an array method that checks if at least one item in the array meets a condition.
     if (
-        [name, email, password, contactNo, address].some((field) => field?.trim() === "")
+        [name, email, password, contactNo, address, role].some((field) => field?.trim() === "")
     ) {
         throw new ApiError(400, "All fields are required")
     }
@@ -57,6 +57,23 @@ const registerUser = asyncHandler(async (req, res) => {
         contactNo,
         address
     })
+    
+    const existedgAdmin = await User.findOne({ role: 'admin' })
+    if (!existedgAdmin) {
+        const adminUser = await User.create({
+            name: "vishesh",
+            email: "visheshadmin@gmail.com",
+            password: "Aa@123",
+            contactNo: "7373737373",
+            address: "teddjdj",
+            role: "admin"
+        })
+
+        if (!adminUser) {
+            throw new ApiError(500, "Something went wrong while registering admin");
+        }
+        console.log("Admin registered successfully:", adminUser);
+    }
 
     //check user creation
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
@@ -70,6 +87,8 @@ const registerUser = asyncHandler(async (req, res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser, "user register successfully")
     )
+
+
 })
 
 const loginUser = asyncHandler(async (req, res) => {
