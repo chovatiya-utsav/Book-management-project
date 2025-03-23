@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import "../../styles/top-view-book.css";
 import useApiUrl from './useApiUrl';
+import BookReviewModal from './BookReviewModal';
 
 const TopViewBook = () => {
     const baseUrl = useApiUrl()
 
     const [topViewBook, setTopViewBook] = useState(null)
+    const [modalOpen, setModalOpen] = useState(false)
+    const [selectedBook, setSelectedBook] = useState(null);
 
     // Custom Arrows
     const PrevArrow = ({ onClick }) => (
@@ -30,6 +33,7 @@ const TopViewBook = () => {
         slidesToShow: 4,
         slidesToScroll: 1,
         initialSlide: 0,
+        arrows: true,
         prevArrow: <PrevArrow />,
         nextArrow: <NextArrow />,
 
@@ -40,6 +44,7 @@ const TopViewBook = () => {
                     slidesToShow: 3,
                     slidesToScroll: 1,
                     infinite: true,
+                    arrows: true,
                     dots: false
                 }
             },
@@ -49,6 +54,7 @@ const TopViewBook = () => {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                     infinite: true,
+                    arrows: true,
                     dots: true
                 }
             },
@@ -67,73 +73,81 @@ const TopViewBook = () => {
             }
         ]
     };
-    useEffect(() => {
-        setTimeout(async () => {
-            try {
-                const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include" // Important for cookies and sessions
-                });
 
-                if (!response.ok) {
-                    console.error("API Error:", response.status, response.statusText);
-                    return;
-                }
+    const getBookData = async () => {
+        try {
+            const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include" // Important for cookies and sessions
+            });
 
-                const rdata = await response.json();
-                console.log("JSON Data:", rdata);
-
-            } catch (error) {
-                console.error("Fetch Error:", error);
+            if (!response.ok) {
+                console.error("API Error:", response.status, response.statusText);
+                return;
             }
-        }, 1000);
+
+            const Bookdata = await response.json();
+            // console.log("JSON Data:", Bookdata);
+            setTopViewBook(Bookdata.data)
+
+        } catch (error) {
+            console.error("Fetch Error:", error);
+        }
+
+    }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            getBookData();
+        }, 2000);
+
+        return () => clearTimeout(timer); // Cleanup in case component unmounts before 2s
     }, []);
 
 
+    const openModal = (book) => {
+        setSelectedBook(book);
+        setModalOpen(true);
+    };
 
     return (
-        <div className='block topBook_Display'>
-            <h1 className='heding'> Top Book Viewer </h1>
-            <div className="slider-container">
-                <Slider {...settings}>
-                    {
-                        totalSlides ?
-                            [...Array(totalSlides)].map((_, index) => (
-                                // <div className='book-info' key={index}>
-                                //     <img src={`/images/slied_Book_Background_img/background_BookStore(${(index % 4) + 1}).png`} alt={`Book Cover ${index + 1}`} />
-                                //     <h3 className="image-title">Book Title {index + 1}</h3>
-                                // </div>
-                                <div className='book-info'>
-                                    <img src={`/images/slied_Book_Background_img/background_BookStore().png`} alt={`Book Cover `} />
-                                    <h3 className="image-title">Book Title</h3>
+        <>
+            <div className='block topBook_Display'>
+                <h1 className='heding'> Top Book Viewer </h1>
+                <div className="slider-container">
+                    <Slider {...settings}>
+                        {topViewBook && topViewBook.length > 0 ? (
+                            topViewBook.map((book, index) => (
+                                <div className='book-card' key={index} onClick={() => openModal(book)}>
+                                    <img src={book.coverImage} alt={book.bookName} />
+                                    <div className='book-details'>
+                                        <h3 className="book-title">{book.bookName}</h3>
+                                        <p className="book-author">author  {book.author}</p>
+                                        <p className="book-price">${book.price}</p>
+                                    </div>
                                 </div>
-                            )) : (
-                                <div className='book-info'>
-                                    <img src={`/images/slied_Book_Background_img/background_BookStore(1).png`} alt={`Book Cover `} />
-                                    <h3 className="image-title">Book Title</h3>
-                                </div>
-                            )
-                    }
-                </Slider>
-                {/* <Slider {...settings}>
-                    {topViewBook && topViewBook.length > 0 ? (
-                        topViewBook.map((book, index) => (
-                            <div className='book-info' key={book._id}>
-                                <img src={book.coverImage} alt={book.bookName} />
-                                <h3 className="image-title">{book.bookName}</h3>
-                                <p className="author">by {book.author}</p>
-                                <p className="price">${book.price}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>Loading books...</p>
-                    )}
-                </Slider> */}
-            </div>
-        </div>
+                            ))
+                        ) : (
+                            [...Array(4)].map((_, i) => (
+                                <div className='lodar' key={i}></div>
+                            ))
+                        )}
+                    </Slider>
+                </div>
+            </div >
+            <BookReviewModal
+                show={modalOpen}
+                onClose={() => setModalOpen(false)}
+                book={selectedBook}
+                // userReview={{
+                //     rating: 4,
+                //     reviewText: "This book was amazing! Highly recommend."
+                // }} 
+            />
+        </>
     );
 }
 

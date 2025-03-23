@@ -108,6 +108,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: none;
 }
 
 .ragistrtion-book .Book_Body .Book .page .back .back-content {
@@ -126,6 +129,10 @@
 
 .ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info h1 {
     margin: 20px 0px;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data {
@@ -135,6 +142,7 @@
 .ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title {
     font-size: 18px;
     font-weight: bolder;
+    text-transform: capitalize;
 }
 
 .ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .user_value {
@@ -220,6 +228,9 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 
@@ -241,7 +252,12 @@
 
 .ragistrtion-book .Book_Body .Book .page .front .front-content .user_info {
     text-transform: capitalize;
+    width: 100%;
+    text-align: start;
+    padding: 0px 0px 0px 3vw;
+
 }
+
 
 
 .ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content h1 {
@@ -249,6 +265,10 @@
     color: #fff;
     margin: 20px 3px;
     text-transform: capitalize;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+
 }
 
 .ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content h1 {
@@ -256,6 +276,9 @@
     color: #fff;
     margin: 20px 8px;
     text-transform: capitalize;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag {
@@ -265,6 +288,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag button,
 .ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button,
 .ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button {
@@ -276,6 +300,10 @@
         0px 0.9px 10px 0px #898888;
     text-align: center;
     text-transform: capitalize;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag button:hover,
@@ -300,6 +328,10 @@
     border: 2px solid;
     border-radius: 6px;
     margin: 10px 20px;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
 }
 
 .ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input span {
@@ -309,6 +341,9 @@
     margin: 0px 20px;
     display: flex;
     text-align: start;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 @keyframes coverFlip {

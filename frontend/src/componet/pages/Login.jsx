@@ -36,6 +36,7 @@ const Login = () => {
     const [userNotExists, setUserNotExists] = useState(false)
     const [modalOpen, setModalOpen] = useState(false);
     const [changePasswordConform, setChangePasswordConform] = useState(false);
+    const [autoLoginData, setAutoLoginData] = useState(null)
 
 
     const [message, setMessage] = useState(null);
@@ -43,7 +44,6 @@ const Login = () => {
     useEffect(() => {
         const initialMessage = JSON.parse(localStorage?.getItem("userExistError")) || null;
         const userRagistretionData = JSON.parse(localStorage?.getItem("userRagistretion")) || null;
-        console.log(userRagistretionData)
 
         setMessage(initialMessage)
         if (message) {
@@ -80,10 +80,9 @@ const Login = () => {
 
         const responeData = await response.json()
 
-        console.log(responeData);
         if (responeData.statuscode === 200) {
+            setAutoLoginData(responeData.data)
             localStorage.clear()
-            console.log("response", responeData.data.user);
             localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
             navigate("/Book-Management")
         } else {
@@ -174,9 +173,7 @@ const Login = () => {
 
                 const responeData = await response.json()
 
-                console.log(responeData);
                 if (responeData.statuscode === 200) {
-                    console.log("response", responeData.data.user);
                     localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
                     navigate("/Book-Management")
                 } else if (responeData.statuscode === 404) {
@@ -212,7 +209,13 @@ const Login = () => {
 
 
                 <Formik
-                    initialValues={{ userEmail: "", userPassword: "", userContact: "" }}
+                    initialValues={
+                        {
+                            userEmail: autoLogin.email || "",
+                            userPassword: autoLogin.password || "",
+                            userContact: ""
+                        }
+                    }
                     validationSchema={validationSchema}
                     validateOnBlur
                     validateOnChange

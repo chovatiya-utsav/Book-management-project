@@ -4,7 +4,10 @@
     position: relative;
     overflow: hidden;
     width: 100%;
+    background-attachment: fixed;
     height: calc(100vh - 60px);
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .book_slide .background_Book_image {
@@ -42,12 +45,53 @@
     text-align: center;
     position: absolute;
     z-index: 2;
-    /* Above the overlay */
     text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
     animation: fadeInText 2s ease-in-out infinite alternate;
     background: rgba(255, 255, 255, 0.2);
     padding: 15px 30px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.book_slide .background_Book_image h1 .typewriter-text {
+    font-size: 18px;
+    font-weight: 500;
+    /* color: #fff; */
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    font-family: "Doto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+    font-variation-settings:
+        "ROND" 0;
+    position: relative;
+}
+
+.book_slide .background_Book_image h1 .cursor {
+    position: absolute;
+    top: 0;
+    display: inline-block;
+    background-color: #fff;
+    margin-left: 4px;
+    animation: blink 0.8s infinite;
+    width: 2px;
+    height: 25px;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 
@@ -83,3 +127,42 @@
         background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(2).png");
     }
 } */
+
+@media only screen and (max-width: 1124px) {
+
+    .book_slide .background_Book_image h1 {
+        font-size: 3.5vw;
+    }
+}
+
+@media only screen and (max-width: 884px) {
+    .book_slide .background_Book_image h1 {
+        font-size: 4vw;
+    }
+
+    .book_slide .background_Book_image h1 .typewriter-text {
+        font-size: 14px;
+        white-space: normal;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .book_slide {
+        height: 500px;
+    }
+
+    .book_slide .background_Book_image h1 {
+        font-size: 3vw;
+        width: 90%;
+    }
+
+    .book_slide .background_Book_image h1 .typewriter-text {
+        font-size: 12px;
+        white-space: normal;
+    }
+
+    .book_slide .background_Book_image h1 .cursor {
+        display: none;
+    }
+
+}

@@ -35,6 +35,9 @@
 
 .login-form .change-password-info h2 {
     text-transform: capitalize;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 
@@ -74,11 +77,17 @@
     background: #dc3545;
     border-radius: 9px 8px 3px 4px;
     display: none;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .login-form .form .showError {
     animation: top 1s ease-in-out;
     display: block;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 @keyframes top {
@@ -97,18 +106,28 @@
     text-align: center;
     padding: 2px;
     text-transform: capitalize;
+    font-family: "Arvo", serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .login-form .form .login-heding h1 {
     color: #fff;
     text-align: center;
     padding: 35px 0px 10px 0px;
+    font-family: "Arvo", serif;
+    font-weight: 400;
+    font-style: italic;
+
 }
 
 /* Input fields animation */
 .login-form .form .input-filed label {
     color: #fff;
     font-size: 18px;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .login-form .form .input-filed .froget-password {
@@ -128,6 +147,10 @@
     text-decoration: underline;
     text-underline-offset: 2px;
     letter-spacing: 1px;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .login-form .form .input-filed .froget-password h3:hover {
@@ -144,6 +167,10 @@
     border: 1px solid #fff;
     margin: 10px 0px 24px 0px;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
 }
 
 .login-form .form .input-filed input:focus {
@@ -158,6 +185,9 @@
     color: #ff4d4d;
     font-weight: bold;
     margin: -22px 0px 0px 0px;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* Buttons animation */
@@ -170,6 +200,10 @@
     cursor: pointer;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     width: 50%;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+
 }
 
 .login-form .form .button .login_type {
@@ -182,7 +216,6 @@
 
 .login-form .form .button .login_button button {
     flex: 50%;
-
 }
 
 .login-form .form .button button:hover {
