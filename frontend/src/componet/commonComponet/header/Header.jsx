@@ -47,8 +47,6 @@ const Header = () => {
                         <li><NavLink to={"/library"} >library</NavLink></li>
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"} >Books</NavLink></li>
-                        {/* <li><NavLink to={"/Login"} >Login</NavLink></li>
-                        <li><NavLink to={"/registration"} >registration</NavLink></li> */}
                     </ul>
                 </div>
             </div>
