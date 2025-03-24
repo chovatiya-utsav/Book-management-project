@@ -16,7 +16,7 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
             setRating(0);
             setReviewText("");
         }
-    }, [show])
+    }, [show, userReview])
 
     const navigate = useNavigate()
 
@@ -47,11 +47,12 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
     };
 
     const readBook = (id) => {
-        if (rating && reviewText) {
+        if (rating && reviewText && !userReview) {
             setSuccessMessage("✅ Review successfully submitted!");
         }
         setTimeout(() => {
             navigate(`/BookDisplay?Book=${id}`)
+            onClose()
         }, 1000);
     }
 
@@ -78,7 +79,7 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <span
                                             key={star}
-                                            className={`star ${star <= rating ? 'filled' : ''}`}
+                                            className={`star ${star <= hover || rating ? 'filled' : ''}`}
                                             onClick={!userReview ? () => setRating(star) : undefined}
                                             onMouseEnter={!userReview ? () => setHover(star) : undefined}
                                             onMouseLeave={!userReview ? () => setHover(null) : undefined}
