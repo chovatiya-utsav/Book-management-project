@@ -1,16 +1,30 @@
-// import { asyncHandler } from "../utils/asyncHandler.js";
-// import { Admin } from "../models/admin.model.js";
-// import { ApiError } from "../utils/ApiError";
+import { asyncHandler } from "../utils/asyncHandler.js";
+//import { ApiError } from "../utils/ApiError";
+import { Book } from "../models/book.model.js"
+import { User } from "../models/user.model.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
-// const registerAdmin = asyncHandler(async (req, res) => {
 
-//     const { name, email, password, contactNo, address } = req.body
+const getBookCount = asyncHandler(async (req, res) => {
 
-//     if (
-//         [name, email, password, contactNo, address].some((field) => field?.trim() === "")
-//     ) {
-//         throw new ApiError(400, "All fields are required")
-//     }
+    const bookCount = await Book.countDocuments()
 
-//     const existedAdmin = await Admin.findOne()
-// })
+    if (bookCount === 0) {
+        return res.status(404).json({ message: "No book found" })
+    }
+
+    return res.status(200)
+        .json(new ApiResponse(200, { bookCount }))
+})
+
+const getUserCount = asyncHandler(async (req, res) => {
+    const userCount = await User.countDocuments()
+
+    if (userCount === 0) {
+        return res.status(404).json({ message: "No user found" })
+    }
+
+    return res.status(200).json(new ApiResponse(200, { userCount }))
+})
+
+export { getBookCount, getUserCount }
