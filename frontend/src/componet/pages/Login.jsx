@@ -139,10 +139,10 @@ const Login = () => {
                     navigate("/Book-Management")
                 }
 
-               
+
 
                 //   Check if user is admin
-                  if (responeData.data.user.role === "admin") {
+                if (responeData.data.user.role === "admin") {
                     navigate("/admin-dashboard");  // Redirect admin to admin panel
                 } else {
                     navigate("/Book-Management");  // Redirect regular users
@@ -185,24 +185,24 @@ const Login = () => {
 
                 const responeData = await response.json()
 
-                if(responeData.statuscode === 202){
+                if (responeData.statuscode === 202) {
 
                     localStorage.setItem("userAdimnLogin", JSON.stringify(responeData.data.user))
                     navigate("/admin")
                 }
 
                 if (responeData.statuscode === 200) {
-                    localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
-                    navigate("/Book-Management")
 
-                    
-                   
+
+
                     // Check if user is admin
                     if (responeData.data.user.role === "admin") {
+                        localStorage.setItem("userAdminLogin", JSON.stringify(responeData.data.user))
                         navigate("/admin-dashboard");  // Redirect admin to admin panel
                     }
-                     else {
-                        navigate("/Book-Management");  // Redirect regular users
+                    else {
+                        localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
+                        navigate("/Book-Management")
                     }
 
                 } else if (responeData.statuscode === 404) {

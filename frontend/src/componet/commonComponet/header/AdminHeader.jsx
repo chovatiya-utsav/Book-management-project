@@ -47,10 +47,11 @@ const AdminHeader = () => {
                 <div className={`nav-link ${menuOpen ? "show" : ""}`}>
                     <ul>
                         <li><NavLink to={"/admin-dashboard"} >Dashboard   </NavLink></li>
-                        <li><NavLink to={"/manageuser"} >ManageUsers</NavLink></li>
-                        <li><NavLink to={"/managebook"} >ManageBooks</NavLink></li>
-                        <li><NavLink to={"/manageorder"} >ManageOrder</NavLink></li>
-                        <li><NavLink to={"/profile"} >Profile</NavLink></li>
+                        <li><NavLink to={"/ManageUsers"} >ManageUsers</NavLink></li>
+                        <li><NavLink to={"/ManageBooks"} >ManageBooks</NavLink></li>
+                        <li><NavLink to={"/ManageOrders"} >ManageOrder</NavLink></li>
+                        <li><NavLink to={"/Profile"} >Profile</NavLink></li>
+                        <li><NavLink to={"/Book-Management"} >client</NavLink></li>
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         {/* <li><NavLink to={"/loogout"} >Logout</NavLink></li> */}
                     </ul>

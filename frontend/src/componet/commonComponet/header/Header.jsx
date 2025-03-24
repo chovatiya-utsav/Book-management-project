@@ -9,6 +9,8 @@ const Header = () => {
     const baseurl = useApiUrl();
     const navigate = useNavigate();
 
+    let userAdminLogin = localStorage?.getItem('userAdminLogin') || "";
+
     const userLogout = async () => {
         try {
             const response = await fetch(`${baseurl}/api/v1/users/logout`, {
@@ -47,6 +49,9 @@ const Header = () => {
                         <li><NavLink to={"/library"} >library</NavLink></li>
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"} >Books</NavLink></li>
+                        {userAdminLogin ?
+                            <li><NavLink to={"/admin-dashboard"} >Admin</NavLink></li> : null
+                        }
                     </ul>
                 </div>
             </div>

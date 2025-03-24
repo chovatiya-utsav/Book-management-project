@@ -23,19 +23,21 @@ const Layout = () => {
         <div className='body'>
             <BrowserRouter>
                 <Routes>
+                    {/* user */}
                     <Route path='/*' element={<Protected Componet={Home} />} />
                     <Route path='/' element={<Protected Componet={Home} />} />
                     <Route path='/Book-Management' element={<Protected Componet={Home} />} />
                     <Route path='/library' element={<Protected Componet={Library} />} />
                     <Route path='/Login' element={<UserAuthentication Componet={Login} />} />
                     <Route path='/Registration' element={<UserAuthentication Componet={Registration} />} />
-                    <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} ></Route>
-                    <Route path='/admin-dashboard' element={<AdminDashboard />} />
-                    <Route path='/ManageUsers' element={<ManageUsers />} />
-                    <Route path='/ManageBooks' element={<ManageBooks />} />
-                    <Route path='/ManageOrders' element={<ManageOrders />} />
-                    <Route path='/Profile' element={<Profile />} />
-                    
+                    <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} />
+                    {/* admin */}
+                    <Route path='/admin-dashboard' element={<Protected AdminComponet={AdminDashboard} />} />
+                    <Route path='/ManageUsers' element={<Protected AdminComponet={ManageUsers} />} />
+                    <Route path='/ManageBooks' element={<Protected AdminComponet={ManageBooks} />} />
+                    <Route path='/ManageOrders' element={<Protected AdminComponet={ManageOrders} />} />
+                    <Route path='/Profile' element={<Protected AdminComponet={Profile} />} />
+
                 </Routes>
             </BrowserRouter>
         </div>

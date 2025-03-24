@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import Header from '../header/Header';
 import useApiUrl from '../useApiUrl';
+import AdminHeader from '../header/AdminHeader';
 
 
 
 const Protected = (props) => {
-    const { Componet } = props;
+    const { Componet, AdminComponet } = props;
     const baseurl = useApiUrl
 
     // const refreshAccessToken = async () => {
@@ -26,12 +27,14 @@ const Protected = (props) => {
     //         console.error("Refresh Token Error:", error);
     //     }
     // };
-
-    let userLogin = localStorage.getItem('userLogin');
+    
+    let userLogin = localStorage?.getItem('userLogin') || "";
+    let userAdminLogin = localStorage?.getItem('userAdminLogin') || "";
     const naviget = useNavigate();
     useEffect(() => {
-        let userLogin = localStorage.getItem('userLogin');
-        if (!userLogin) {
+        let userLogin = localStorage?.getItem('userLogin') || "";
+        let userAdminLogin = localStorage?.getItem('userAdminLogin') || "";
+        if (!userLogin && !userAdminLogin) {
             naviget('/Login')
         }
     }, [naviget])
@@ -39,10 +42,19 @@ const Protected = (props) => {
     return (
         <>
             {
-                userLogin ?
+                (userLogin || userAdminLogin) && Componet && !AdminComponet ?
                     <>
                         <Header />
                         <Componet />
+                    </>
+                    : null
+            }
+            {
+                userAdminLogin && AdminComponet && !Componet ?
+                <>
+                    
+                        <AdminHeader />
+                        <AdminComponet />
                     </>
                     : null
             }
