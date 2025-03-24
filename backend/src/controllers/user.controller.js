@@ -66,8 +66,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (!existedgAdmin) {
         const adminUser = await User.create({
-            name: "vishesh",
-            email: "visheshadmin@gmail.com",
+            name: "admin",
+            email: "admin@gmail.com",
             password: "Aa@123",
             contactNo: "7373737373",
             address: "teddjdj",
