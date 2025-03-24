@@ -31,10 +31,11 @@ const Layout = () => {
                     <Route path='/Registration' element={<UserAuthentication Componet={Registration} />} />
                     <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} ></Route>
                     <Route path='/admin-dashboard' element={<AdminDashboard />} />
-                    <Route path="/manageuser" element={<ManageUsers />} />
-                    <Route path="/managebook" element={<ManageBooks />} />
-                    <Route path="/manageorder" element={<ManageOrders />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path='/ManageUsers' element={<ManageUsers />} />
+                    <Route path='/ManageBooks' element={<ManageBooks />} />
+                    <Route path='/ManageOrders' element={<ManageOrders />} />
+                    <Route path='/Profile' element={<Profile />} />
+                    
                 </Routes>
             </BrowserRouter>
         </div>

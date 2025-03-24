@@ -15,11 +15,11 @@ const Protected = (props) => {
     //             method: "POST",
     //             credentials: "include" // Important for sending cookies
     //         });
-    
+
     //         if (!response.ok) {
     //             throw new Error("Failed to refresh token");
     //         }
-    
+
     //         const data = await response.json();
     //         console.log("Token refreshed:", data);
     //     } catch (error) {
@@ -51,3 +51,6 @@ const Protected = (props) => {
 }
 
 export default Protected;
+
+
+

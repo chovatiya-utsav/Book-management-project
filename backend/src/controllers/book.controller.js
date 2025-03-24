@@ -84,10 +84,23 @@ const getAllBooks = asyncHandler(async (req, res) => {
 
 })
 
+// const getBookById = asyncHandler(async (req, res) => {
+
+//     const { id } = req.params
+//     const book = await Book.findById(id).populate("user", "name email")
+
+//     if (!book) {
+//         throw new ApiError(404, "Book not found")
+//     }
+
+//     res.status(200)
+//         .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
+// })
 const getBookById = asyncHandler(async (req, res) => {
 
-    const { id } = req.params
-    const book = await Book.findById(id).populate("user", "name email")
+    const { _id } = req.query
+    console.log(_id)
+    const book = await Book.findById(_id).populate("user", "name email")
 
     if (!book) {
         throw new ApiError(404, "Book not found")

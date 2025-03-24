@@ -135,10 +135,17 @@ const Login = () => {
                 if (responeData.statuscode === 200) {
                     console.log("response", responeData.data.user);
                     localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
+
                     navigate("/Book-Management")
                 }
-                if (responeData.statuscode === 202) {
-                    navigate("/admin-dashboard");  // Redirect admin to admin pane
+
+               
+
+                //   Check if user is admin
+                  if (responeData.data.user.role === "admin") {
+                    navigate("/admin-dashboard");  // Redirect admin to admin panel
+                } else {
+                    navigate("/Book-Management");  // Redirect regular users
                 }
 
 
@@ -178,9 +185,26 @@ const Login = () => {
 
                 const responeData = await response.json()
 
+                if(responeData.statuscode === 202){
+
+                    localStorage.setItem("userAdimnLogin", JSON.stringify(responeData.data.user))
+                    navigate("/admin")
+                }
+
                 if (responeData.statuscode === 200) {
                     localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
                     navigate("/Book-Management")
+
+                    
+                   
+                    // Check if user is admin
+                    if (responeData.data.user.role === "admin") {
+                        navigate("/admin-dashboard");  // Redirect admin to admin panel
+                    }
+                     else {
+                        navigate("/Book-Management");  // Redirect regular users
+                    }
+
                 } else if (responeData.statuscode === 404) {
                     setUserNotExists(true)
                     setTimeout(() => {
