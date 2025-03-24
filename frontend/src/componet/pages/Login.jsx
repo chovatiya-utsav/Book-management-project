@@ -243,8 +243,8 @@ const Login = () => {
                 <Formik
                     initialValues={
                         {
-                            userEmail: autoLogin.email || "",
-                            userPassword: autoLogin.password || "",
+                            userEmail: autoLoginData?.email || "",
+                            userPassword: autoLoginData?.password || "",
                             userContact: ""
                         }
                     }

@@ -162,7 +162,7 @@
     color: white;
     width: 50px;
     height: 50px;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -283,9 +283,6 @@
         margin: 10px 0px;
     }
 
-    .topBook_Display .slider-container .slick-arrow {
-        display: none;
-    }
 
     /* Slick dots positioning */
     .topBook_Display .slider-container .slick-dots {

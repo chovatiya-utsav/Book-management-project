@@ -93,14 +93,17 @@
   font-size: 1.4rem;
   margin: 0.5rem 0;
   color: #333;
-  font-family: "PT Serif", serif;
-  font-weight: 700;
+  font-family: "Arvo", serif;
+  font-weight: 600;
   font-style: normal;
 }
 
 .modal-overlay .modal-content .book-info .book-content .modal-author {
   font-size: 1rem;
   color: #777;
+  font-family: "PT Serif", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .modal-overlay .modal-content .book-info .book-content .modal-review {
@@ -156,6 +159,9 @@
   font-weight: bold;
   transition: 0.2s ease;
   width: 100%;
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
+  font-style: normal;
 }
 
 .modal-overlay .modal-content .book-info .modal-buttons .btn.primary {
@@ -216,7 +222,10 @@
   font-size: 1rem;
   resize: vertical;
   outline: none;
-  font-family: inherit;
+  font-family: "Domine", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .modal-overlay .modal-content .book-info .book-content .star-rating .review-input:focus {

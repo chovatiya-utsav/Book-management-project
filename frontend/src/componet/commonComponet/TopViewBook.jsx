@@ -11,18 +11,6 @@ const TopViewBook = () => {
     const [modalOpen, setModalOpen] = useState(false)
     const [selectedBook, setSelectedBook] = useState(null);
 
-    // Custom Arrows
-    const PrevArrow = ({ onClick }) => (
-        <div className="slick-arrow slick-prev" onClick={onClick}>
-            <i className="fa fa-arrow-circle-left"></i>
-        </div>
-    );
-
-    const NextArrow = ({ onClick }) => (
-        <div className="slick-arrow slick-next" onClick={onClick}>
-            <i className="fa fa-arrow-circle-right"></i>
-        </div>
-    );
 
     const totalSlides = 10; // Change this based on the number of slides
     const maxDots = 5; // Maximum number of dots to show
@@ -33,9 +21,12 @@ const TopViewBook = () => {
         slidesToShow: 4,
         slidesToScroll: 1,
         initialSlide: 0,
-        arrows: true,
-        prevArrow: <PrevArrow />,
-        nextArrow: <NextArrow />,
+        prevArrow: <div className="slick-arrow slick-prev">
+            <i className="fa fa-arrow-circle-left"></i>
+        </div>,
+        nextArrow: <div className="slick-arrow slick-next">
+            <i className="fa fa-arrow-circle-right"></i>
+        </div>,
 
         responsive: [
             {
@@ -44,7 +35,6 @@ const TopViewBook = () => {
                     slidesToShow: 3,
                     slidesToScroll: 1,
                     infinite: true,
-                    arrows: true,
                     dots: false
                 }
             },
@@ -54,7 +44,6 @@ const TopViewBook = () => {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                     infinite: true,
-                    arrows: true,
                     dots: true
                 }
             },
@@ -100,11 +89,7 @@ const TopViewBook = () => {
     }
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            getBookData();
-        }, 2000);
-
-        return () => clearTimeout(timer); // Cleanup in case component unmounts before 2s
+        getBookData();
     }, []);
 
 
@@ -120,16 +105,20 @@ const TopViewBook = () => {
                 <div className="slider-container">
                     <Slider {...settings}>
                         {topViewBook && topViewBook.length > 0 ? (
-                            topViewBook.map((book, index) => (
-                                <div className='book-card' key={index} onClick={() => openModal(book)}>
-                                    <img src={book.coverImage} alt={book.bookName} />
-                                    <div className='book-details'>
-                                        <h3 className="book-title">{book.bookName}</h3>
-                                        <p className="book-author">author  {book.author}</p>
-                                        <p className="book-price">${book.price}</p>
+                            topViewBook.map((book, index) => {
+                                return (
+
+                                    <div className='book-card' key={index} onClick={() => openModal(book)}>
+                                        <img src={book.coverImage} alt={book.bookName} />
+                                        <div className='book-details'>
+                                            <h3 className="book-title">{book.bookName}</h3>
+                                            <p className="book-author">author  {book.author}</p>
+                                            <p className="book-price">${book.price}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))
+                                )
+                            }
+                            )
                         ) : (
                             [...Array(4)].map((_, i) => (
                                 <div className='lodar' key={i}></div>
