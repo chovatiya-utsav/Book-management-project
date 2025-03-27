@@ -33,7 +33,7 @@ const createReview = asyncHandler(async (req, res) => {
                 },
             },
         },
-        { new: true, upsert: true }
+        { new: true, upsert: true }// upsert:If no document exists for bookId, it creates a new one.
     )
 
     res.status(201)
@@ -53,7 +53,7 @@ const getReviews = asyncHandler(async (req, res) => {
         throw new ApiError(404, "No reviews found for this book")
     }
 
-    return res.status(200)//return use karvanu k nai e puchvanu utsav ne
+    return res.status(200)
         .json(new ApiResponse(200, reviews, "Reviews retrieved successfully"))
 })
 

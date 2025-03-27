@@ -71,7 +71,7 @@ const createBook = asyncHandler(async (req, res) => {
 const getAllBooks = asyncHandler(async (req, res) => {
     const books = await Book.find().populate("user", "name email")//The populate() method in Mongoose is used to automatically replace a field in a document with the actual data from a related document.Then, instead of returning just the user ObjectId, MongoDB will return the full user details with only the specified fields.
 
-    console.log("books", books)
+    //console.log("books", books)
 
     res.status(200)
         .json(
@@ -84,23 +84,10 @@ const getAllBooks = asyncHandler(async (req, res) => {
 
 })
 
-// const getBookById = asyncHandler(async (req, res) => {
-
-//     const { id } = req.params
-//     const book = await Book.findById(id).populate("user", "name email")
-
-//     if (!book) {
-//         throw new ApiError(404, "Book not found")
-//     }
-
-//     res.status(200)
-//         .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
-// })
 const getBookById = asyncHandler(async (req, res) => {
 
-    const { _id } = req.query
-    console.log(_id)
-    const book = await Book.findById(_id).populate("user", "name email")
+    const { id } = req.params
+    const book = await Book.findById(id).populate("user", "name email")
 
     if (!book) {
         throw new ApiError(404, "Book not found")
@@ -109,6 +96,19 @@ const getBookById = asyncHandler(async (req, res) => {
     res.status(200)
         .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
 })
+// const getBookById = asyncHandler(async (req, res) => {
+
+//     const { _id } = req.query
+//     //console.log(_id)
+//     const book = await Book.findById(_id).populate("user", "name email")
+
+//     if (!book) {
+//         throw new ApiError(404, "Book not found")
+//     }
+
+//     res.status(200)
+//         .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
+// })
 
 const updateBook = asyncHandler(async (req, res) => {
     const { bookName, author, publishedYear, genre, description, price, category } = req.body
