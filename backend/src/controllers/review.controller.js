@@ -40,21 +40,42 @@ const createReview = asyncHandler(async (req, res) => {
         .json(new ApiResponse(201, review, "Review added successfully"))
 })
 
-const getReviews = asyncHandler(async (req, res) => {
-    const { bookId } = req.params
+// const getReviews = asyncHandler(async (req, res) => {
+//     const { bookId } = req.params
 
-    if (!bookId) {
-        throw new ApiError(400, "BookId is required")
-    }
+//     if (!bookId) {
+//         throw new ApiError(400, "BookId is required")
+//     }
 
-    const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email")
+//     const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email")
 
-    if (!reviews || reviews.review.length === 0) {
-        throw new ApiError(404, "No reviews found for this book")
-    }
+//     if (!reviews || reviews.review.length === 0) {
+//         throw new ApiError(404, "No reviews found for this book")
+//     }
 
-    return res.status(200)
-        .json(new ApiResponse(200, reviews, "Reviews retrieved successfully"))
-})
+//     return res.status(200)
+//         .json(new ApiResponse(200, reviews, "Reviews retrieved successfully"))
+// })
+
+// const getReviews = asyncHandler(async (req, res) => {
+//     const { bookId } = req.params;
+
+//     if (!bookId || bookId === "undefined") {
+//         return res.status(400).json({ error: "Invalid bookId provided" });
+//     }
+
+//     try {
+//         const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email");
+
+//         if (!reviews || reviews.review.length === 0) {
+//             return res.status(404).json({ message: "No reviews found for this book" });
+//         }
+
+//         res.status(200).json({ data: reviews, message: "Reviews retrieved successfully" });
+//     } catch (error) {
+//         console.error("Database error:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// });
 
 export { createReview, getReviews }
