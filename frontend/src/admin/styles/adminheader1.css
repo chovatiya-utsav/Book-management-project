@@ -20,6 +20,13 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
+.header .navebar .logo {
+    height: 90px;
+    width: 250px;
+    filter: invert(1);
+
+}
+
 .logo h3 a {
     color: #fff;
     text-decoration: none;

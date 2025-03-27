@@ -16,7 +16,7 @@ const BookDisplay = () => {
 
     useEffect(() => {
         getBookData()
-
+        getBookReviw()
     }, [])
 
 
@@ -42,7 +42,30 @@ const BookDisplay = () => {
             console.error("Fetch Error:", error);
         }
     };
+    const getBookReviw = async (bookId) => {
+        try {
+            const response = await fetch(`${baseUrl}/api/v1/review/:bookId/${bookId}`,);
 
+            if (!response.ok) {
+                throw new Error("Failed to fetch review data");
+            }
+
+            const responseData = await response.json();
+
+            if (responseData?.data) {
+                // setUserReview({
+                //     rating: responseData?.data?.review[0].rating,
+                //     reviewText: responseData?.data?.review[0].comment
+
+                // })
+            }
+            console.log(responseData)
+            return responseData;
+        } catch (error) {
+            console.log("Error fetching book review:", error);
+            return null;
+        }
+    };
 
     return (
         <>

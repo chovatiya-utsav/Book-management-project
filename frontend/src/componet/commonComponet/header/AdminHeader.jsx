@@ -12,34 +12,36 @@ const AdminHeader = () => {
 
     const userLogout = async () => {
         console.log("logout")
-            try {
-                const response = await fetch(`${baseurl}/api/v1/users/logout`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    mode: 'cors', // Ensure CORS mode
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const responseData = await response.json();
-
-                if (responseData.statuscode === 200) {
-                    localStorage.clear();
-                    navigate('/Login'); // Redirect to Login
-                } else {
-                    alert('Logout failed, please try again.');
+        try {
+            const response = await fetch(`${baseurl}/api/v1/users/logout`, {
+                method: 'POST',
+                credentials: 'include',
+                mode: 'cors', // Ensure CORS mode
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            } catch (error) {
-                console.error('Logout Error:', error);
+            });
+
+            const responseData = await response.json();
+
+            if (responseData.statuscode === 200) {
+                localStorage.clear();
+                navigate('/Login'); // Redirect to Login
+            } else {
+                alert('Logout failed, please try again.');
             }
+        } catch (error) {
+            console.error('Logout Error:', error);
+        }
     };
 
     return (
         <div className='header'>
             <div className='navebar'>
                 <div className='logo'>
-                    <h3>  <NavLink to={"/admin-dashboard"} >logo</NavLink></h3>
+                    <NavLink to={"/admin-dashboard"} >
+                        <img src="./images/logo.png" alt="logo" className='logo' />
+                    </NavLink>
                 </div>
                 <div className='menu-icon' onClick={() => setMenuOpen(!menuOpen)}>
                     ☰
