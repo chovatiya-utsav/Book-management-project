@@ -27,22 +27,21 @@ const Home = () => {
 
     }
 
+
     const getBookReviw = async (bookId) => {
+        if (!bookId) {
+            console.error("❌ Error: bookId is missing in API call!");
+            return;
+        }
+
         try {
-            const response = await fetch(`${baseUrl}/api/v1/review/bookId/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ bookId })  // Send bookId in the request body
-            });
+            const response = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
 
             if (!response.ok) {
-                throw new Error("Failed to fetch review data");
+                throw new Error(`Error: ${response.statusText}`);
             }
-
+            
             const responseData = await response.json();
-
             if (responseData?.data) {
                 setUserReview({
                     rating: responseData?.data?.review[0].rating,
@@ -50,12 +49,15 @@ const Home = () => {
 
                 })
             }
+
+            console.log("Book Reviews:", responseData);
             return responseData;
         } catch (error) {
-            console.log("Error fetching book review:", error);
-            return null;
+            console.error("Error fetching book review:", error.message);
         }
     };
+
+
 
     const getBookData = async () => {
         try {
