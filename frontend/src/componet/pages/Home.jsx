@@ -42,6 +42,7 @@ const Home = () => {
             }
             
             const responseData = await response.json();
+            
             if (responseData?.data) {
                 setUserReview({
                     rating: responseData?.data?.review[0].rating,

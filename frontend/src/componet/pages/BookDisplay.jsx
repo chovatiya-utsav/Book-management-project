@@ -16,8 +16,8 @@ const BookDisplay = () => {
 
     useEffect(() => {
         getBookData()
-        getBookReviw()
-    }, [])
+        getBookReviw(bookId)
+    }, [bookId])
 
 
     const getBookData = async () => {
