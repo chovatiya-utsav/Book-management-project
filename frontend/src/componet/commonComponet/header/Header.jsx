@@ -40,7 +40,9 @@ const Header = () => {
             <div className='navebar'>
                 <div className='logo'>
                     <ul >
-                        <h3>  <NavLink to={"/Book-Management"} >logo</NavLink></h3>
+                        <NavLink to={"/Book-Management"} >
+                            <img src="./images/logo.png" alt="logo" className='logo' />
+                        </NavLink>
                     </ul>
                 </div>
                 <div className='nav-link'>

@@ -9,7 +9,7 @@ const BookDisplay = () => {
     const baseUrl = useApiUrl()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const bookId = params.get('Book') || "67e2d870f538fd3c5bb12813";
+    const bookId = params.get('Book') || "67dc204ee0fd7353583fbea7";
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
@@ -42,30 +42,27 @@ const BookDisplay = () => {
             console.error("Fetch Error:", error);
         }
     };
-
     const getBookReviw = async (bookId) => {
+        if (!bookId) {
+            console.error("❌ Error: bookId is missing in API call!");
+            return;
+        }
+
         try {
-            const response = await fetch(`${baseUrl}/api/v1/review/${bookId}`)
+            const response = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
 
             if (!response.ok) {
-                throw new Error("Failed to fetch review data");
+                throw new Error(`Error: ${response.statusText}`);
             }
 
             const responseData = await response.json();
-
-            if (responseData?.data) {
-                // setUserReview({
-                //     rating: responseData?.data?.review[0].rating,
-                //     reviewText: responseData?.data?.review[0].comment
-
-                // })
-            }
+            console.log("Book Reviews:", responseData);
             return responseData;
         } catch (error) {
-            console.log("Error fetching book review:", error);
-            return null;
+            console.error("Error fetching book review:", error.message);
         }
     };
+
     return (
         <>
             <section className='user-Book-read'>

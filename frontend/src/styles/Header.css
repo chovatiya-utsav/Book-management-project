@@ -18,6 +18,12 @@
     background: hsla(0, 0%, 100%, .05);
 }
 
+.header .navebar .logo {
+    height: 90px;
+    width: 250px;
+    filter: invert(1);
+
+}
 
 .header .navebar .nav-link ul {
     display: flex;

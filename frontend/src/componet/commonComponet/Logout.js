@@ -9,23 +9,26 @@ const Logout = () => {
 
     const naviget = useNavigate();
     const userLogout = async () => {
+        localStorage.clear()
+        naviget("/Login")
 
         const loginUser = JSON.parse(localStorage.getItem("userLogin")) || null;
 
-        // const userLogin = {
-        //     _id: loginUser?._id
-        // }
+        try {
 
-        const response = await fetch(`${baseurl}/api/v1/users/logout`, {
-            method: 'POST',
-            // body: JSON.stringify(userLogin),
-            credentials: 'include'
-        })
-        const responseData = response.json()
+            const response = await fetch(`${baseurl}/api/v1/users/logout`, {
+                method: 'POST',
+                credentials: 'include'
+            })
+            const responseData = response.json()
 
-        if (responseData.statuscode === 200) {
-            localStorage.clear()
-            naviget("/Login")
+            if (responseData.statuscode === 200) {
+                localStorage.clear()
+                naviget("/Login")
+            }
+        } catch (error) {
+            console.log("error", error);
+
         }
     }
 

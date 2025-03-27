@@ -26,7 +26,7 @@ const TopAuthorBook = ({ bookData }) => {
     };
 
     return (
-        <div className="book-slider-container">
+        <div className="book-slider-container block">
             <div className="book-slider">
                 {bookData?.map((data, index) => {
                     // Show only active + 4 next books
