@@ -33,7 +33,7 @@ const createReview = asyncHandler(async (req, res) => {
                 },
             },
         },
-        { new: true, upsert: true }
+        { new: true, upsert: true }// upsert:If no document exists for bookId, it creates a new one.
     )
 
     res.status(201)
@@ -41,7 +41,7 @@ const createReview = asyncHandler(async (req, res) => {
 })
 
 const getReviews = asyncHandler(async (req, res) => {
-    const { bookId } = await req.params
+    const { bookId } = req.params
 
     if (!bookId) {
         throw new ApiError(400, "BookId is required")
@@ -49,11 +49,11 @@ const getReviews = asyncHandler(async (req, res) => {
 
     const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email")
 
-    if (!reviews || !reviews.review.length === 0) {
+    if (!reviews || reviews.review.length === 0) {
         throw new ApiError(404, "No reviews found for this book")
     }
 
-    return res.status(200)//return use karvanu k nai e puchvanu utsav ne
+    return res.status(200)
         .json(new ApiResponse(200, reviews, "Reviews retrieved successfully"))
 })
 
