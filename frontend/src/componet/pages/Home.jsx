@@ -1,58 +1,116 @@
 import React, { useEffect, useState } from 'react';
 import "../../styles/pages_styles/Home.css";
 import TopViewBook from '../commonComponet/TopViewBook';
+import useApiUrl from '../commonComponet/useApiUrl';
+import BookReviewModal from '../commonComponet/BookReviewModal';
+import TopAuthorBook from '../commonComponet/TopAuthorBook'
 
 const Home = () => {
+    const baseUrl = useApiUrl();
 
+    const [bookData, setBookData] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false)
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [userReview, setUserReview] = useState(null)
 
-    const [textIndex, setTextIndex] = useState(0);
-    const [displayText, setDisplayText] = useState('');
-    const [isDeleting, setIsDeleting] = useState(false);
     useEffect(() => {
-        const texts = [
-            "Designed and developed by Utsav, Vishesh, and Manan",
-            "Created by  Manan, Utsav, and Vishesh"
-        ];
-        const currentText = texts[textIndex];
-        let timeout;
+        getBookData()
+    }, [])
 
-        if (isDeleting) {
-            timeout = setTimeout(() => {
-                setDisplayText((prev) => prev.slice(0, -1));
-            }, 50);
-        } else {
-            timeout = setTimeout(() => {
-                setDisplayText((prev) => currentText.slice(0, prev.length + 1));
-            }, 100);
+    const toggalModal = (book) => {
+        setUserReview(null)
+        if (book) {
+            getBookReviw(book?._id);
+            setSelectedBook(book);
         }
+        setModalOpen(!modalOpen)
 
-        if (!isDeleting && displayText === currentText) {
-            timeout = setTimeout(() => setIsDeleting(true), 1500);
+    }
+
+    const getBookReviw = async (bookId) => {
+        try {
+            const response = await fetch(`${baseUrl}/api/v1/review/bookId/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ bookId })  // Send bookId in the request body
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch review data");
+            }
+
+            const responseData = await response.json();
+
+            if (responseData?.data) {
+                setUserReview({
+                    rating: responseData?.data?.review[0].rating,
+                    reviewText: responseData?.data?.review[0].comment
+
+                })
+            }
+            return responseData;
+        } catch (error) {
+            console.log("Error fetching book review:", error);
+            return null;
         }
+    };
 
-        if (isDeleting && displayText === '') {
-            setIsDeleting(false);
-            setTextIndex((prev) => (prev + 1) % texts.length);
+    const getBookData = async () => {
+        try {
+            const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                console.error("API Error:", response.status, response.statusText);
+                return;
+            }
+
+            const Bookdata = await response.json();
+            setBookData(Bookdata?.data)
+
+        } catch (error) {
+            console.error("Fetch Error:", error);
         }
+    };
 
-        return () => clearTimeout(timeout);
-    }, [displayText, isDeleting, textIndex]);
     return (
         <>
+
             <section className='book_slide block'>
                 <div className='background_Book_image'>
                     <h1>
                         Welcome to our online book store<br />
-                        <span className="typewriter-text">
-                            {displayText}
-                            <span className="cursor"></span>
-                        </span>
+                        <div className="typing-container">
+                            <div className="text text-1">Designed and developed by Utsav, Vishesh, and Manan</div>
+                            <div className="text text-2">Created by Manan, Utsav, and Vishesh</div>
+                        </div>
                     </h1>
                 </div>
             </section>
+
             <section className='top-view-book-display'>
-                <TopViewBook />
+                <TopViewBook
+                    bookData={bookData}
+                    toggalModal={toggalModal}
+                />
             </section>
+            <section className='top-author-book'>
+                <TopAuthorBook bookData={bookData} />
+            </section>
+
+            <BookReviewModal
+                show={modalOpen}
+                onClose={() => setModalOpen(false)}
+                book={selectedBook}
+                userReview={userReview}
+            />
         </>
 
     )

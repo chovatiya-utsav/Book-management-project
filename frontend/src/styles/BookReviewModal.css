@@ -210,6 +210,11 @@
   font-weight: 600;
   font-style: normal;
   color: #000;
+  height: 150px;
+  width: 100%;
+  align-content: center;
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
 
 .modal-overlay .modal-content .book-info .book-content .star-rating .review-input {
@@ -237,4 +242,18 @@
   .modal-overlay .modal-content .book-detail {
     flex-direction: column;
   }
+}
+
+textarea::-webkit-scrollbar {
+  border-radius: 10px;
+
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #4CAF50;
+}
+
+textarea::-webkit-scrollbar-track {
+  border-radius: 20px;
+  background-color: #f1f1f1;
 }

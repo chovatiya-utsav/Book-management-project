@@ -1,0 +1,251 @@
+import React, { useState } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import confetti from 'canvas-confetti';
+import '../../styles/pages_styles/AddBook.css';
+import useApiUrl from '../commonComponet/useApiUrl';
+
+const AddBook = () => {
+    const baseUrl = useApiUrl()
+    const [preview, setPreview] = useState(null);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [formValues, setFormValues] = useState(null);
+
+    const currentYear = new Date().getFullYear();
+
+    const initialValues = {
+        bookName: '',
+        author: '',
+        publishedYear: currentYear,
+        genre: '',
+        description: '',
+        price: '',
+        category: '',
+        coverImage: null
+    };
+
+    const validationSchema = Yup.object({
+        bookName: Yup.string().trim().required('Book name is required'),
+        author: Yup.string()
+            .trim()
+            .matches(/^[A-Za-z\s]+$/, 'Author name must only contain letters')
+            .required('Author is required'),
+        genre: Yup.string().trim().required('Genre is required'),
+        description: Yup.string().trim().required('Description is required'),
+        price: Yup.number()
+            .typeError('Price must be a number')
+            .positive('Price must be positive')
+            .required('Price is required'),
+        category: Yup.string().trim().required('Category is required'),
+        coverImage: Yup.mixed().required('Cover image is required'),
+    });
+
+    const firworkAnimation = () => {
+        // Firework animation
+        const duration = 5 * 1000; // run for 3 seconds
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 20, spread: 260, ticks: 1000, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const fireworkInterval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                clearInterval(fireworkInterval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+        }, 250);
+
+        // Save interval id in state to stop early on button click
+        window.fireworkIntervalId = fireworkInterval;
+    }
+
+    const handleFormSubmit = async (values, resetForm) => {
+        const formData = values;
+        console.log("data",formData)
+
+        try {
+            const response = await fetch(`${baseUrl}/api/v1/books/addBook`, {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                // headers: {
+                //     'Content-Type': 'multipart/form-data'
+                // },
+                credentials: "include"
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+                setShowSuccessModal(true);
+                firworkAnimation()
+                resetForm();
+                setPreview(null);
+            } else {
+                alert(result?.message || 'Something went wrong');
+
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to submit form');
+        }
+    };
+
+    return (
+        <div className="add-book-container">
+            <h2>Add New Book</h2>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+
+                onSubmit={(values, { setSubmitting, resetForm }) => {
+
+                    // Save form data for later confirmation
+                    console.log(values)
+                    setFormValues({ values, resetForm });
+                    // Show confirmation modal
+                    setShowConfirmModal(true);
+                    setSubmitting(false);
+                }}
+
+            >
+                {({ setFieldValue, values }) => (
+                    <Form className="book-form">
+                        <div className="form-group">
+                            <label>Book Name</label>
+                            <Field type="text" name="bookName" placeholder="Enter book name" />
+                            <ErrorMessage name="bookName" component="div" className="error" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Author</label>
+                            <Field
+                                type="text"
+                                name="author"
+                                placeholder="Enter author name"
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+                                }}
+                            />
+                            <ErrorMessage name="author" component="div" className="error" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Published Year</label>
+                            <Field type="text" name="publishedYear" readOnly placeholder="Current Year" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Genre</label>
+                            <Field type="text" name="genre" placeholder="Enter genre (e.g. Fiction)" />
+                            <ErrorMessage name="genre" component="div" className="error" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Description</label>
+                            <Field
+                                as="textarea"
+                                name="description"
+                                rows="4"
+                                placeholder="Write a brief description of the book..."
+                            />
+                            <ErrorMessage name="description" component="div" className="error" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Price</label>
+                            <Field
+                                type="number"
+                                name="price"
+                                min="0"
+                                placeholder="Enter price (e.g. 499)"
+                            />
+                            <ErrorMessage name="price" component="div" className="error" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Category</label>
+                            <Field
+                                type="text"
+                                name="category"
+                                placeholder="Enter category (e.g. Best Seller)"
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+                                }}
+                            />
+                            <ErrorMessage name="category" component="div" className="error" />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Cover Image</label>
+                            <input
+                                type="file"
+                                name="coverImage"
+                                accept="image/*"
+                                onChange={(event) => {
+                                    const file = event.currentTarget.files[0];
+                                    setFieldValue('coverImage', file);
+                                    setPreview(URL.createObjectURL(file));
+                                }}
+                            />
+                            <ErrorMessage name="coverImage" component="div" className="error" />
+                            {preview && (
+                                <div className="image-preview">
+                                    <img src={preview} alt="Preview" />
+                                </div>
+                            )}
+                        </div>
+
+                        <button type="submit">Add Book</button>
+                    </Form>
+                )}
+            </Formik>
+
+            {showConfirmModal && (
+                <div className="addBook-modal-overlay">
+                    <div className="modal-content scale-in">
+                        <span className="close-icon" onClick={() => setShowConfirmModal(false)}>✖</span>
+                        <p>Are you sure you want to add this book?</p>
+                        <div className="modal-actions">
+                            <button
+                                className="btn-confirm"
+                                onClick={async () => {
+                                    setShowConfirmModal(false);
+                                    if (formValues) {
+                                        await handleFormSubmit(formValues.values, formValues.resetForm);
+                                    }
+                                }}
+                            >
+                                Yes, Submit
+                            </button>
+                            <button className="btn-cancel" onClick={() => setShowConfirmModal(false)}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+            {showSuccessModal && (
+                <div className="addBook-modal-overlay">
+                    <div className="modal-content scale-in">
+                        <span className="close-icon" onClick={() => setShowSuccessModal(false)}>✖</span>
+                        <h3>🎉 Book submitted successfully!</h3>
+                        <button className="btn-confirm" onClick={() => setShowSuccessModal(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default AddBook;

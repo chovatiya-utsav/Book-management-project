@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Slider from "react-slick";
 import "../../styles/top-view-book.css";
-import useApiUrl from './useApiUrl';
 import BookReviewModal from './BookReviewModal';
 
-const TopViewBook = () => {
-    const baseUrl = useApiUrl()
+const TopViewBook = (props) => {
+    const { bookData, toggalModal } = props;
 
-    const [topViewBook, setTopViewBook] = useState(null)
-    const [modalOpen, setModalOpen] = useState(false)
-    const [selectedBook, setSelectedBook] = useState(null);
-
-
-    const totalSlides = 10; // Change this based on the number of slides
     const maxDots = 5; // Maximum number of dots to show
 
     const settings = {
@@ -63,52 +56,17 @@ const TopViewBook = () => {
         ]
     };
 
-    const getBookData = async () => {
-        try {
-            const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include" // Important for cookies and sessions
-            });
-
-            if (!response.ok) {
-                console.error("API Error:", response.status, response.statusText);
-                return;
-            }
-
-            const Bookdata = await response.json();
-            // console.log("JSON Data:", Bookdata);
-            setTopViewBook(Bookdata.data)
-
-        } catch (error) {
-            console.error("Fetch Error:", error);
-        }
-
-    }
-
-    useEffect(() => {
-        getBookData();
-    }, []);
-
-
-    const openModal = (book) => {
-        setSelectedBook(book);
-        setModalOpen(true);
-    };
-
     return (
         <>
             <div className='block topBook_Display'>
                 <h1 className='heding'> Top Book Viewer </h1>
                 <div className="slider-container">
                     <Slider {...settings}>
-                        {topViewBook && topViewBook.length > 0 ? (
-                            topViewBook.map((book, index) => {
+                        {bookData && bookData.length > 0 ? (
+                            bookData.map((book, index) => {
                                 return (
 
-                                    <div className='book-card' key={index} onClick={() => openModal(book)}>
+                                    <div className='book-card' key={index} onClick={() => toggalModal(book)}>
                                         <img src={book.coverImage} alt={book.bookName} />
                                         <div className='book-details'>
                                             <h3 className="book-title">{book.bookName}</h3>
@@ -127,15 +85,7 @@ const TopViewBook = () => {
                     </Slider>
                 </div>
             </div >
-            <BookReviewModal
-                show={modalOpen}
-                onClose={() => setModalOpen(false)}
-                book={selectedBook}
-            // userReview={{
-            //     rating: 4,
-            //     reviewText: "This book was amazing! Highly recommend."
-            // }} 
-            />
+
         </>
     );
 }
