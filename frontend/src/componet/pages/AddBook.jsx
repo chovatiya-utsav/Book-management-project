@@ -6,11 +6,11 @@ import '../../styles/pages_styles/AddBook.css';
 import useApiUrl from '../commonComponet/useApiUrl';
 
 const AddBook = () => {
-    const baseUrl = useApiUrl()
+    const baseUrl = useApiUrl();
     const [preview, setPreview] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [formValues, setFormValues] = useState(null);
+    const [formData, setFormData] = useState(null);
 
     const currentYear = new Date().getFullYear();
 
@@ -38,12 +38,10 @@ const AddBook = () => {
             .positive('Price must be positive')
             .required('Price is required'),
         category: Yup.string().trim().required('Category is required'),
-        coverImage: Yup.mixed().required('Cover image is required'),
+        coverImage: Yup.mixed().required('Cover image is required')
     });
-
     const firworkAnimation = () => {
-        // Firework animation
-        const duration = 5 * 1000; // run for 3 seconds
+        const duration = 5 * 1000;
         const animationEnd = Date.now() + duration;
         const defaults = { startVelocity: 20, spread: 260, ticks: 1000, zIndex: 0 };
 
@@ -53,7 +51,6 @@ const AddBook = () => {
 
         const fireworkInterval = setInterval(() => {
             const timeLeft = animationEnd - Date.now();
-
             if (timeLeft <= 0) {
                 clearInterval(fireworkInterval);
             }
@@ -62,23 +59,28 @@ const AddBook = () => {
             confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
             confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
         }, 250);
-
-        // Save interval id in state to stop early on button click
-        window.fireworkIntervalId = fireworkInterval;
-    }
+    };
 
     const handleFormSubmit = async (values, resetForm) => {
-        const formData = values;
-        console.log("data",formData)
+        const formData = new FormData();
+        formData.append('bookName', values.bookName);
+        formData.append('author', values.author);
+        formData.append('publishedYear', values.publishedYear);
+        formData.append('genre', values.genre);
+        formData.append('description', values.description);
+        formData.append('price', values.price);
+        formData.append('category', values.category);
+        formData.append('coverImage', values.coverImage);
+
+        // if (values.coverImage) {
+        //     formData.append('coverImage', values.coverImage);
+        // }
 
         try {
             const response = await fetch(`${baseUrl}/api/v1/books/addBook`, {
                 method: 'POST',
-                body: JSON.stringify(formData),
-                // headers: {
-                //     'Content-Type': 'multipart/form-data'
-                // },
-                credentials: "include"
+                body: formData,
+                credentials: 'include',
             });
 
             const result = await response.json();
@@ -86,12 +88,11 @@ const AddBook = () => {
             if (response.ok) {
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
                 setShowSuccessModal(true);
-                firworkAnimation()
+                firworkAnimation();
                 resetForm();
                 setPreview(null);
             } else {
                 alert(result?.message || 'Something went wrong');
-
             }
         } catch (err) {
             console.error(err);
@@ -99,25 +100,20 @@ const AddBook = () => {
         }
     };
 
+
     return (
         <div className="add-book-container">
             <h2>Add New Book</h2>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-
                 onSubmit={(values, { setSubmitting, resetForm }) => {
-
-                    // Save form data for later confirmation
-                    console.log(values)
-                    setFormValues({ values, resetForm });
-                    // Show confirmation modal
+                    setFormData({ values, resetForm });
                     setShowConfirmModal(true);
                     setSubmitting(false);
                 }}
-
             >
-                {({ setFieldValue, values }) => (
+                {({ values, setFieldValue }) => (
                     <Form className="book-form">
                         <div className="form-group">
                             <label>Book Name</label>
@@ -127,14 +123,7 @@ const AddBook = () => {
 
                         <div className="form-group">
                             <label>Author</label>
-                            <Field
-                                type="text"
-                                name="author"
-                                placeholder="Enter author name"
-                                onInput={(e) => {
-                                    e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
-                                }}
-                            />
+                            <Field type="text" name="author" placeholder="Enter author name" />
                             <ErrorMessage name="author" component="div" className="error" />
                         </div>
 
@@ -151,49 +140,32 @@ const AddBook = () => {
 
                         <div className="form-group">
                             <label>Description</label>
-                            <Field
-                                as="textarea"
-                                name="description"
-                                rows="4"
-                                placeholder="Write a brief description of the book..."
-                            />
+                            <Field as="textarea" name="description" rows="4" placeholder="Write a brief description of the book..." />
                             <ErrorMessage name="description" component="div" className="error" />
                         </div>
 
                         <div className="form-group">
                             <label>Price</label>
-                            <Field
-                                type="number"
-                                name="price"
-                                min="0"
-                                placeholder="Enter price (e.g. 499)"
-                            />
+                            <Field type="number" name="price" min="0" placeholder="Enter price (e.g. 499)" />
                             <ErrorMessage name="price" component="div" className="error" />
                         </div>
 
                         <div className="form-group">
                             <label>Category</label>
-                            <Field
-                                type="text"
-                                name="category"
-                                placeholder="Enter category (e.g. Best Seller)"
-                                onInput={(e) => {
-                                    e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
-                                }}
-                            />
+                            <Field type="text" name="category" placeholder="Enter category (e.g. Best Seller)" />
                             <ErrorMessage name="category" component="div" className="error" />
                         </div>
-
                         <div className="form-group">
                             <label>Cover Image</label>
                             <input
                                 type="file"
-                                name="coverImage"
                                 accept="image/*"
                                 onChange={(event) => {
                                     const file = event.currentTarget.files[0];
-                                    setFieldValue('coverImage', file);
-                                    setPreview(URL.createObjectURL(file));
+                                    if (file) {
+                                        setFieldValue('coverImage', file);
+                                        setPreview(URL.createObjectURL(file));
+                                    }
                                 }}
                             />
                             <ErrorMessage name="coverImage" component="div" className="error" />
@@ -219,21 +191,18 @@ const AddBook = () => {
                                 className="btn-confirm"
                                 onClick={async () => {
                                     setShowConfirmModal(false);
-                                    if (formValues) {
-                                        await handleFormSubmit(formValues.values, formValues.resetForm);
+                                    if (formData) {
+                                        await handleFormSubmit(formData.values, formData.resetForm);
                                     }
                                 }}
                             >
                                 Yes, Submit
                             </button>
-                            <button className="btn-cancel" onClick={() => setShowConfirmModal(false)}>
-                                Cancel
-                            </button>
+                            <button className="btn-cancel" onClick={() => setShowConfirmModal(false)}>Cancel</button>
                         </div>
                     </div>
                 </div>
             )}
-
 
             {showSuccessModal && (
                 <div className="addBook-modal-overlay">

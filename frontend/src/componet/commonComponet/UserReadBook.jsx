@@ -90,12 +90,15 @@ const UserReadBook = (props) => {
             const Bookdata = await response.json();
             // console.log("JSON Data:", Bookdata);
             setbookData(Bookdata.data)
+            console.log(bookData);
+            
 
         } catch (error) {
             console.error("Fetch Error:", error);
         }
 
     }
+    
 
     useEffect(() => {
 

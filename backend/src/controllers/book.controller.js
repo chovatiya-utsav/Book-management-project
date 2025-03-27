@@ -8,6 +8,9 @@ import { Category } from "../models/category.model.js";
 
 const createBook = asyncHandler(async (req, res) => {
 
+    console.log("receive data", req.body);
+     console.log("Received file:", req.file);
+
     //get all book details from frontend
     const { bookName, author, publishedYear, genre, description, price, category } = req.body
 
@@ -18,6 +21,10 @@ const createBook = asyncHandler(async (req, res) => {
         [bookName, author, publishedYear, genre, description, price, category].some((field) => (field?.trim() === ""))
     ) {
         throw new ApiError(400, "All fields are required")
+    }
+
+    if (!category || category.trim() === "") {
+        throw new ApiError(400, "Category name is required");
     }
 
     //check for category exists
@@ -42,7 +49,7 @@ const createBook = asyncHandler(async (req, res) => {
 
     const coverImageLocalPath = req.file.path//uploaded on file path
 
-    //upload on cloudinary
+    // //upload on cloudinary
     const coverImageUrl = await uploadOnCloudinary(coverImageLocalPath)
     //console.log("Cloudinary Upload Response:", coverImage);
     if (!coverImageUrl) {
@@ -58,7 +65,7 @@ const createBook = asyncHandler(async (req, res) => {
         description,
         price,
         category: categoryExist._id,
-        coverImage: coverImageUrl?.url || "",
+         coverImage: coverImageUrl?.url || "",
         user: req.user._id
     })
     //console.log(newBook);
@@ -84,23 +91,10 @@ const getAllBooks = asyncHandler(async (req, res) => {
 
 })
 
-const getBookById = asyncHandler(async (req, res) => {
-
-    const { id } = req.params
-    const book = await Book.findById(id).populate("user", "name email")
-
-    if (!book) {
-        throw new ApiError(404, "Book not found")
-    }
-
-    res.status(200)
-        .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
-})
 // const getBookById = asyncHandler(async (req, res) => {
 
-//     const { _id } = req.query
-//     //console.log(_id)
-//     const book = await Book.findById(_id).populate("user", "name email")
+//     const { id } = req.params
+//     const book = await Book.findById(id).populate("user", "name email")
 
 //     if (!book) {
 //         throw new ApiError(404, "Book not found")
@@ -109,6 +103,19 @@ const getBookById = asyncHandler(async (req, res) => {
 //     res.status(200)
 //         .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
 // })
+const getBookById = asyncHandler(async (req, res) => {
+
+    const { _id } = req.query
+    //console.log(_id)
+    const book = await Book.findById(_id).populate("user", "name email")
+
+    if (!book) {
+        throw new ApiError(404, "Book not found")
+    }
+
+    res.status(200)
+        .json(new ApiResponse(200, book, "Book detail fetched successfuly"))
+})
 
 const updateBook = asyncHandler(async (req, res) => {
     const { bookName, author, publishedYear, genre, description, price, category } = req.body

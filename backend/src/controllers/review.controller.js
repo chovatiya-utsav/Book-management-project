@@ -41,7 +41,7 @@ const createReview = asyncHandler(async (req, res) => {
 })
 
 const getReviews = asyncHandler(async (req, res) => {
-    const { bookId } = await req.params
+    const { bookId } = req.params
 
     if (!bookId) {
         throw new ApiError(400, "BookId is required")
@@ -49,7 +49,7 @@ const getReviews = asyncHandler(async (req, res) => {
 
     const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email")
 
-    if (!reviews || !reviews.review.length === 0) {
+    if (!reviews || reviews.review.length === 0) {
         throw new ApiError(404, "No reviews found for this book")
     }
 

@@ -9,14 +9,14 @@ const BookDisplay = () => {
     const baseUrl = useApiUrl()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const bookId = params.get('Book') || "67dc204ee0fd7353583fbea7";
+    const bookId = params.get('Book') || "67e2d870f538fd3c5bb12813";
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
 
     useEffect(() => {
         getBookData()
-
+        getBookReviw()
     }, [])
 
 
@@ -43,7 +43,29 @@ const BookDisplay = () => {
         }
     };
 
+    const getBookReviw = async (bookId) => {
+        try {
+            const response = await fetch(`${baseUrl}/api/v1/review/${bookId}`)
 
+            if (!response.ok) {
+                throw new Error("Failed to fetch review data");
+            }
+
+            const responseData = await response.json();
+
+            if (responseData?.data) {
+                // setUserReview({
+                //     rating: responseData?.data?.review[0].rating,
+                //     reviewText: responseData?.data?.review[0].comment
+
+                // })
+            }
+            return responseData;
+        } catch (error) {
+            console.log("Error fetching book review:", error);
+            return null;
+        }
+    };
     return (
         <>
             <section className='user-Book-read'>
