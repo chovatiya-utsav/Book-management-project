@@ -14,6 +14,7 @@ import ManageUsers from '../../../admin/Pages/ManageUsers.jsx';
 import ManageBooks from '../../../admin/Pages/ManageBooks.jsx';
 import ManageOrders from '../../../admin/Pages/ManageOrder.jsx';
 import Profile from '../../../admin/Pages/Profile.jsx';
+import AddBook from '../../pages/AddBook.jsx';
 
 
 
@@ -31,6 +32,8 @@ const Layout = () => {
                     <Route path='/Login' element={<UserAuthentication Componet={Login} />} />
                     <Route path='/Registration' element={<UserAuthentication Componet={Registration} />} />
                     <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} />
+                    <Route path='/BookDisplay/bookId=:id' element={<Protected Componet={BookDisplay} />} />
+                    <Route path='/AddBook' element={<Protected Componet={AddBook} />} />
                     {/* admin */}
                     <Route path='/admin-dashboard' element={<Protected AdminComponet={AdminDashboard} />} />
                     <Route path='/ManageUsers' element={<Protected AdminComponet={ManageUsers} />} />

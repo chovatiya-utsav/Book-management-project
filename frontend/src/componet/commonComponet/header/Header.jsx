@@ -49,6 +49,7 @@ const Header = () => {
                         <li><NavLink to={"/library"} >library</NavLink></li>
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"} >Books</NavLink></li>
+                        <li><NavLink to={"/AddBook"} >AddBook</NavLink></li>
                         {userAdminLogin ?
                             <li><NavLink to={"/admin-dashboard"} >Admin</NavLink></li> : null
                         }

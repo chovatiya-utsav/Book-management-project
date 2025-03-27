@@ -55,32 +55,7 @@
     overflow: hidden;
 }
 
-.book_slide .background_Book_image h1 .typewriter-text {
-    font-size: 18px;
-    font-weight: 500;
-    /* color: #fff; */
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-    font-family: "Doto", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 900;
-    font-style: normal;
-    font-variation-settings:
-        "ROND" 0;
-    position: relative;
-}
 
-.book_slide .background_Book_image h1 .cursor {
-    position: absolute;
-    top: 0;
-    display: inline-block;
-    background-color: #fff;
-    margin-left: 4px;
-    animation: blink 0.8s infinite;
-    width: 2px;
-    height: 25px;
-}
 
 @keyframes blink {
 
@@ -140,10 +115,6 @@
         font-size: 4vw;
     }
 
-    .book_slide .background_Book_image h1 .typewriter-text {
-        font-size: 14px;
-        white-space: normal;
-    }
 }
 
 @media only screen and (max-width: 480px) {
@@ -156,13 +127,83 @@
         width: 90%;
     }
 
-    .book_slide .background_Book_image h1 .typewriter-text {
-        font-size: 12px;
-        white-space: normal;
-    }
 
     .book_slide .background_Book_image h1 .cursor {
         display: none;
     }
 
+}
+
+.typing-container {
+    position: relative;
+    height: 20px;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    /* border-right: 2px solid black; */
+}
+
+.text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0ch;
+    overflow: hidden;
+    border-right: 2px solid #fff;
+    white-space: nowrap;
+    animation: none;
+    visibility: hidden;
+}
+
+.text-1 {
+    animation: typing-1 8s steps(50) infinite;
+}
+
+.text-2 {
+    animation: typing-2 8s steps(50) infinite;
+}
+
+@keyframes typing-1 {
+
+    0%,
+    45% {
+        width: 0ch;
+        visibility: visible;
+    }
+
+    5%,
+    40% {
+        width: 49ch;
+    }
+
+    45.01%,
+    100% {
+        visibility: hidden;
+    }
+}
+
+@keyframes typing-2 {
+
+    0%,
+    50% {
+        visibility: hidden;
+        width: 0ch;
+    }
+
+    50.01%,
+    55% {
+        visibility: visible;
+        width: 0ch;
+    }
+
+    55%,
+    90% {
+        width: 34ch;
+    }
+
+    45.01%,
+    100% {
+        visibility: hidden;
+        width: 0ch;
+    }
 }
