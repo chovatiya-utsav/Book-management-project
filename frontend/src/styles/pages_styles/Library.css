@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.book-Library-Container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: #000;
+}
+
+.book-Library-Container .book-card {
+    width: 350px;
+    height: 400px;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    perspective: 2000px;
+}
+
+.book-Library-Container .book-card:hover {
+    scale: 1;
+    box-shadow: 10px -10px 0px 7px rgba(255, 255, 255, 0.6), 6px -4px 58px rgba(255, 255, 255, 0.8);
+    transform: translateY(-5px) scale(1.02);
+}
+
+.book-Library-Container .book-card img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px 20px 0px 0px;
+}
+
+.book-Library-Container .book-card .book-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 16px;
+}
+
+.book-Library-Container .book-card .book-info .book-name {
+    text-align: start;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 51px;
+    font-family: "Arvo", serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.book-Library-Container .book-card .book-info .author-name {
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.book-Library-Container .book-card .book-info .book-amount {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4fbcff;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}

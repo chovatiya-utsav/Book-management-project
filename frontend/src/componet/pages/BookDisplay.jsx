@@ -13,11 +13,12 @@ const BookDisplay = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
+    const [reviewData, setReviwData] = useState([])
 
     useEffect(() => {
         getBookData()
-        getBookReviw(bookId)
-    }, [bookId])
+        getBookReviw()
+    }, [])
 
 
     const getBookData = async () => {
@@ -42,7 +43,7 @@ const BookDisplay = () => {
             console.error("Fetch Error:", error);
         }
     };
-    const getBookReviw = async (bookId) => {
+    const getBookReviw = async () => {
         if (!bookId) {
             console.error("❌ Error: bookId is missing in API call!");
             return;
@@ -56,7 +57,9 @@ const BookDisplay = () => {
             }
 
             const responseData = await response.json();
-            console.log("Book Reviews:", responseData);
+            setReviwData(responseData?.data?.review || []);
+
+            console.log("Book Reviews:", responseData.data.review);
             return responseData;
         } catch (error) {
             console.error("Error fetching book review:", error.message);
@@ -68,9 +71,9 @@ const BookDisplay = () => {
             <section className='user-Book-read'>
                 <UserReadBook bookId={bookId} />
                 <button className="view-comments-btn" onClick={() => setIsOpen(true)}>
-                    View Comments
+                    View review
                 </button>
-                <CommentsModal isOpen={isOpen} setIsOpen={setIsOpen} />
+                <CommentsModal isOpen={isOpen} setIsOpen={setIsOpen} reviewData={reviewData} />
             </section>
             <section className='top-author-book'>
                 <TopAuthorBook bookData={bookData} />
@@ -82,12 +85,27 @@ const BookDisplay = () => {
 
 const CommentsModal = (props) => {
 
-    const { isOpen, setIsOpen } = props
+    const { isOpen, setIsOpen, reviewData } = props
     const [commentText, setCommentText] = useState("");
-    const [comments, setComments] = useState([
-        { id: 1, user: "Alice", comment: "This book was amazing!", likes: 2, likedByUser: false },
-        { id: 2, user: "Bob", comment: "Loved the storytelling.", likes: 1, likedByUser: false },
-    ]);
+    const [comments, setComments] = useState([]);
+
+    console.log("review", reviewData);
+
+    useEffect(() => {
+        if (reviewData) {
+            const formatted = reviewData.map((item, index) => ({
+                id: index,
+                user: item.user.name,
+                comment: item.comment,
+                likes: item.likes || 0,
+                rating: item.rating || 0,
+                likedByUser: false,
+            }));
+            setComments(formatted);
+        }
+        
+    }, [reviewData]);
+
 
     const toggleLike = (id) => {
         const updated = comments.map((item) =>
@@ -107,7 +125,8 @@ const CommentsModal = (props) => {
         if (!commentText.trim()) return;
 
         const newComment = {
-            id: Date.now(),
+            id: comments.length,
+            rating: 5,
             user: "You",
             comment: commentText.trim(),
             likes: 0,
@@ -129,11 +148,11 @@ const CommentsModal = (props) => {
                 </div>
 
                 <div className="modal-body">
-                    {comments.length === 0 && <p className="no-comments">No comments yet.</p>}
-                    {comments.map((item) => (
+                    {comments?.length === 0 && <p className="no-comments">No comments yet.</p>}
+                    {comments?.map((item) => (
                         <div key={item.id} className="comment-box">
                             <div className="comment-top">
-                                <p className="username">{item.user}</p>
+                                <p className="username">{item?.id + 1} {item.user}</p>
                                 <button
                                     className="like-btn"
                                     onClick={() => toggleLike(item.id)}
@@ -142,6 +161,13 @@ const CommentsModal = (props) => {
                                     {item.likedByUser ? "❤️" : "🤍"}
                                 </button>
                             </div>
+
+                            <div className="star-rating">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span key={star} className={star <= item.rating ? "star filled" : "star"}>★</span>
+                                ))}
+                            </div>
+
                             <p className="comment-text">{item.comment}</p>
                             {item.likes > 0 && (
                                 <p className="likes-count">
@@ -150,6 +176,8 @@ const CommentsModal = (props) => {
                             )}
                         </div>
                     ))}
+
+
                 </div>
 
                 <form className="comment-form" onSubmit={handleSubmit}>

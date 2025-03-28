@@ -24,7 +24,7 @@
 
 .user-Book-read .view-comments-btn:hover {
     box-shadow: 0px 0px 4px #f5f4f4;
-    
+
 }
 
 .view-comments-btn {
@@ -45,7 +45,7 @@
     background-color: #fff;
     box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease-in-out;
-    z-index: 1000;
+    z-index: 1001;
     display: flex;
     flex-direction: column;
 }
@@ -54,7 +54,7 @@
     right: 0;
 }
 
-.modal-header {
+.comments-modal .modal-header {
     padding: 16px;
     border-bottom: 1px solid #ddd;
     display: flex;
@@ -62,53 +62,57 @@
     align-items: center;
 }
 
-.modal-body {
+.comments-modal .modal-body {
     padding: 16px;
     overflow-y: auto;
     flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    scrollbar-width: none;
 }
 
-.comment-box {
+.comments-modal .modal-body .comment-box {
     margin-bottom: 16px;
     border-bottom: 1px solid #eee;
     padding-bottom: 12px;
 }
 
-.comment-top {
+.comments-modal .modal-body .comment-box .comment-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.username {
+.comments-modal .modal-body .comment-box .comment-top .username {
     font-weight: bold;
     color: #333;
 }
 
-.comment-text {
+.comments-modal .modal-body .comment-box .comment-text {
     color: #444;
-    margin: 4px 0;
+    margin: 1px 21px 0px 8px;
+    width: -webkit-fill-available;
 }
 
-.likes-count {
+.comments-modal .modal-body .comment-box .likes-count {
     font-size: 13px;
     color: #888;
 }
 
-.no-comments {
+.comments-modal .modal-body .no-comments {
     color: #888;
     text-align: center;
     margin-top: 20px;
 }
 
-.comment-form {
+.comments-modal .comment-form {
     display: flex;
     padding: 12px 16px;
     border-top: 1px solid #ddd;
     background-color: #fafafa;
 }
 
-.comment-form input {
+.comments-modal .comment-form input {
     flex: 1;
     padding: 8px 12px;
     border: 1px solid #ccc;
@@ -117,7 +121,7 @@
     font-size: 14px;
 }
 
-.comment-form button {
+.comments-modal .comment-form button {
     margin-left: 10px;
     padding: 8px 16px;
     background-color: #1877f2;
@@ -128,7 +132,7 @@
 }
 
 /* Like button */
-.like-btn {
+.comments-modal .modal-body .comment-box .comment-top .like-btn {
     background: none;
     border: none;
     font-size: 18px;
@@ -137,15 +141,15 @@
     transition: transform 0.2s ease;
 }
 
-.like-btn:hover {
+.comments-modal .modal-body .comment-box .comment-top .like-btn:hover {
     transform: scale(1.1);
 }
 
-.like-btn.liked {
+.comments-modal .modal-body .comment-box .comment-top .like-btn.liked {
     color: red;
 }
 
-.close-btn {
+.comments-modal .modal-header .close-btn {
     background: none;
     border: none;
     font-size: 20px;
@@ -160,5 +164,38 @@
     width: calc(100vw - 400px);
     height: 100vh;
     background: rgba(0, 0, 0, 0.2);
-    z-index: 999;
+    z-index: 1000;
+}
+
+
+.comments-modal .modal-body .comment-box .star-rating {
+    display: flex;
+    gap: 4px;
+    margin: 0 8px;
+}
+
+.comments-modal .modal-body .comment-box .star {
+    font-size: 20px;
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+
+.comments-modal .modal-body .comment-box .star.filled {
+    color: #ffc107;
+}
+
+.comments-modal .modal-body .comment-box .star-rating {
+    animation: fadeInStars 0.5s ease-in;
+}
+
+@keyframes fadeInStars {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
