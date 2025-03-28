@@ -19,7 +19,18 @@ const createReview = asyncHandler(async (req, res) => {
     const existingReview = await Review.findOne({ book: bookId, "review.user": userId })
 
     if (existingReview) {
-        throw new ApiError(409, "you have already reviewed this book")
+        const updatedReview = await Review.findOneAndUpdate(
+            { bookId, userId },
+            {
+                $set: {
+                    "review.$.rating": rating,
+                    "review.$.comment": comment
+                }
+            },
+            { new: true }
+        )
+
+        return res.status(200).json(new ApiResponse(200, updatedReview, "Review update successfully"))
     }
 
     const review = await Review.findOneAndUpdate(
@@ -36,7 +47,7 @@ const createReview = asyncHandler(async (req, res) => {
         { new: true, upsert: true }// upsert:If no document exists for bookId, it creates a new one.
     )
 
-    res.status(201)
+    return res.status(201)
         .json(new ApiResponse(201, review, "Review added successfully"))
 })
 

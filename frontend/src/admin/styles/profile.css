@@ -81,53 +81,129 @@
   background: #0056b3;
 }
 
+/* Edit Profile Form Styles */
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 100%;
+}
+
+.profile-edit-form label {
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+}
+
+.profile-edit-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.profile-edit-form input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.profile-edit-form .error {
+  color: red;
+  font-size: 14px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 48%;
+  transition: background 0.3s ease;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 48%;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .profile-card {
-      flex-direction: column;
-      text-align: center;
-      width: 90%;
-      padding: 20px;
+    flex-direction: column;
+    text-align: center;
+    width: 90%;
+    padding: 20px;
   }
 
   .profile-image {
-      margin: 0 auto 15px;
+    margin: 0 auto 15px;
   }
 
   .profile-info h2 {
-      font-size: 1.6rem;
+    font-size: 1.6rem;
   }
 
   .profile-info p {
-      font-size: 0.95rem;
+    font-size: 0.95rem;
   }
 
   .edit-profile-btn {
-      font-size: 0.95rem;
-      padding: 8px 15px;
+    font-size: 0.95rem;
+    padding: 8px 15px;
   }
 }
 
 @media (max-width: 480px) {
   .profile-container h1 {
-      font-size: 1.8rem;
+    font-size: 1.8rem;
   }
 
   .profile-card {
-      width: 100%;
-      padding: 15px;
+    width: 100%;
+    padding: 15px;
   }
 
   .profile-info h2 {
-      font-size: 1.4rem;
+    font-size: 1.4rem;
   }
 
   .profile-info p {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
   }
 
   .edit-profile-btn {
-      font-size: 0.9rem;
-      padding: 7px 12px;
+    font-size: 0.9rem;
+    padding: 7px 12px;
   }
 }

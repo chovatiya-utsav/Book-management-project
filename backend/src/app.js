@@ -30,15 +30,17 @@ app.use(cookieParser())
 
 //import routes
 import userRouter from "./routes/user.routes.js"
-import bookRouter from "./routes/book.router.js"
-import categoryRouter from "./routes/category.router.js"
-import reviewRouter from "./routes/review.router.js"
+import bookRouter from "./routes/book.routes.js"
+import categoryRouter from "./routes/category.routes.js"
+import reviewRouter from "./routes/review.routes.js"
 import cartRouter from "./routes/cart.routes.js"
+import activityRouter from "./routes/activity.routes.js"
 //routes declaration
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/books", bookRouter)
 app.use("/api/v1/category", categoryRouter)
 app.use("/api/v1/review", reviewRouter)
 app.use("/api/v1/cart", cartRouter)
+app.use("/api/v1/activity",activityRouter)
 
 export { app }
