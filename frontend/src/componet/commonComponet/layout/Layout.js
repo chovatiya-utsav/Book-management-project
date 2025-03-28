@@ -12,7 +12,6 @@ import UserAuthentication from './UserAuthentication.js';
 import AdminDashboard from "../../../admin/Pages/AdminDashboard.jsx"
 import ManageUsers from '../../../admin/Pages/ManageUsers.jsx';
 import ManageBooks from '../../../admin/Pages/ManageBooks.jsx';
-import ManageOrders from '../../../admin/Pages/ManageOrder.jsx';
 import Profile from '../../../admin/Pages/Profile.jsx';
 import AddBook from '../../pages/AddBook.jsx';
 
@@ -38,7 +37,6 @@ const Layout = () => {
                     <Route path='/admin-dashboard' element={<Protected AdminComponet={AdminDashboard} />} />
                     <Route path='/ManageUsers' element={<Protected AdminComponet={ManageUsers} />} />
                     <Route path='/ManageBooks' element={<Protected AdminComponet={ManageBooks} />} />
-                    <Route path='/ManageOrders' element={<Protected AdminComponet={ManageOrders} />} />
                     <Route path='/Profile' element={<Protected AdminComponet={Profile} />} />
 
                 </Routes>

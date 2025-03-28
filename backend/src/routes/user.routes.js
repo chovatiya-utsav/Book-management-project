@@ -2,7 +2,7 @@ import { Router } from "express";
 import { checkUser, forgotPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser } from "../controllers/user.controller.js";
 import { registrationValidation, loginValidation } from "../middlewares/validation.middlewares.js"
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
-import { getBookCount, getUserCount } from "../controllers/admin.controller.js"
+import { deleteBook, deleteUser, getAdminProfile, getAllBooks, getAllUsers, getBookCount, getUserCount, updateAdminProfile } from "../controllers/admin.controller.js"
 
 const router = Router()
 
@@ -24,4 +24,16 @@ router.route("/forgotpassword").post(forgotPassword)
 router.route("/getBookCount").get(verifyJWT, getBookCount)
 
 router.route('/getUserCount').get(verifyJWT, getUserCount)
+
+router.route('/getAllUsers').get(verifyJWT, getAllUsers)
+
+router.route('/deleteUser/:userId').delete(verifyJWT, deleteUser)
+
+router.route('/getAllBooks').get(verifyJWT, getAllBooks)
+
+router.route('/deleteBook/:bookId').delete(verifyJWT, deleteBook)
+
+router.route('/getAdminProfile').get(verifyJWT, getAdminProfile)
+
+router.route('/updateAdminProfile/:userId').put(verifyJWT, updateAdminProfile)
 export default router

@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
+import { Activity } from "../models/activity.model.js"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
@@ -58,6 +59,11 @@ const registerUser = asyncHandler(async (req, res) => {
         address
     })
 
+    // Insert activity log
+    await Activity.create({
+        description: `new user registered: ${user.name}`,
+        user: user._id
+    })
     const existedgAdmin = await User.findOne({ role: 'admin' })
     if (existedgAdmin) {
         return res.status(202).json({ existedgAdmin })
@@ -129,7 +135,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
     //user ne badhi vastu mokalvani sivay pass and refreshtoken
     const loggedinUser = await User.findById(user._id).select("-password -refreshToken")
-
+    await Activity.create({
+        description: `new user registered: ${user.name}`,
+        user: user._id
+    })
     //when we send cookies , we design option.
     //cookies bydefault anyone can modified on frontend , so when below 2 options "true" karie tyre khali server side j cookie modified thai sake.
     const options = {
