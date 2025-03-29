@@ -148,14 +148,14 @@ const Library = () => {
                     </button>
 
                     <div className='filter-group'>
-                        <select value={selectedAuthor} onChange={handleAuthorChange}>
+                        <select value={selectedAuthor} onChange={handleAuthorChange} className='authoe-filter'>
                             <option value="">All Authors</option>
                             {uniqueAuthors.map((author, i) => (
                                 <option key={i} value={author}>{author}</option>
                             ))}
                         </select>
 
-                        <select value={selectedPriceRange} onChange={handlePriceChange}>
+                        <select value={selectedPriceRange} onChange={handlePriceChange} className='price-filter'>
                             <option value="">All Prices</option>
                             <option value="0-199">Below ₹200</option>
                             <option value="200-499">₹200 - ₹499</option>
@@ -213,6 +213,7 @@ const Library = () => {
                         </div>
                     ))}
                 </div>
+                
             </section>
 
             <BookReviewModal
