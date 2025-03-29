@@ -157,7 +157,7 @@
     color: #666;
 }
 
-.modal-backdrop {
+.user-Book-read .modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;

@@ -11,16 +11,19 @@ const Home = () => {
     const [bookData, setBookData] = useState(null);
     const [modalOpen, setModalOpen] = useState(false)
     const [selectedBook, setSelectedBook] = useState(null);
-    const [userReview, setUserReview] = useState(null)
+    const [userReview, setUserReview] = useState(null);
+    const [userData, setUserData] = useState(null);
 
     useEffect(() => {
         getBookData()
+        const user = JSON.parse(localStorage?.getItem("userLogin")) || JSON.parse(localStorage?.getItem("userAdminLogin")) || null;
+        setUserData(user._id)
     }, [])
 
     const toggalModal = (book) => {
         setUserReview(null)
         if (book) {
-            getBookReviw(book?._id);
+            getBookUserReviw(book?._id);
             setSelectedBook(book);
         }
         setModalOpen(!modalOpen)
@@ -28,7 +31,7 @@ const Home = () => {
     }
 
 
-    const getBookReviw = async (bookId) => {
+    const getBookUserReviw = async (bookId) => {
         if (!bookId) {
             console.error("❌ Error: bookId is missing in API call!");
             return;
@@ -40,14 +43,24 @@ const Home = () => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-            
-            const responseData = await response.json();
-            
-            if (responseData?.data) {
-                setUserReview({
-                    rating: responseData?.data?.review[0].rating,
-                    reviewText: responseData?.data?.review[0].comment
 
+            const responseData = await response.json();
+
+            console.log(responseData.data)
+            console.log(userData)
+
+            if (responseData?.data && userData) {
+                const review = responseData.data.review
+                review?.map((item, index) => {
+                    if (userData === item?.user._id) {
+                        return (
+                            setUserReview({
+                                rating: responseData?.data?.review[index].rating,
+                                reviewText: responseData?.data?.review[index].comment
+
+                            })
+                        )
+                    }
                 })
             }
 

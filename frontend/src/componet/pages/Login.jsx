@@ -36,7 +36,8 @@ const Login = () => {
     const [userNotExists, setUserNotExists] = useState(false)
     const [modalOpen, setModalOpen] = useState(false);
     const [changePasswordConform, setChangePasswordConform] = useState(false);
-    const [autoLoginData, setAutoLoginData] = useState(null)
+    const [autoLoginData, setAutoLoginData] = useState(null);
+    const [passwordShow, setPasswordShow] = useState(false)
 
 
     const [message, setMessage] = useState(null);
@@ -193,8 +194,6 @@ const Login = () => {
 
                 if (responeData.statuscode === 200) {
 
-
-
                     // Check if user is admin
                     if (responeData.data.user.role === "admin") {
                         localStorage.setItem("userAdminLogin", JSON.stringify(responeData.data.user))
@@ -282,7 +281,23 @@ const Login = () => {
                                     <label htmlFor="password">Password</label>
                                     <h3 onClick={handelForgetPassword}>forget password</h3>
                                 </div>
-                                <Field type="password" name="userPassword" id="password" />
+                                <div className="input-password">
+                                    <Field type={!passwordShow ? "password" : "text"} name="userPassword" id="password" />
+                                    {
+                                        values.userPassword ?
+
+                                            <button type="button" className="toggle-password-visibility" title={`password  ${!passwordShow ? "Show" : "Hide"} `} onClick={() => setPasswordShow(!passwordShow)} >
+                                                {
+                                                    passwordShow ?
+                                                        <i className="fa fa-eye-slash" aria-hidden="true" ></i>
+                                                        :
+                                                        <i className="fa fa-eye" aria-hidden="true"></i>
+                                                }
+                                            </button>
+                                            : null
+                                    }
+
+                                </div>
                                 <ErrorMessage name="userPassword" component="span" />
                             </div>
                             <div className="button">

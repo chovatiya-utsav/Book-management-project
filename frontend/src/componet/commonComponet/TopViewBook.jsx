@@ -1,7 +1,6 @@
 import React from 'react';
 import Slider from "react-slick";
 import "../../styles/top-view-book.css";
-import BookReviewModal from './BookReviewModal';
 
 const TopViewBook = (props) => {
     const { bookData, toggalModal } = props;
@@ -71,7 +70,7 @@ const TopViewBook = (props) => {
                                         <div className='book-details'>
                                             <h3 className="book-title">{book.bookName}</h3>
                                             <p className="book-author">author  {book.author}</p>
-                                            <p className="book-price">${book.price}</p>
+                                            <p className="book-price">₹{book.price}</p>
                                         </div>
                                     </div>
                                 )

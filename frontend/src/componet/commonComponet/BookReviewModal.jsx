@@ -115,7 +115,7 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
                                         {[1, 2, 3, 4, 5].map((star) => (
                                             <span
                                                 key={star}
-                                                className={`star ${star <= hover || rating ? 'filled' : ''}`}
+                                                className={`star ${hover !== null ? (star <= hover ? 'filled' : '') : (star <= rating ? 'filled' : '')}`}
                                                 onClick={!userReview ? () => setRating(star) : undefined}
                                                 onMouseEnter={!userReview ? () => setHover(star) : undefined}
                                                 onMouseLeave={!userReview ? () => setHover(null) : undefined}
@@ -124,6 +124,7 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
                                             </span>
                                         ))}
                                     </div>
+
 
                                     {userReview ? (
                                         <p className="read-only-review">{userReview.reviewText}</p>
@@ -156,7 +157,7 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
 
                 {/* <CommentsModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
             </div >
-            
+
         </>
     );
 };

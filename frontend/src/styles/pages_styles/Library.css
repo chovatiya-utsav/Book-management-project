@@ -6,49 +6,55 @@
 
 .book-Library-Container {
     width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
     background-color: #000;
+    margin: auto;
 }
 
-.book-Library-Container .book-card {
-    width: 350px;
-    height: 400px;
+.book-Library-Container .book-Container {
+    gap: 40px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 40px 0px;
+    margin: 0px auto;
+}
+
+
+.book-Library-Container .book-Container .book-card {
+    width: 250px;
+    height: 350px;
     background-color: #1f1f1f;
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 0px 19px 0px rgba(255, 255, 255, 0.8);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     perspective: 2000px;
 }
 
-.book-Library-Container .book-card:hover {
+.book-Library-Container .book-Container .book-card:hover {
     scale: 1;
-    box-shadow: 10px -10px 0px 7px rgba(255, 255, 255, 0.6), 6px -4px 58px rgba(255, 255, 255, 0.8);
+    box-shadow: 9px -6px 0px 3px rgba(255, 255, 255, 0.6), 25px -14px 41px rgba(37, 35, 35, 0.8);
     transform: translateY(-5px) scale(1.02);
 }
 
-.book-Library-Container .book-card img {
+.book-Library-Container .book-Container .book-card img {
     width: 100%;
-    height: 260px;
+    height: 60%;
     object-fit: cover;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px 20px 0px 0px;
 }
 
-.book-Library-Container .book-card .book-info {
+.book-Library-Container .book-Container .book-card .book-info {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     padding: 16px;
 }
 
-.book-Library-Container .book-card .book-info .book-name {
+.book-Library-Container .book-Container .book-card .book-info .book-name {
     text-align: start;
     font-size: 18px;
     font-weight: 600;
@@ -65,7 +71,8 @@
     font-style: normal;
 }
 
-.book-Library-Container .book-card .book-info .author-name {
+.book-Library-Container .book-Container .book-card .book-info .author-name {
+    text-align: justify;
     text-transform: capitalize;
     font-size: 14px;
     color: #aaa;
@@ -78,7 +85,7 @@
     font-style: normal;
 }
 
-.book-Library-Container .book-card .book-info .book-amount {
+.book-Library-Container .book-Container .book-card .book-info .book-amount {
     font-size: 16px;
     font-weight: bold;
     color: #4fbcff;
@@ -86,4 +93,64 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+}
+
+.book-Library-Container h2 {
+    color: #fff;
+    text-align: center;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+}
+
+.book-Library-Container .search-bar {
+    position: relative;
+    padding: 20px 0px;
+    margin: auto;
+    width: fit-content;
+}
+
+.book-Library-Container .search-bar input {
+    padding: 8px;
+    width: 300px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.book-Library-Container .search-bar button i {
+    font-size: 15px;
+}
+
+.book-Library-Container .search-bar button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-image: radial-gradient(#9a8d8d, #7f7979, #121111);
+    border-radius: 20px;
+}
+
+.book-Library-Container .search-bar button:hover {
+    background-image: radial-gradient(#ffffff, #3f3e3e, #000000);
+
+}
+
+.book-Library-Container .suggestion-list {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 250px;
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.book-Library-Container .suggestion-list li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.book-Library-Container .suggestion-list li:hover {
+    background: #eee;
 }
