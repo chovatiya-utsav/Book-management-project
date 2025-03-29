@@ -7,6 +7,6 @@ const router = Router()
 
 router.route('/createReview').post(verifyJWT, createReview)
 
-router.route('/:bookId').get(getReviews)
+router.route('/getReviews/:bookId').get(getReviews)
 
 export default router

@@ -9,7 +9,7 @@ import { Category } from "../models/category.model.js";
 const createBook = asyncHandler(async (req, res) => {
 
     console.log("receive data", req.body);
-     console.log("Received file:", req.file);
+    console.log("Received file:", req.file);
 
     //get all book details from frontend
     const { bookName, author, publishedYear, genre, description, price, category } = req.body
@@ -65,8 +65,9 @@ const createBook = asyncHandler(async (req, res) => {
         description,
         price,
         category: categoryExist._id,
-         coverImage: coverImageUrl?.url || "",
-        user: req.user._id
+        coverImage: coverImageUrl?.url || "",
+        user: req.user._id,
+        rating: 1
     })
     //console.log(newBook);
 
@@ -181,10 +182,29 @@ const deleteBook = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, {}, "Book deleted successfully"))
 })
 
+const getOverallAverageRating = asyncHandler(async (req, res) => {
+    const result = await Book.aggregate([
+        {
+            $group: {
+                _id: null, // No grouping field, calculates for all books
+                avgRating: { $avg: "$rating" } // Calculate average rating
+            }
+        }
+    ]);
+    const overallAverageRating = result.length > 0 ? result[0].avgRating : 0;
+
+    if (!overallAverageRating) {
+        return res.status(500).json(new ApiResponse(500,{overallAverageRating},"Failed to calculate overall average rating"))
+    }
+
+    return res.status(200).json(new ApiResponse(200, { overallAverageRating }, "Overall average rating calculated successfully"))
+})
+
 export {
     createBook,
     getAllBooks,
     getBookById,
     updateBook,
-    deleteBook
+    deleteBook,
+    getOverallAverageRating
 }
