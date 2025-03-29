@@ -2,54 +2,62 @@ import { Review } from "../models/review.model.js"
 import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
+import { Book } from "../models/book.model.js"
 
 
 const createReview = asyncHandler(async (req, res) => {
-    const { bookId, rating, comment } = req.body
-    const userId = req.user.id
+    const { bookId, rating, comment } = req.body;
+    const userId = req.user.id;
 
     if (!bookId) {
-        throw new ApiError(400, "Book id is required.")
+        throw new ApiError(400, "Book ID is required.");
     }
 
     if (!rating && !comment) {
-        throw new ApiError(400, "At least a rating or comment is required.")
+        throw new ApiError(400, "At least a rating or comment is required.");
     }
 
-    const existingReview = await Review.findOne({ book: bookId, "review.user": userId })
+    const numericRating = parseFloat(rating);
+    if (isNaN(numericRating) || numericRating < 1 || numericRating > 5) {
+        throw new ApiError(400, "Rating must be a number between 1 and 5.");
+    }
 
+    // Find existing book's review document
+    let reviewDoc = await Review.findOne({ book: bookId });
+
+    if (!reviewDoc) {
+        // If no review document exists, create one
+        reviewDoc = await Review.create({
+            book: bookId,
+            review: []
+        });
+    }
+
+    // Check if user has already reviewed
+    const existingReview = reviewDoc.review.find(r => r.user.toString() === userId);
     if (existingReview) {
-        const updatedReview = await Review.findOneAndUpdate(
-            { bookId, userId },
-            {
-                $set: {
-                    "review.$.rating": rating,
-                    "review.$.comment": comment
-                }
-            },
-            { new: true }
-        )
-
-        return res.status(200).json(new ApiResponse(200, updatedReview, "Review update successfully"))
+        throw new ApiError(409, "You have already reviewed this book.");
     }
 
-    const review = await Review.findOneAndUpdate(
-        { book: bookId },
-        {
-            $push: {
-                review: {
-                    user: userId,
-                    rating,
-                    comment
-                },
-            },
-        },
-        { new: true, upsert: true }// upsert:If no document exists for bookId, it creates a new one.
-    )
+    // Push new review to the array
+    reviewDoc.review.push({
+        user: userId,
+        rating: numericRating,
+        comment
+    });
 
-    return res.status(201)
-        .json(new ApiResponse(201, review, "Review added successfully"))
-})
+    // Save the updated review document
+    await reviewDoc.save();
+
+    // Calculate new average rating
+    const totalRatings = reviewDoc.review.reduce((sum, rev) => sum + rev.rating, 0);
+    const averageRating = (totalRatings / reviewDoc.review.length).toFixed(1);
+
+    // Update the book's rating
+    await Book.findByIdAndUpdate(bookId, { rating: parseFloat(averageRating) });
+
+    res.status(201).json(new ApiResponse(201, reviewDoc, "Review added successfully"));
+});
 
 const getReviews = asyncHandler(async (req, res) => {
     const { bookId } = req.params
@@ -68,6 +76,6 @@ const getReviews = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, reviews, "Reviews retrieved successfully"))
 })
 
-   
+
 
 export { createReview, getReviews }

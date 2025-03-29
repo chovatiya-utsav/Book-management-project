@@ -173,10 +173,30 @@
     font-style: normal;
 }
 
+
 .login-form .form .input-filed input:focus {
     transform: scale(1.05);
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
     outline: none;
+}
+
+.login-form .form .input-filed .input-password {
+    position: relative;
+}
+
+.login-form .form .input-filed .toggle-password-visibility i {
+    font-size: 18px;
+}
+
+.login-form .form .input-filed .toggle-password-visibility {
+    background: transparent;
+    position: absolute;
+    top: 10.5px;
+    right: 0px;
+    padding: 13px;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 /* Error message styling */

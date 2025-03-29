@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router';
 import Header from '../header/Header';
 import useApiUrl from '../useApiUrl';
 import AdminHeader from '../header/AdminHeader';
-
-
+import "../../../styles/pages_styles/Protected.css"
 
 const Protected = (props) => {
     const { Componet, AdminComponet } = props;
@@ -27,7 +26,7 @@ const Protected = (props) => {
     //         console.error("Refresh Token Error:", error);
     //     }
     // };
-    
+
     let userLogin = localStorage?.getItem('userLogin') || "";
     let userAdminLogin = localStorage?.getItem('userAdminLogin') || "";
     const naviget = useNavigate();
@@ -37,7 +36,11 @@ const Protected = (props) => {
         if (!userLogin && !userAdminLogin) {
             naviget('/Login')
         }
+        scrollToTop()
     }, [naviget])
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <>
@@ -46,15 +49,21 @@ const Protected = (props) => {
                     <>
                         <Header />
                         <Componet />
+                        <div className='top_arrow_circle' onClick={scrollToTop} >
+                            <img src="./images/top-arrow-different.jpg" alt="truck images" width={30} height={30} />
+                        </div>
                     </>
                     : null
             }
             {
                 userAdminLogin && AdminComponet && !Componet ?
-                <>
-                    
+                    <>
+
                         <AdminHeader />
                         <AdminComponet />
+                        <div className='top_arrow_circle' onClick={scrollToTop} >
+                            <img src="./images/top-arrow-different.jpg" alt="truck images" width={30} height={30} />
+                        </div>
                     </>
                     : null
             }

@@ -66,7 +66,8 @@ const createBook = asyncHandler(async (req, res) => {
         price,
         category: categoryExist._id,
          coverImage: coverImageUrl?.url || "",
-        user: req.user._id
+        user: req.user._id,
+        rating: 1
     })
     //console.log(newBook);
 

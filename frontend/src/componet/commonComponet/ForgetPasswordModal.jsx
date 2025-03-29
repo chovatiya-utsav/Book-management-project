@@ -29,8 +29,10 @@ const ForgetPasswordModal = (props) => {
     const baseUrl = useApiUrl()
     const { modalOpen, closeModal, changePassword } = props
     const [getInput, setGetInput] = useState(false);
-    const [userNotFound, setUserNotFound] = useState(false)
-    const [response, setResponse] = useState(null)
+    const [userNotFound, setUserNotFound] = useState(false);
+    const [response, setResponse] = useState(null);
+    const [passwordShow, setPasswordShow] = useState(false)
+    const [confirmPasswordShow, setConfirmPasswordShow] = useState(false)
 
     const checkUser = async (values, errors, e, resetForm) => {
         e.preventDefault()
@@ -144,12 +146,50 @@ const ForgetPasswordModal = (props) => {
                                     <div className="chenge-password-input-filed">
                                         <div className='filed'>
                                             <label htmlFor="Contact">password</label>
-                                            <Field type="password" name="userPassword" id="userPassword" autoFocus />
+                                            <div className="input-password">
+                                                <Field type={!passwordShow ? "password" : "text"} name="userPassword" id="userPassword" autoFocus />
+                                                {
+                                                    values.userPassword ?
+                                                        <button
+                                                            type="button"
+                                                            className="toggle-password-visibility"
+                                                            title={`password  ${!passwordShow ? "Show" : "Hide"} `}
+                                                            onClick={() => setPasswordShow(!passwordShow)} >
+                                                            {
+                                                                passwordShow ?
+                                                                    <i className="fa fa-eye-slash" aria-hidden="true" ></i>
+                                                                    :
+                                                                    <i className="fa fa-eye" aria-hidden="true"></i>
+                                                            }
+                                                        </button>
+                                                        : null
+                                                }
+                                            </div>
                                             <ErrorMessage name="userPassword" component="span" className="error" />
                                         </div>
                                         <div className='filed'>
                                             <label htmlFor="Contact">confirm Password</label>
-                                            <Field type="password" name="userConfirmPassword" id="userConfirmPassword" />
+                                            <div className="input-password">
+                                                <Field type={!confirmPasswordShow ? "password" : "text"} name="userConfirmPassword" id="userConfirmPassword" />
+
+                                                {
+                                                    values.userConfirmPassword ?
+
+                                                        <button
+                                                            type="button"
+                                                            className="toggle-password-visibility"
+                                                            title={`password  ${!confirmPasswordShow ? "Show" : "Hide"} `}
+                                                            onClick={() => setConfirmPasswordShow(!confirmPasswordShow)} >
+                                                            {
+                                                                confirmPasswordShow ?
+                                                                    <i className="fa fa-eye-slash" aria-hidden="true" ></i>
+                                                                    :
+                                                                    <i className="fa fa-eye" aria-hidden="true"></i>
+                                                            }
+                                                        </button>
+                                                        : null
+                                                }
+                                            </div>
                                             <ErrorMessage name="userConfirmPassword" component="span" className="error" />
                                         </div>
                                     </div>

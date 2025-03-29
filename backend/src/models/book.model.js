@@ -43,6 +43,12 @@ const bookSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Category",
             required: true
+        },
+        rating: {
+            type: Number,
+            required: true,
+            min: 1,
+            max: 5
         }
     }, { timestamps: true })
 
