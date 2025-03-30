@@ -28,7 +28,12 @@ const Header = () => {
                 contact: userLogin?.contactNo,
                 id: userLogin?._id
             })
-            setUpdateUser({ ...user })
+            setUpdateUser({
+                name: userLogin?.name,
+                email: userLogin?.email,
+                contact: userLogin?.contactNo,
+                id: userLogin?._id
+            })
         }
     }, [successMessage])
 
