@@ -167,7 +167,7 @@ const Header = () => {
             <div className='navebar'>
                 <div className='logo'>
                     <ul>
-                        {location.pathname !== "/UserProfile" && (
+                        {location.pathname !== "/UserProfile" && !userAdminLogin && (
 
                             <li>
                                 <div className="profile-avatar" onClick={toggleProfileModal}>
@@ -191,8 +191,8 @@ const Header = () => {
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
-                        {location.pathname === "/UserProfile" && (
-                            <li><NavLink to={"/UserProfile"}>Profile</NavLink></li>)}
+                        {location.pathname === "/UserProfile" || userAdminLogin ?
+                            <li li > <NavLink to={"/UserProfile"}>Profile</NavLink></li> : null}
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
@@ -201,96 +201,100 @@ const Header = () => {
             </div>
 
             {/* Profile Modal */}
-            {isProfileOpen && location.pathname !== "/UserProfile" && (
-                <div className="profile-modal">
-                    <div className="profile-content">
-                        <button onClick={toggleProfileModal} className="close-profile-icone"><i className="fa fa-close"></i></button>
-                        <div className="user-info">
-                            <div className="profile-circle">{getInitial(user.name)}</div>
-                            <h2>{user?.name}</h2>
-                        </div>
-                        <div className='user-update-facility'>
-                            <h3 className='heding'>profile detail</h3>
-                            <div className="user-detail">
-                                <h3>Email</h3>
-                                {userProfileUpdate ? (
-                                    <div className='input-filed'>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            value={updateUser.email}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className="profile-input"
-                                        />
-                                        {touched.email && errors.email && <p className="input-error">{errors.email}</p>}
-                                    </div>) : (
-                                    <p>{user?.email}</p>
-                                )}
+            {
+                isProfileOpen && !userAdminLogin && location.pathname !== "/UserProfile" && (
+                    <div className="profile-modal">
+                        <div className="profile-content">
+                            <button onClick={toggleProfileModal} className="close-profile-icone"><i className="fa fa-close"></i></button>
+                            <div className="user-info">
+                                <div className="profile-circle">{getInitial(user.name)}</div>
+                                <h2>{user?.name}</h2>
                             </div>
+                            <div className='user-update-facility'>
+                                <h3 className='heding'>profile detail</h3>
+                                <div className="user-detail">
+                                    <h3>Email</h3>
+                                    {userProfileUpdate ? (
+                                        <div className='input-filed'>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                value={updateUser.email}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                className="profile-input"
+                                            />
+                                            {touched.email && errors.email && <p className="input-error">{errors.email}</p>}
+                                        </div>) : (
+                                        <p>{user?.email}</p>
+                                    )}
+                                </div>
 
-                            <div className="user-detail">
-                                <h3>Contact</h3>
-                                {userProfileUpdate ? (
-                                    <div className='input-filed'>
-                                        <input
-                                            type="text"
-                                            name="contact"
-                                            value={updateUser.contact}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className="profile-input"
-                                        />
-                                        {touched.contact && errors.contact && <p className="input-error">{errors.contact}</p>}
-                                    </div>) : (
-                                    <p>{user?.contact}</p>
-                                )}
+                                <div className="user-detail">
+                                    <h3>Contact</h3>
+                                    {userProfileUpdate ? (
+                                        <div className='input-filed'>
+                                            <input
+                                                type="text"
+                                                name="contact"
+                                                value={updateUser.contact}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                className="profile-input"
+                                            />
+                                            {touched.contact && errors.contact && <p className="input-error">{errors.contact}</p>}
+                                        </div>) : (
+                                        <p>{user?.contact}</p>
+                                    )}
+                                </div>
+
+
+
+                                <div className='user-profile-update'>
+                                    {userProfileUpdate ? (
+                                        <button type='button' onClick={handleCancelUpdate} className="close-profile">Cancel</button>
+                                    ) : (
+                                        <button type='button' onClick={() => setUserProfileUpdate(true)} className="update-profile">Update</button>
+                                    )}
+                                    {userProfileUpdate && (
+                                        <button
+                                            type='button'
+                                            onClick={() => setShowConfirmPopup(true)}
+                                            className="submit-profile"
+                                        >
+                                            Submit
+                                        </button>
+                                    )}
+                                </div>
                             </div>
+                            <div className='user-activity'>
+                                <h3 className='heding'>user activities</h3>
+                                <button type='button' onClick={userProfileNaviget} className="user-acticity-button">user uploaded book</button>
+                                <button type='button' onClick={userProfileNaviget} className="user-acticity-button">Read later book</button>
 
-
-
-                            <div className='user-profile-update'>
-                                {userProfileUpdate ? (
-                                    <button type='button' onClick={handleCancelUpdate} className="close-profile">Cancel</button>
-                                ) : (
-                                    <button type='button' onClick={() => setUserProfileUpdate(true)} className="update-profile">Update</button>
-                                )}
-                                {userProfileUpdate && (
-                                    <button
-                                        type='button'
-                                        onClick={() => setShowConfirmPopup(true)}
-                                        className="submit-profile"
-                                    >
-                                        Submit
-                                    </button>
-                                )}
                             </div>
-                        </div>
-                        <div className='user-activity'>
-                            <h3 className='heding'>user activities</h3>
-                            <button type='button' onClick={userProfileNaviget} className="user-acticity-button">user uploaded book</button>
-                            <button type='button' onClick={userProfileNaviget} className="user-acticity-button">Read later book</button>
-
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
 
             {/* Confirmation Popup */}
-            {showConfirmPopup && (
-                <div className="confirm-popup">
-                    <div className="confirm-box">
-                        <p>Are you sure you want to update your profile?</p>
-                        <div className="confirm-buttons">
-                            <button onClick={handleProfileUpdate} className="confirm-yes">Yes</button>
-                            <button onClick={handleCancelUpdate} className="confirm-no">No</button>
+            {
+                showConfirmPopup && !userAdminLogin && (
+                    <div className="confirm-popup">
+                        <div className="confirm-box">
+                            <p>Are you sure you want to update your profile?</p>
+                            <div className="confirm-buttons">
+                                <button onClick={handleProfileUpdate} className="confirm-yes">Yes</button>
+                                <button onClick={handleCancelUpdate} className="confirm-no">No</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
-        </div>
+        </div >
     );
 };
 
