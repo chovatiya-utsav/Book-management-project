@@ -55,7 +55,7 @@ const ForgetPasswordModal = (props) => {
             })
 
             const responeData = await respone.json()
-            console.log(responeData)
+            // console.log(responeData)
 
             if (responeData.statusCode === 404) {
                 setUserNotFound(true);
@@ -74,11 +74,11 @@ const ForgetPasswordModal = (props) => {
     }
 
     const updatePassword = async (values, errors, e) => {
-        console.log(response)
+        // console.log(response)
 
         if (getInput && response.statuscode === 200 && response.data && values.userConfirmPassword && !errors.userConfirmPassword) {
 
-            console.log("id", response.data.userId)
+            // console.log("id", response.data.userId)
 
             const checkUser = {
                 password: values?.userConfirmPassword,
@@ -96,7 +96,7 @@ const ForgetPasswordModal = (props) => {
             })
 
             const responeData = await respone.json()
-            console.log(responeData)
+            // console.log(responeData)
 
             if (responeData.statuscode === 200) {
                 changePassword();

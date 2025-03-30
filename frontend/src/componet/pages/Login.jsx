@@ -130,11 +130,11 @@ const Login = () => {
                 })
 
                 const responeData = await response.json()
-                console.log(responeData.statuscode)
+                // console.log(responeData.statuscode)
 
 
                 if (responeData.statuscode === 200) {
-                    console.log("response", responeData.data.user);
+                    // console.log("response", responeData.data.user);
                     localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
 
                     navigate("/Book-Management")

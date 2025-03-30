@@ -80,9 +80,9 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* Hide arrows in Firefox */
-/* input[type="number"] {
+input[type="number"] {
     -moz-appearance: textfield;
-} */
+}
 
 /* Modal Background */
 .addBook-modal-overlay {
@@ -131,6 +131,7 @@ input[type="number"]::-webkit-outer-spin-button {
     font-weight: 700;
     font-style: normal;
 }
+
 .add-book-container .addBook-modal-overlay .modal-content h3 {
     padding: 20px 0px;
     font-size: 18px;
@@ -172,7 +173,7 @@ input[type="number"]::-webkit-outer-spin-button {
     transition: background 0.3s;
     font-family: "Domine", serif;
     font-optical-sizing: auto;
-    font-weight: 400;   
+    font-weight: 400;
 }
 
 .add-book-container .addBook-modal-overlay .modal-actions .btn-confirm:hover {
@@ -197,110 +198,59 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 
-.book-loader-container {
-    width: 200px;
-    height: 150px;
-    margin: 80px auto;
-    position: relative;
-    perspective: 1000px;
-  }
-  
-  .book-loader {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    animation: bookOpenClose 5s infinite ease-in-out;
-  }
-  
-  /* Covers */
-  .book-cover {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: black;
-    border: 2px solid #111;
-    border-radius: 6px;
-    z-index: 3;
-  }
-  
-  .book-cover.front {
-    transform-origin: left;
-    animation: coverFlip 5s infinite ease-in-out;
-  }
-  
-  .book-cover.back {
-    transform: rotateY(180deg);
-  }
-  
-  /* Page */
-  .book-inner {
-    background: #fff;
-    border: 1px solid #ccc;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-    overflow: hidden;
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
-  }
-  
-  .book-page {
-    position: relative;
-    width: 90%;
-    height: 80%;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+}
+
+.loader-overlay .loader-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
+}
+
+.loader-overlay .loader-text {
+    font-size: 1.5rem;
+    margin-top: 20px;
     color: #333;
-  }
-  
-  /* Writing text */
-  .writing-text {
+    font-weight: bold;
     position: absolute;
-    left: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 2px solid black;
-    animation: typing 2.5s steps(20, end) forwards;
-  }
-  
-  /* Pen */
-  .pen {
-    position: absolute;
-    bottom: 20px;
-    left: 10px;
-    width: 20px;
-    height: 4px;
-    background: black;
-    border-radius: 2px;
-    animation: penMove 2.5s forwards;
-  }
-  
-  /* KEYFRAMES */
-  @keyframes coverFlip {
-    0% { transform: rotateY(0deg); }
-    20% { transform: rotateY(-150deg); }
-    80% { transform: rotateY(-150deg); }
-    100% { transform: rotateY(0deg); }
-  }
-  
-  @keyframes bookOpenClose {
-    0% { transform: rotateY(0); }
-    100% { transform: rotateY(0); }
-  }
-  
-  @keyframes typing {
-    0% { width: 0; }
-    100% { width: 160px; }
-  }
-  
-  @keyframes penMove {
-    0% { left: 10px; }
-    100% { left: 170px; }
-  }
-  
+    top: 58%;
+    left: 50%;
+    transform: translate(-41%, 0);
+}
+
+.loader-overlay .dot-animate::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    animation: dots 1.5s steps(3, end) infinite;
+}
+
+
+@keyframes dots {
+    0% {
+        content: '';
+    }
+
+    33% {
+        content: '.';
+    }
+
+    66% {
+        content: '..';
+    }
+
+    100% {
+        content: '...';
+    }
+}

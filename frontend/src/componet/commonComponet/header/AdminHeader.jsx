@@ -11,7 +11,7 @@ const AdminHeader = () => {
     const navigate = useNavigate();
 
     const userLogout = async () => {
-        console.log("logout")
+        // console.log("logout")
         try {
             const response = await fetch(`${baseurl}/api/v1/users/logout`, {
                 method: 'POST',

@@ -62,13 +62,22 @@ const TopViewBook = (props) => {
                 <div className="slider-container">
                     <Slider {...settings}>
                         {bookData && bookData.length > 0 ? (
-                            bookData.map((book, index) => {
+                            bookData.filter((book) => book.rating >= 3.5).map((book, index) => {
+                                const percentage = (book.rating / 5) * 75;
                                 return (
-
                                     <div className='book-card' key={index} onClick={() => toggalModal(book)}>
                                         <img src={book.coverImage} alt={book.bookName} />
                                         <div className='book-details'>
-                                            <h3 className="book-title">{book.bookName}</h3>
+                                            <div className='book-reting'>
+                                                <h3 className="book-title">{book.bookName}</h3>
+                                                <div className="rating-box">
+                                                    <div className="star-wrapper">
+                                                        <div className="star-background">★</div>
+                                                        <div className="star-fill" style={{ width: `${percentage}%` }}>★</div>
+                                                    </div>
+                                                    <span className="rating-number">{book.rating.toFixed(1)}</span>
+                                                </div>
+                                            </div>
                                             <p className="book-author">author  {book.author}</p>
                                             <p className="book-price">₹{book.price}</p>
                                         </div>

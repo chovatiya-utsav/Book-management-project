@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import confetti from 'canvas-confetti';
 import '../../styles/pages_styles/AddBook.css';
 import useApiUrl from '../commonComponet/useApiUrl';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const AddBook = () => {
     const baseUrl = useApiUrl();
@@ -11,7 +12,7 @@ const AddBook = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [formData, setFormData] = useState(null);
-    const [showLoader, setShowLoader] = useState(true);
+    const [showLoader, setShowLoader] = useState(false);
 
     const currentYear = new Date().getFullYear();
 
@@ -98,6 +99,7 @@ const AddBook = () => {
                 alert(result?.message || 'Something went wrong');
             }
         } catch (err) {
+            setShowLoader(false)
             console.error(err);
             alert('Failed to submit form');
         }
@@ -207,20 +209,21 @@ const AddBook = () => {
                 </div>
             )}
 
-{showLoader && (
-  <div className="book-loader-container">
-    <div className="book-loader">
-      <div className="book-cover front" />
-      <div className="book-inner">
-        <div className="book-page">
-          <span className="writing-text">Saving your book...</span>
-          <div className="pen" />
-        </div>
-      </div>
-      <div className="book-cover back" />
-    </div>
-  </div>
-)}
+            {showLoader && (
+                <div className="loader-overlay">
+                    <div className="loader-content">
+                        <Player
+                            autoplay
+                            speed={2.5}
+                            loop
+                            src="/images/book-loader.json"
+                            style={{ height: '300px', width: '300px' }}
+                        />
+                        <h2 className="loader-text">Book is adding to library<span className="dot-animate"></span></h2>
+                    </div>
+                </div>
+            )}
+
 
 
             {showSuccessModal && (

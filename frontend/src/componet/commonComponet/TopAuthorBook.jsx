@@ -36,7 +36,7 @@ const TopAuthorBook = ({ bookData }) => {
     return (
         <div className="book-slider-container block">
             <div className="book-slider">
-                {bookData?.map((data, index) => {
+                {bookData?.filter((book) => book.rating >= 3.5).map((data, index) => {
                     if (index < activeIndex || index > activeIndex + 4) return null;
 
                     const isActive = index === activeIndex;

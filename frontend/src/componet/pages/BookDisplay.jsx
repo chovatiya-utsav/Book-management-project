@@ -9,7 +9,7 @@ const BookDisplay = () => {
     const baseUrl = useApiUrl()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const bookId = params.get('Book') || "67e8cf3d46e308b334952ac0";
+    const bookId = params.get('Book') || "67dc2005e0fd7353583fbe9c";
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
@@ -59,7 +59,7 @@ const BookDisplay = () => {
             const responseData = await response.json();
             setReviwData(responseData?.data?.review || []);
 
-            console.log("Book Reviews:", responseData.data.review);
+            // console.log("Book Reviews:", responseData.data.review);
             return responseData;
         } catch (error) {
             console.error("Error fetching book review:", error.message);
@@ -89,7 +89,7 @@ const CommentsModal = (props) => {
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
 
-    console.log("review", reviewData);
+    // console.log("review", reviewData);
 
     useEffect(() => {
         if (reviewData) {

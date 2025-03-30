@@ -90,6 +90,7 @@
 
 /* Text styles */
 .modal-overlay .modal-content .book-info .book-content .modal-book-title {
+  word-break: break-all;
   font-size: 1.4rem;
   margin: 0.5rem 0;
   color: #333;

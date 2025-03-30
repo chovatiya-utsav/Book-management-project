@@ -13,7 +13,7 @@ const Home = () => {
     const [selectedBook, setSelectedBook] = useState(null);
     const [userReview, setUserReview] = useState(null);
     const [userData, setUserData] = useState(null);
-    
+
 
     useEffect(() => {
         getBookData()
@@ -47,22 +47,19 @@ const Home = () => {
 
             const responseData = await response.json();
 
-            console.log(responseData.data)
-            console.log(userData)
+            // console.log(responseData.data)
+            // console.log(userData)
 
             if (responseData?.data && userData) {
-                const review = responseData.data.review
-                review?.map((item, index) => {
-                    if (userData === item?.user._id) {
-                        return (
-                            setUserReview({
-                                rating: responseData?.data?.review[index].rating,
-                                reviewText: responseData?.data?.review[index].comment
+                const review = responseData.data.review;
+                const userReview = review?.find((item) => userData === item?.user._id);
 
-                            })
-                        )
-                    }
-                })
+                if (userReview) {
+                    setUserReview({
+                        rating: userReview.rating,
+                        reviewText: userReview.comment
+                    });
+                }
             }
 
             console.log("Book Reviews:", responseData);
