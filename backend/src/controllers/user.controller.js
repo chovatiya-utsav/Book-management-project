@@ -282,6 +282,33 @@ const forgotPassword = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, user, "Password Successfully Update."))
 })
 
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const { name, email, contactNo } = req.body
+    const { userId } = req.params
+    //console.log(userId);
+
+    if (!userId) {
+        throw new ApiError(404, "user id not found")
+    }
+
+    const updateData = {}
+
+    if (name) updateData.name = name
+    if (email) updateData.email = email
+    if (contactNo) updateData.contactNo = contactNo
+
+    const updateProfile = await User.findByIdAndUpdate(
+        userId,
+        {
+            $set: updateData
+        },
+        {
+            new: true
+        }
+    )
+
+    return res.status(200).json(new ApiResponse(200, updateProfile, "User profile updated"))
+})
 export {
     registerUser,
     loginUser,
@@ -289,5 +316,5 @@ export {
     refreshAccessToken,
     getCurrentUser,
     checkUser,
-    forgotPassword
+    forgotPassword, updateUserProfile
 }
