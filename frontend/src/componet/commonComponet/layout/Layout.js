@@ -33,6 +33,7 @@ const Layout = () => {
                     <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} />
                     <Route path='/BookDisplay/bookId=:id' element={<Protected Componet={BookDisplay} />} />
                     <Route path='/AddBook' element={<Protected Componet={AddBook} />} />
+                    <Route path='/Profile' element={<Protected Componet={Profile} />} />
                     {/* admin */}
                     <Route path='/admin-dashboard' element={<Protected AdminComponet={AdminDashboard} />} />
                     <Route path='/ManageUsers' element={<Protected AdminComponet={ManageUsers} />} />

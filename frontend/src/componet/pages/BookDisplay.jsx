@@ -9,7 +9,7 @@ const BookDisplay = () => {
     const baseUrl = useApiUrl()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const bookId = params.get('Book') || "67dc2005e0fd7353583fbe9c";
+    const bookId = params.get('Book') || "67e8cf3d46e308b334952ac0";
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
