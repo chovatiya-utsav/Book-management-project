@@ -11,6 +11,7 @@ const AddBook = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [formData, setFormData] = useState(null);
+    const [showLoader, setShowLoader] = useState(true);
 
     const currentYear = new Date().getFullYear();
 
@@ -62,6 +63,7 @@ const AddBook = () => {
     };
 
     const handleFormSubmit = async (values, resetForm) => {
+        setShowLoader(true);
         const formData = new FormData();
         formData.append('bookName', values.bookName);
         formData.append('author', values.author);
@@ -84,6 +86,7 @@ const AddBook = () => {
             });
 
             const result = await response.json();
+            setShowLoader(false);
 
             if (response.ok) {
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
@@ -203,6 +206,22 @@ const AddBook = () => {
                     </div>
                 </div>
             )}
+
+{showLoader && (
+  <div className="book-loader-container">
+    <div className="book-loader">
+      <div className="book-cover front" />
+      <div className="book-inner">
+        <div className="book-page">
+          <span className="writing-text">Saving your book...</span>
+          <div className="pen" />
+        </div>
+      </div>
+      <div className="book-cover back" />
+    </div>
+  </div>
+)}
+
 
             {showSuccessModal && (
                 <div className="addBook-modal-overlay">
