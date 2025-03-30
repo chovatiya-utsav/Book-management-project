@@ -133,7 +133,7 @@ const Header = () => {
                     setSuccessMessage(false)
                 }, 2000);
                 getInitial(result.data.name)
-                localStorage.setItem("userLogin",JSON.stringify(result.data))
+                localStorage.setItem("userLogin", JSON.stringify(result.data))
             } else {
                 alert("Failed to update profile.");
             }
@@ -186,7 +186,8 @@ const Header = () => {
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
-                        <li><NavLink to={"/Profile"}>Profile</NavLink></li>
+                        {location.pathname === "/Profile" && (
+                            <li><NavLink to={"/Profile"}>Profile</NavLink></li>)}
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
