@@ -14,6 +14,7 @@ import ManageUsers from '../../../admin/Pages/ManageUsers.jsx';
 import ManageBooks from '../../../admin/Pages/ManageBooks.jsx';
 import Profile from '../../../admin/Pages/Profile.jsx';
 import AddBook from '../../pages/AddBook.jsx';
+import UserProfile from '../../pages/UserProfile.jsx';
 
 
 
@@ -33,7 +34,7 @@ const Layout = () => {
                     <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} />
                     <Route path='/BookDisplay/bookId=:id' element={<Protected Componet={BookDisplay} />} />
                     <Route path='/AddBook' element={<Protected Componet={AddBook} />} />
-                    <Route path='/Profile' element={<Protected Componet={Profile} />} />
+                    <Route path='/UserProfile' element={<Protected Componet={UserProfile} />} />
                     {/* admin */}
                     <Route path='/admin-dashboard' element={<Protected AdminComponet={AdminDashboard} />} />
                     <Route path='/ManageUsers' element={<Protected AdminComponet={ManageUsers} />} />

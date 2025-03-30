@@ -38,7 +38,7 @@ const Header = () => {
     }, [successMessage])
 
     const userProfileNaviget = () => {
-        navigate('/Profile')
+        navigate('/UserProfile')
         setUserProfileUpdate(false);
         setShowConfirmPopup(false);
         setIsProfileOpen(false)
@@ -167,7 +167,7 @@ const Header = () => {
             <div className='navebar'>
                 <div className='logo'>
                     <ul>
-                        {location.pathname !== "/Profile" && (
+                        {location.pathname !== "/UserProfile" && (
 
                             <li>
                                 <div className="profile-avatar" onClick={toggleProfileModal}>
@@ -191,8 +191,8 @@ const Header = () => {
                         <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
-                        {location.pathname === "/Profile" && (
-                            <li><NavLink to={"/Profile"}>Profile</NavLink></li>)}
+                        {location.pathname === "/UserProfile" && (
+                            <li><NavLink to={"/UserProfile"}>Profile</NavLink></li>)}
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
@@ -201,7 +201,7 @@ const Header = () => {
             </div>
 
             {/* Profile Modal */}
-            {isProfileOpen && location.pathname !== "/Profile" && (
+            {isProfileOpen && location.pathname !== "/UserProfile" && (
                 <div className="profile-modal">
                     <div className="profile-content">
                         <button onClick={toggleProfileModal} className="close-profile-icone"><i className="fa fa-close"></i></button>
