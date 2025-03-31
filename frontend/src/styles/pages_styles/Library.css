@@ -54,7 +54,58 @@
     padding: 16px;
 }
 
-.book-Library-Container .book-Container .book-card .book-info .book-name {
+.book-Library-Container .book-Container .book-card .book-info .book-reting {
+    display: flex;
+    align-items: baseline;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .rating-box {
+    display: flex;
+    align-items: center;
+    flex: 20%;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+    font-size: 24px;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-background,
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-background {
+    color: #ddd;
+    /* Light gray star */
+    z-index: 1;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-fill {
+    color: gold;
+    /* Filled star */
+    z-index: 2;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .rating-number {
+    font-size: 16px;
+    color: #4a4949;
+    padding-top: 10px;
+}
+
+
+.book-Library-Container .book-Container .book-card .book-reting .book-title {
+    word-wrap: break-word;
+    flex: 80%;
+    width: 100%;
     text-align: start;
     font-size: 18px;
     font-weight: 600;
@@ -93,9 +144,11 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    text-align: justify;
 }
 
-.book-Library-Container h2 {
+.book-Library-Container h2,
+.book-Library-Container p {
     color: #fff;
     text-align: center;
     font-family: "PT Serif", serif;
@@ -104,9 +157,16 @@
     font-size: 24px;
 }
 
+.book-Library-Container .filter-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
 .book-Library-Container .search-bar {
     position: relative;
-    padding: 20px 0px;
+    padding: 20px 0px 0px 0px;
     margin: auto;
     width: fit-content;
 }
@@ -125,13 +185,19 @@
 
 .book-Library-Container .search-bar button {
     margin-left: 10px;
+
+}
+
+.book-Library-Container .search-bar button,
+.book-Library-Container .filter-group button {
     padding: 8px 12px;
     cursor: pointer;
     background-image: radial-gradient(#9a8d8d, #7f7979, #121111);
     border-radius: 20px;
 }
 
-.book-Library-Container .search-bar button:hover {
+.book-Library-Container .search-bar button:hover,
+.book-Library-Container .filter-group button:hover {
     background-image: radial-gradient(#ffffff, #3f3e3e, #000000);
 
 }
@@ -192,10 +258,8 @@
 
 .book-Library-Container .authoe-filter {
     width: 200px;
-    margin-right: 10px;
 }
 
 .book-Library-Container .price-filter {
     width: 150px;
 }
-

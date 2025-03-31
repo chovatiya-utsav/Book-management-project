@@ -218,6 +218,7 @@
     font-family: "PT Serif", serif;
     font-weight: 700;
     font-style: normal;
+    word-break: break-all;
 }
 
 .book-slider-container .book-slider .slides .content.deactive h2 {

@@ -60,7 +60,7 @@ const BookReviewModal = ({ show, onClose, book, userReview }) => {
             }
 
             const responseData = await response.json();
-            console.log(responseData);
+            // console.log(responseData);
             setSuccessMessage("✅ Review successfully submitted!");
             setTimeout(() => {
                 setSuccessMessage(null)

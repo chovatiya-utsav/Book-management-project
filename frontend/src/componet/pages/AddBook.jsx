@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import confetti from 'canvas-confetti';
 import '../../styles/pages_styles/AddBook.css';
 import useApiUrl from '../commonComponet/useApiUrl';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 const AddBook = () => {
     const baseUrl = useApiUrl();
@@ -11,6 +12,7 @@ const AddBook = () => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [formData, setFormData] = useState(null);
+    const [showLoader, setShowLoader] = useState(false);
 
     const currentYear = new Date().getFullYear();
 
@@ -62,6 +64,7 @@ const AddBook = () => {
     };
 
     const handleFormSubmit = async (values, resetForm) => {
+        setShowLoader(true);
         const formData = new FormData();
         formData.append('bookName', values.bookName);
         formData.append('author', values.author);
@@ -84,6 +87,7 @@ const AddBook = () => {
             });
 
             const result = await response.json();
+            setShowLoader(false);
 
             if (response.ok) {
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
@@ -95,6 +99,7 @@ const AddBook = () => {
                 alert(result?.message || 'Something went wrong');
             }
         } catch (err) {
+            setShowLoader(false)
             console.error(err);
             alert('Failed to submit form');
         }
@@ -203,6 +208,23 @@ const AddBook = () => {
                     </div>
                 </div>
             )}
+
+            {showLoader && (
+                <div className="loader-overlay">
+                    <div className="loader-content">
+                        <Player
+                            autoplay
+                            speed={2.5}
+                            loop
+                            src="/images/book-loader.json"
+                            style={{ height: '300px', width: '300px' }}
+                        />
+                        <h2 className="loader-text">Book is adding to library<span className="dot-animate"></span></h2>
+                    </div>
+                </div>
+            )}
+
+
 
             {showSuccessModal && (
                 <div className="addBook-modal-overlay">

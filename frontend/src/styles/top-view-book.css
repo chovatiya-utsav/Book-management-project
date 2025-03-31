@@ -85,7 +85,57 @@
     justify-content: space-between;
 }
 
-.topBook_Display .slider-container .book-card .book-details .book-title {
+.topBook_Display .slider-container .book-card .book-details .book-reting {
+    display: flex;
+    align-items: baseline;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .rating-box {
+    display: flex;
+    align-items: center;
+    flex: 20%;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+    font-size: 24px;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-background,
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-background {
+    color: #ddd;
+    /* Light gray star */
+    z-index: 1;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-fill {
+    color: gold;
+    /* Filled star */
+    z-index: 2;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .rating-number {
+    font-size: 16px;
+    color: #4a4949;
+    padding-top: 10px;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .book-title {
+    word-wrap: break-word;
+    flex: 80%;
+    width: 100%;
     text-align: start;
     font-size: 18px;
     font-weight: 600;

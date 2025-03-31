@@ -146,28 +146,6 @@ const Library = () => {
                     <button onClick={filterBooks}>
                         <i className="fa fa-search" aria-hidden="true"></i>
                     </button>
-
-                    <div className='filter-group'>
-                        <select value={selectedAuthor} onChange={handleAuthorChange} className='authoe-filter'>
-                            <option value="">All Authors</option>
-                            {uniqueAuthors.map((author, i) => (
-                                <option key={i} value={author}>{author}</option>
-                            ))}
-                        </select>
-
-                        <select value={selectedPriceRange} onChange={handlePriceChange} className='price-filter'>
-                            <option value="">All Prices</option>
-                            <option value="0-199">Below ₹200</option>
-                            <option value="200-499">₹200 - ₹499</option>
-                            <option value="500-999">₹500 - ₹999</option>
-                            <option value="1000-9999">Above ₹1000</option>
-                        </select>
-
-                        <button className="clear-filters" onClick={clearFilters}>
-                            Clear Filters
-                        </button>
-                    </div>
-
                     {showSuggestions && searchText && (
                         <ul className='suggestion-list'>
                             {filteredBooks.length > 0 ? (
@@ -182,19 +160,51 @@ const Library = () => {
                         </ul>
                     )}
                 </div>
+                <div className='filter-group'>
+                    <select value={selectedAuthor} onChange={handleAuthorChange} className='authoe-filter'>
+                        <option value="">All Authors</option>
+                        {uniqueAuthors.map((author, i) => (
+                            <option key={i} value={author}>{author}</option>
+                        ))}
+                    </select>
+
+                    <select value={selectedPriceRange} onChange={handlePriceChange} className='price-filter'>
+                        <option value="">All Prices</option>
+                        <option value="0-199">Below ₹200</option>
+                        <option value="200-499">₹200 - ₹499</option>
+                        <option value="500-999">₹500 - ₹999</option>
+                        <option value="1000-9999">Above ₹1000</option>
+                    </select>
+
+                    <button className="clear-filters" onClick={clearFilters}>
+                        Clear Filters
+                    </button>
+                </div>
 
                 <div className='book-Container'>
                     {filteredBooks.length > 0 ? (
-                        filteredBooks.map((book, index) => (
-                            <div className='book-card' key={index} onClick={() => toggleModal(book)}>
-                                <img src={book.coverImage} alt="book-cover" />
-                                <div className='book-info'>
-                                    <h1 className='book-name'>{book.bookName}</h1>
-                                    <h2 className='author-name'>by {book.author}</h2>
-                                    <p className='book-amount'>₹{book.price}</p>
+                        filteredBooks.map((book, index) => {
+                            const percentage = (book.rating / 5) * 75;
+                            return (
+                                <div className='book-card' key={index} onClick={() => toggleModal(book)}>
+                                    <img src={book.coverImage} alt="book-cover" />
+                                    <div className='book-info'>
+                                        <div className='book-reting'>
+                                            <h3 className="book-title">{book.bookName}</h3>
+                                            <div className="rating-box">
+                                                <div className="star-wrapper">
+                                                    <div className="star-background">★</div>
+                                                    <div className="star-fill" style={{ width: `${percentage}%` }}>★</div>
+                                                </div>
+                                                <span className="rating-number">{book.rating}</span>
+                                            </div>
+                                        </div>
+                                        <h2 className='author-name'>by {book.author}</h2>
+                                        <p className='book-amount'>₹{book.price}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            )
+                        })
                     ) : (
                         <p>No books found matching the filters.</p>
                     )}
@@ -202,18 +212,30 @@ const Library = () => {
 
                 <h2 className='all-books-heading'>All Books</h2>
                 <div className='book-Container '>
-                    {bookData?.map((item, index) => (
-                        <div className='book-card' key={index} onClick={() => toggleModal(item)}>
-                            <img src={item?.coverImage} alt="book-cover" />
-                            <div className='book-info'>
-                                <h1 className='book-name'>{item?.bookName}</h1>
-                                <h2 className='author-name'>by {item?.author}</h2>
-                                <p className='book-amount'>₹{item?.price}</p>
+                    {bookData?.map((item, index) => {
+                        const percentage = (item.rating / 5) * 75;
+                        return (
+                            <div className='book-card' key={index} onClick={() => toggleModal(item)}>
+                                <img src={item?.coverImage} alt="book-cover" />
+                                <div className='book-info'>
+                                    <div className='book-reting'>
+                                        <h3 className="book-title">{item.bookName}</h3>
+                                        <div className="rating-box">
+                                            <div className="star-wrapper">
+                                                <div className="star-background">★</div>
+                                                <div className="star-fill" style={{ width: `${percentage}%` }}>★</div>
+                                            </div>
+                                            <span className="rating-number">{item.rating}</span>
+                                        </div>
+                                    </div>
+                                    <h2 className='author-name'>by {item?.author}</h2>
+                                    <p className='book-amount'>₹{item?.price}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
-                
+
             </section>
 
             <BookReviewModal
