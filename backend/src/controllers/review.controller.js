@@ -69,7 +69,9 @@ const getReviews = asyncHandler(async (req, res) => {
     const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email")
 
     if (!reviews || reviews.review.length === 0) {
-        throw new ApiError(404, "No reviews found for this book")
+        //throw new ApiError(404, "No reviews found for this book")
+        return res.status(404)
+        .json(new ApiResponse(404, reviews, "No reviews found for this book"))    
     }
 
     return res.status(200)
