@@ -25,14 +25,14 @@ const Profile = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
-  
+
     let profileEndpoint = role === "admin"
       ? `${baseUrl}/api/v1/users/getAdminProfile`
       : `${baseUrl}/api/v1/users/current-user`;
-  
+
     // Fetch Profile Data First
     fetch(profileEndpoint, {
       method: "GET",
@@ -43,13 +43,13 @@ const Profile = () => {
       .then(data => {
         if (data.data) {
           setProfile(data.data);
-  
+
           // Fetch Profile Image Only If profile._id Exists
           if (data.data._id) {
             const imageEndpoint = role === "admin"
               ? `${baseUrl}/api/v1/profileImage/getProfileImage/${data.data._id}`
               : `${baseUrl}/api/v1/profileImage/getProfileImage/${data.data._id}`;
-  
+
             fetch(imageEndpoint, {
               method: "GET",
               headers: { Authorization: `Bearer ${token}` },
@@ -63,7 +63,7 @@ const Profile = () => {
       })
       .catch(error => console.error("Error fetching profile:", error));
   }, [baseUrl]);
-  
+
   const handleUpdateProfile = async (values) => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
@@ -137,12 +137,11 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <h1>My Profile</h1>
-      <div className="profile-card">
+      <div className="Admin-profile-card">
         {/* Show preview image if selected, otherwise show existing profile image */}
-        <img src={selectedImage || profileImage} alt="User Profile" className="profile-image" />
 
         <label htmlFor="imageUpload" className="upload-image-btn">
-          Upload Image
+          <img src={selectedImage || profileImage} alt="User Profile" className="profile-image" />
         </label>
         <input
           type="file"
