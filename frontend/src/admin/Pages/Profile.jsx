@@ -10,7 +10,6 @@ const validationSchema = Yup.object().shape({
     .required("Name is required"),
   email: Yup.string()
     .email("Invalid email format")
-    .matches(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, "Invalid email format")
     .required("Email is required"),
   contactNo: Yup.string()
     .matches(/^\d+$/, "Contact must contain only numbers")
@@ -21,42 +20,49 @@ const validationSchema = Yup.object().shape({
 
 const Profile = () => {
   const baseUrl = useApiUrl();
-  const [profile, setProfile] = useState({
-    _id: "",
-    name: "",
-    email: "",
-    contactNo: "",
-    role: "",
-  });
+  const [profile, setProfile] = useState({ _id: "", name: "", email: "", contactNo: "", role: "" });
+  const [profileImage, setProfileImage] = useState("/images/author-image.png"); // Default image
+  const [selectedImage, setSelectedImage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role"); // Get role from localStorage
+    const role = localStorage.getItem("role");
 
-    let apiEndpoint = role === "admin"
+    let profileEndpoint = role === "admin"
       ? `${baseUrl}/api/v1/users/getAdminProfile`
       : `${baseUrl}/api/v1/users/current-user`;
 
-    fetch(apiEndpoint, {
+    // Fetch Profile Data First
+    fetch(profileEndpoint, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
       credentials: "include",
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
-        console.log("API Response:", data);
-        setProfile(data.data || {});
+        if (data.data) {
+          setProfile(data.data);
+
+          // Fetch Profile Image Only If profile._id Exists
+          if (data.data._id) {
+            const imageEndpoint = role === "admin"
+              ? `${baseUrl}/api/v1/profileImage/getProfileImage/${data.data._id}`
+              : `${baseUrl}/api/v1/profileImage/getProfileImage/${data.data._id}`;
+
+            fetch(imageEndpoint, {
+              method: "GET",
+              headers: { Authorization: `Bearer ${token}` },
+              credentials: "include",
+            })
+              .then(response => response.json())
+              .then(imageData => setProfileImage(imageData.data?.image || "/images/author-image.png"))
+              .catch(error => console.error("Error fetching profile image:", error));
+          }
+        }
       })
       .catch(error => console.error("Error fetching profile:", error));
-  }, []);
+  }, [baseUrl]);
 
   const handleUpdateProfile = async (values) => {
     const token = localStorage.getItem("token");
@@ -70,19 +76,14 @@ const Profile = () => {
       const response = await fetch(updateEndpoint, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          _id: profile._id, 
-          ...values,
-        }),
+        body: JSON.stringify(values),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update profile");
-      }
+      if (!response.ok) throw new Error("Failed to update profile");
 
       alert("Profile updated successfully!");
       setProfile({ ...profile, ...values });
@@ -92,11 +93,63 @@ const Profile = () => {
     }
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Preview image before uploading
+    const imageUrl = URL.createObjectURL(file);
+    setSelectedImage(imageUrl);
+
+    // Upload the image
+    handleImageUpload(file);
+  };
+
+  const handleImageUpload = async (file) => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    let uploadEndpoint = role === "admin"
+      ? `${baseUrl}/api/v1/profileImage/uploadProfileImage/${profile._id}`
+      : `${baseUrl}/api/v1/profileImage/uploadProfileImage/${profile._id}`;
+
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const response = await fetch(uploadEndpoint, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: "include",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Failed to upload image");
+
+      const data = await response.json();
+      setProfileImage(data.imageUrl);
+      alert("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
   return (
     <div className="profile-container">
       <h1>My Profile</h1>
-      <div className="profile-card">
-        <img src="/images/author-image.png" alt="User Profile" className="profile-image" />
+      <div className="Admin-profile-card">
+        {/* Show preview image if selected, otherwise show existing profile image */}
+
+        <label htmlFor="imageUpload" className="upload-image-btn">
+          <img src={selectedImage || profileImage} alt="User Profile" className="profile-image" />
+        </label>
+        <input
+          type="file"
+          id="imageUpload"
+          accept="image/*"
+          onChange={handleImageChange}
+          style={{ display: "none" }}
+        />
 
         {!isEditing ? (
           <div className="profile-info">
@@ -110,11 +163,7 @@ const Profile = () => {
           </div>
         ) : (
           <Formik
-            initialValues={{
-              name: profile.name,
-              email: profile.email,
-              contactNo: profile.contactNo,
-            }}
+            initialValues={{ name: profile.name, email: profile.email, contactNo: profile.contactNo }}
             enableReinitialize
             validationSchema={validationSchema}
             onSubmit={handleUpdateProfile}
@@ -151,183 +200,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-
-// import React, { useState, useEffect } from "react";
-// import { Formik, Form, Field, ErrorMessage } from "formik";
-// import * as Yup from "yup";
-// import "../styles/profile.css";
-// //import useApiUrl from "../components/useApiUrl";
-// import useApiUrl from "../../componet/commonComponet/useApiUrl.js";
-
-
-// const validationSchema = Yup.object().shape({
-//   name: Yup.string()
-//     .matches(/^[A-Za-z\s]+$/, "Name cannot contain numbers")
-//     .required("Name is required"),
-//   email: Yup.string()
-//     .email("Invalid email format")
-//     .matches(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, "Invalid email format")
-//     .required("Email is required"),
-//   contactNo: Yup.string()
-//     .matches(/^\d+$/, "Contact must contain only numbers")
-//     .min(10, "Contact must be exactly 10 digits")
-//     .max(10, "Contact must be exactly 10 digits")
-//     .required("Contact is required"),
-// });
-
-// const Profile = () => {
-//   const baseUrl = useApiUrl();
-//   const [admin, setAdmin] = useState({
-//     _id:"",
-//     name: "",
-//     email: "",
-//     contactNo: "",
-//     role: "",
-//   });
-//   const [isEditing, setIsEditing] = useState(false); // State to show edit form
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("token");
-
-//     fetch(`${baseUrl}/api/v1/users/getAdminProfile`, {
-//       method: "GET",
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       credentials: "include",
-//     })
-//     .then((response) => {
-//       if(!response.ok){
-//         throw new Error(`HTTP error! Status: ${response.status}`);
-//       }
-//       return response.json()
-//     })
-//       .then((data) => {
-//         console.log("Api 1 Response",data);
-//         setAdmin(data.data[0] || []);
-//       })
-//       .catch((error) => console.error("Error fetching profile:", error));
-
-      
-//   }, []);
-
-//   const handleUpdateProfile = async (values) => {
-//     console.log("Submitting form with values:", values); // Debugging
-
-//     const token = localStorage.getItem("token");
-
-//     try {
-//       const response = await fetch(`${baseUrl}/api/v1/users/updateAdminProfile/${admin._id}`, {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         credentials: "include",
-//         body: JSON.stringify({
-//           _id: admin._id, 
-//           ...values,
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to update profile");
-//       }
-
-//       alert("Profile updated successfully!");
-//       setAdmin({ ...admin, ...values }); // Update profile details in state
-//       setIsEditing(false); // Close form
-//     } catch (error) {
-//       console.error("Error updating profile:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="profile-container">
-//       {/* <AdminHeader /> */}
-//       <h1>My Profile</h1>
-//       <div className="profile-card">
-//         <img src="/images/adminImage.jpg" alt="User Profile" className="profile-image" />
-
-//         {!isEditing ? (
-//           <div className="profile-info">
-//             <h2>{admin.name}</h2>
-//             <p><strong>Email:</strong> {admin.email}</p>
-//             <p><strong>Contact No:</strong> {admin.contactNo}</p>
-//             <p><strong>Role:</strong> {admin.role}</p>
-//             <button className="edit-profile-btn" onClick={() => setIsEditing(true)}>
-//               Edit Profile
-//             </button>
-//           </div>
-//         ) : (
-//           <Formik
-//             initialValues={{
-//               name: admin.name,
-//               email: admin.email,
-//               contactNo: admin.contactNo,
-//             }}
-//             enableReinitialize
-//             validationSchema={validationSchema}
-//             onSubmit={handleUpdateProfile}
-//           >
-//             {({ isSubmitting, handleSubmit }) => (
-//               <Form onSubmit={handleSubmit} className="profile-edit-form">
-//                 <label htmlFor="name">Name:</label>
-//                 <Field type="text" name="name" id="name" />
-//                 <ErrorMessage name="name" component="span" className="error" />
-
-//                 <label htmlFor="email">Email:</label>
-//                 <Field type="email" name="email" id="email" />
-//                 <ErrorMessage name="email" component="span" className="error" />
-
-//                 <label htmlFor="contactNo">Contact No:</label>
-//                 <Field type="text" name="contactNo" id="contactNo" />
-//                 <ErrorMessage name="contactNo" component="span" className="error" />
-
-//                 <div className="form-buttons">
-//                   <button type="submit" disabled={isSubmitting} className="save-btn">
-//                     Save Changes
-//                   </button>
-//                   <button type="button" className="cancel-btn" onClick={() => setIsEditing(false)}>
-//                     Cancel
-//                   </button>
-//                 </div>
-//               </Form>
-//             )}
-//           </Formik>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Profile;
-
-// // import React from "react";
-// // import "../styles/profile.css";
-// // import AdminHeader from "../../componet/commonComponet/header/AdminHeader";
-
-// // const Profile = () => {
-// //   return (
-// //     <div className="profile-container">
-// //       {/* <AdminHeader/> */}
-// //       <h1>My Profile</h1>
-// //       <div className="profile-card">
-// //         <img
-// //           src="../../../public/images/2.jpg"
-// //           alt="User Profile"
-// //           className="profile-image"
-// //         />
-// //         <div className="profile-info">
-// //           <h2>John Doe</h2>
-// //           <p>Email: johndoe@example.com</p>
-// //           <p>Role: Admin</p>
-// //           <button className="edit-profile-btn">Edit Profile</button>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default Profile;
