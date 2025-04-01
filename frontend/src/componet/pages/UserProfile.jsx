@@ -81,7 +81,7 @@ const UserProfile = () => {
                 setLoading(false)
             })
             .catch(error => console.error("Error fetching profile:", error));
-    }, [successMessage == false]);
+    }, [!successMessage ]);
 
     const toggleModal = (book, name) => {
         setUserReview(null);
