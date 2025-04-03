@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import Header from '../header/Header';
 import useApiUrl from '../useApiUrl';
-import AdminHeader from '../header/AdminHeader';
+import AdminHeader from '../../../admin/component/AdminHeader.jsx';
 import "../../../styles/pages_styles/Protected.css"
 import Footer from '../footer/Footer';
 
