@@ -207,9 +207,15 @@ const Header = () => {
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
                         {localStorage?.getItem("userUpdateBookData") &&
-                            (<li><NavLink to={"/UpdateBook"}>UpdateBook</NavLink></li>)}
-                        {location.pathname === "/UserProfile" || userAdminLogin ?
-                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li> : null}
+                            (<li><NavLink to={"/UpdateBook"}>UpdateBook</NavLink></li>)
+                        }
+
+
+                        {location.pathname === "/UserProfile" && !userAdminLogin ?
+                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li>
+                            : null}
+
+
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
@@ -306,7 +312,7 @@ const Header = () => {
                     <div className="confirm-popup">
                         <div className="confirm-box">
                             {confirmLogout ?
-                                <p>Do you wish to log out now that you have written but not submitted a book? ?</p>
+                                <p>Do you wish to log out now that you have written but not submitted a book?</p>
                                 :
                                 <p>Are you sure you want to update your profile?</p>
                             }
