@@ -207,9 +207,15 @@ const Header = () => {
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
                         {localStorage?.getItem("userUpdateBookData") &&
-                            (<li><NavLink to={"/UpdateBook"}>UpdateBook</NavLink></li>)}
-                        {location.pathname === "/UserProfile" || userAdminLogin ?
-                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li> : null}
+                            (<li><NavLink to={"/UpdateBook"}>UpdateBook</NavLink></li>)
+                        }
+
+
+                        {location.pathname === "/UserProfile" && !userAdminLogin ?
+                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li>
+                            : null}
+
+
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
