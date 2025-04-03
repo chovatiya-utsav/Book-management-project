@@ -312,7 +312,7 @@ const Header = () => {
                     <div className="confirm-popup">
                         <div className="confirm-box">
                             {confirmLogout ?
-                                <p>Do you wish to log out now that you have written but not submitted a book? ?</p>
+                                <p>Do you wish to log out now that you have written but not submitted a book?</p>
                                 :
                                 <p>Are you sure you want to update your profile?</p>
                             }
