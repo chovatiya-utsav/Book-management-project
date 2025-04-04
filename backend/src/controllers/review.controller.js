@@ -68,10 +68,10 @@ const getReviews = asyncHandler(async (req, res) => {
 
     const reviews = await Review.findOne({ book: bookId }).populate("review.user", "name email")
 
-    if (!reviews || reviews.review.length === 0) {
-        return res.status(404)
-            .json(new ApiResponse(404, reviews, "No reviews found for this book"))
-    }
+    // if (!reviews || reviews.review.length === 0) {
+    //     return res.status(404)
+    //         .json(new ApiResponse(404, reviews, "No reviews found for this book"))
+    // }
 
     return res.status(200)
         .json(new ApiResponse(200, reviews, "Reviews retrieved successfully"))

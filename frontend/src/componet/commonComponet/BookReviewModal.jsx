@@ -20,14 +20,22 @@ const BookReviewModal = ({ show, onClose, book, userReview, readLater, user, del
         const storedUser = JSON.parse(localStorage?.getItem("userLogin")) || null;
         setUserId(storedUser?._id || "");
 
-        if (userReview) {
-            setRating(user ? book?.rating : userReview?.rating);
+
+        if (user) {
+            setRating(book?.rating);
             setReviewText(userReview?.reviewText);
         } else {
-            setReviewSubmited(false);
-            setRating(0);
-            setReviewText("");
+            if (userReview && !user) {
+                setRating(userReview?.rating);
+                setReviewText(userReview?.reviewText);
+            } else {
+                setReviewSubmited(false);
+                setRating(0);
+                setReviewText("");
+            }
         }
+
+
     }, [show, userReview, book, user]);
 
     const navigate = useNavigate();
