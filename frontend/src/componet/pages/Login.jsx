@@ -149,6 +149,8 @@ const Login = () => {
                         navigate("/admin-dashboard");  // Redirect admin to admin panel
                     } else {
                         localStorage.setItem("userLogin", JSON.stringify(res.data.user))
+                        localStorage.setItem("bookdelete", false)
+                        localStorage.setItem("bookupdatedelete", false)
                         navigate("/Book-Management");  // Redirect regular users
                     }
                 } else {
