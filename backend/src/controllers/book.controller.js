@@ -6,6 +6,8 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { Category } from "../models/category.model.js";
 import { Review } from "../models/review.model.js"
 import { Wishlist } from "../models/wishlist.model.js"
+import { Activity } from "../models/activity.model.js";
+import { User } from "../models/user.model.js";
 
 
 const createBook = asyncHandler(async (req, res) => {
@@ -72,7 +74,13 @@ const createBook = asyncHandler(async (req, res) => {
         rating: 1
     })
     //console.log(newBook);
-
+    const user = await User.findById(req.user._id)
+    console.log(user);
+    
+    await Activity.create({
+        description: `create book: ${user.name}`,
+        user: user._id
+    })
 
     return res.status(201)
         .json(new ApiResponse(201, newBook, "Book added successfully"))
@@ -203,7 +211,7 @@ const getOverallAverageRating = asyncHandler(async (req, res) => {
     const overallAverageRating = result.length > 0 ? result[0].avgRating : 0;
 
     if (!overallAverageRating) {
-        return res.status(500).json(new ApiResponse(500,{overallAverageRating},"Failed to calculate overall average rating"))
+        return res.status(500).json(new ApiResponse(500, { overallAverageRating }, "Failed to calculate overall average rating"))
     }
 
     return res.status(200).json(new ApiResponse(200, { overallAverageRating }, "Overall average rating calculated successfully"))
