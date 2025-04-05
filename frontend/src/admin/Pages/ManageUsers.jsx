@@ -87,7 +87,11 @@ const ManageUsers = () => {
               <td>{user.role || "User"}</td>
               <td>
                 {/* <button className="edit-btn">Edit</button> */}
-                <button className="delete-btn" onClick={() => handleDeleteUser(user._id)} >Delete</button>
+                {/* <button className="delete-btn" onClick={() => handleDeleteUser(user._id)} >Delete</button> */}
+                <button className="delete-btn" onClick={() => handleDeleteUser(user._id)} >
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+
+                </button>
               </td>
             </tr>
           ))}

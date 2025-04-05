@@ -87,7 +87,9 @@ const ManageBooks = () => {
               <td>{book.price}</td>
               <td>
                 {/* <button className="edit-btn">Edit</button> */}
-                <button className="delete-btn" onClick={() => { handleDeleteBook(book._id) }} >Delete</button>
+                {/* <button className="delete-btn" onClick={() => { handleDeleteBook(book._id) }} >Delete</button> */}
+                <button className="delete-btn" onClick={() => { handleDeleteBook(book._id) }} >                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
               </td>
             </tr>
           ))}
